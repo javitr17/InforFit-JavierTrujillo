@@ -7,7 +7,7 @@ services:
 # https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html
   postgres:
     build:
-      context: .
+      context: C:\Users\javtr\Desktop\DAW\InForFitApp\InforFit
       dockerfile: ./compose/production/postgres/Dockerfile
     image: django-base-pro_production_postgres
     container_name: django-base-pro_local_postgres

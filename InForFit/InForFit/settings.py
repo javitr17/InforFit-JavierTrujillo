@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-r#3idz!)+zn85h*vajvev(tz)ivl9n&hgrt%cm5-kwbjj0s7y_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'app.wsgi.application'
+WSGI_APPLICATION = 'InForFit.wsgi.application'
 
 
 # Database

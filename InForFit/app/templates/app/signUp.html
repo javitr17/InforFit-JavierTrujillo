@@ -1,0 +1,52 @@
+<!-- app/templates/app/logIn.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de usuario</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Registro de usuario</h2>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <!-- Mostrar errores del formulario -->
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Por favor corrige los siguientes errores:</strong>
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
+            <!-- Campo para el nombre de usuario -->
+            <div class="form-group">
+                <label for="id_username">Nombre de usuario:</label>
+                {{ form.username }}
+            </div>
+
+            <!-- Campo para la contraseña -->
+            <div class="form-group">
+                <label for="id_password">Contraseña:</label>
+                {{ form.password }}
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Registrarse</button>
+            </div>
+        </form>
+
+        <!-- Enlace para iniciar sesión si ya tiene una cuenta -->
+        <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar sesión aquí</a></p>
+    </div>
+</body>
+</html>
