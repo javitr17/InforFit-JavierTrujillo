@@ -1,0 +1,71 @@
+body { 
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Cabecera */
+.cabecera {
+    background-color: #222E39;
+    color: #D9D9D9;
+    display: grid;
+    grid-template-columns: 1fr 7fr 2fr; /* Mantiene la proporción de 10% 70% 20% */
+    font-weight: 600;
+    text-align: center;
+    padding: 0.25vw 0.05vw 0.25vw 0.5vw; /* top, right, bottom, left */
+}
+
+.cabecera img {
+    margin-top: 0.5vh;
+    width: 12vw; /* Proporcional al ancho de la ventana */
+    height: auto; /* Mantener la proporción */
+}
+
+/* Barra de navegación */
+.barraNav {
+    display: flex;
+    justify-content: flex-start; /* Alinear a la izquierda */
+    gap: 2vw; /* Espaciado entre enlaces */
+    font-size: 1.2rem; /* Unidades relativas para adaptarse a distintos tamaños */
+    padding: 1vh 2vw; /* Ajuste con vh y vw para ser responsive */
+}
+
+.barraNav a {
+    padding-top: 0.8rem;
+    color: #D9D9D9;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+/* Elementos de la derecha */
+.navDer {
+    display: flex;
+    gap: 2vw; /* Proporcional a la ventana */
+    justify-content: center; /* Alinea los elementos a la derecha */
+
+}
+
+.logoPerfil {
+    padding-top: 2vh;
+    font-size: 1.5rem; /* Tamaño adaptable */
+
+}
+.logoPerfil a i{
+    color: #D9D9D9;
+}
+
+/* Botón de la cabecera */
+.navBoton a {
+    background-color: #FFCC00;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.navBoton {
+    padding-top: 1.2rem;
+}

@@ -1,0 +1,46 @@
+.imagenFondoPrincipal {
+    width: 100%;
+    height: 80vh;
+    background-image: url("../imagenes/fondoweb.png");
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.seccionInfo {
+    display: flex; /* Flex para alinear los elementos horizontalmente */
+    justify-content: flex-start; /* Alinea los elementos a la izquierda */
+    gap: 3rem; /* Espacio entre los elementos */
+    margin: 4rem auto; /* Centrar en el contenedor, con margen superior e inferior */
+    width: 100vw; /* Ocupa todo el ancho de la pantalla */
+    position: relative;
+}
+
+.infoSuscripcion {
+    position: absolute; /* Posiciona el elemento relativo a .imagenFondoPrincipal */
+    width: 45vw; /* Ajusta el tamaño según sea necesario */
+    height: 40vh;
+    top: 70vh; /* Parte de la infoSuscripcion aparece encima de la imagen de fondo */
+    left: 0; /* Mantenerlo a la izquierda */
+    border: 1px solid red; /* Solo para referencia visual */
+}
+
+.infoGym {
+    flex-grow: 1; /* Ocupa el resto del espacio disponible a la derecha de .infoSuscripcion */
+    padding-left: 3rem; /* Añadir espacio entre los dos elementos */
+}
+
+.seccionInfoGym {
+    margin-bottom: 1.5rem;
+}
+
+.tituloInfogym {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+}
+
+.descInfoGym {
+    font-size: 16px;
+}

@@ -1,8 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>Este seria el contenido de la pagina principal</p>
-    <a href="{% url 'login' %}">log In</a>
-    <a href="{% url 'signup' %}">Sign Up</a>
+<div class="imagenFondoPrincipal"></div>
+<div class="seccionInfo">
+
+    <div class="infoSuscripcion"></div>
+    <div class="infoGym">
+        <div class="seccionInfoGym">
+            <div class="tituloInfogym">ASESORAMIENTO</div>
+            <div class="descInfoGym">Asesoramiento privado y especializado para cada socio</div>
+        </div>
+        <div class="seccionInfoGym">
+            <div class="tituloInfogym">RECETAS</div>
+            <div class="descInfoGym">Ideas de recetas saludables y acordes a tus objetivos</div>
+        </div>
+        <div class="seccionInfoGym">
+            <div class="tituloInfogym">CLASES</div>
+            <div class="descInfoGym">Reserva de clases funcionales colectivas </div>
+        </div>
+        <div class="seccionInfoGym">
+            <div class="tituloInfogym">PROGRESO</div>
+            <div class="descInfoGym">Registra tu progreso día a día</div>
+        </div>
+    </div>
+</div>
+
+
 
 
 {% endblock %}
