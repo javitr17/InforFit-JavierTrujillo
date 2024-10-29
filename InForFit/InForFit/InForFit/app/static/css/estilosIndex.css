@@ -1,0 +1,150 @@
+.imagenFondoPrincipal {
+    width: 100%;
+    height: 80vh;
+    background-image: url("../imagenes/fondoweb.png");
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    margin-top: 3.5rem;
+}
+
+.seccionInfo {
+height: 18.5vw;
+}
+
+.infoSuscripcion {
+    background-color: #ffffff;
+    position: absolute;
+    top: 75vh;
+    left: 11vw;
+    width: 38vw; /* Ajusta el tamaño según sea necesario */
+    height: 23vw;
+    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);*/
+    /*box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);*/
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    z-index: 1;
+}
+
+
+
+.indexBoton a{
+    background-color: #FFCC00;
+    padding: 1rem 8.5rem;
+    border: none;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+
+.indexSuscripcion{
+    font-size: 55px;
+    font-weight: 900;
+    color: #222E39;
+    padding-bottom: 0.3rem;
+}
+.indexMensual{
+    font-size: 25px;
+    font-weight: 900;
+    color: #222E39;
+    padding-bottom: 0.3rem;
+
+}
+
+.index2499{
+    font-size: 60px;
+    font-weight: 900;
+    color: #222E39;
+    padding-bottom: 3rem;
+
+}
+
+.indexSuscripcionContainer{
+padding: 2.5rem;
+}
+.infoGym{
+    padding: 4rem;
+}
+.tituloInfogym{
+    font-size: 28px;
+
+}
+.descInfoGym{
+    margin-left: 2.3rem;
+    font-size: 14px;
+    width: 17em;
+}
+
+.indexInfogymContainer{
+    margin-left: 48vw;
+    font-weight: 900;
+    color: #222E39;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+
+}
+
+.seccionOpciones{
+    height: 33vw;
+    width: 100vw;
+    background-image: url("../imagenes/quebuscas.png");
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    z-index: 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+
+}
+.seccionOpcionesContainer div{
+    width: 15vw;
+    height: 15vw;
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.seccionOpcionesContainer div:hover{
+    transform: scale(1.05); /* Aumenta el tamaño al 105% */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5); /* Sombra un poco más intensa */
+}
+
+.indexEntrenamiento{
+    background-image: url("../imagenes/indexEntrenamiento.png");
+}
+.indexProgreso{
+    background-image: url("../imagenes/indexprogreso.png");
+}
+.indexClubs{
+    background-image: url("../imagenes/indexclubs.png");
+}
+
+.indexDieta{
+    background-image: url("../imagenes/indexDieta.png");
+}
+
+
+.seccionOpcionesContainer{
+    width: fit-content;
+    height: fit-content;
+    display:flex;
+    gap: 4rem;
+    position: absolute;
+    left: 13vw;
+    top: 12vw;
+}
+
+.seccionOpcionesContainer div a{
+    width: 50px;
+    height: 50px;
+}
+

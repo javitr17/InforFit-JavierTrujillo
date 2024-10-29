@@ -1,9 +1,10 @@
-from app.forms import *
+from ..forms import *
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponse
 from django.views import View
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from ..autenticacion_dni import *
 
 class signUp(View):
     template_name = 'app/signUp.html'
@@ -36,25 +37,26 @@ class logIn(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        return_render = render(request, self.template_name, {"form": form})
         if form.is_valid():
-            # <process form cleaned data>
-            username = form.cleaned_data.get('username')
+            # Obtener DNI y contraseña del formulario
+            dni = form.cleaned_data.get('dni')
             password = form.cleaned_data.get('password')
-            next_ruta = request.GET.get('next')
-            user = authenticate(username=username, password=password)
-            print("Contenido de la sesión antes de iniciar sesión:",
-                  request.session)  # Agregar este mensaje para depurar
-            print(user)
+
+            # Autenticar usando el DNI
+            user = authenticate_dni(dni=dni, password=password)
+
             if user is not None:
                 login(request, user)
-                next_url = request.GET.get('next', 'index')  # Si 'next' no está presente, redirige a 'chat'
+                next_url = request.GET.get('next', 'index')  # Si 'next' no está presente, redirige a 'index'
                 return redirect(next_url)
-                print('Credenciales inválidas. Por favor, intente de nuevo.')
-                return render(request, self.template_name, {"form": form})
+            else:
+                form.add_error(None, "Credenciales inválidas. Por favor, intente de nuevo.")
+
+        return render(request, self.template_name, {"form": form})
 
 
 class logOut(View):
     def get(self, request):
         logout(request)
-        return redirect('index')
+        return redirect('welcome')
+

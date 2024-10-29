@@ -2,12 +2,8 @@ from .models import *
 from django import forms
 
 class FormLogIn(forms.Form):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Usuario'})
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'})
-    )
+    dni = forms.CharField(max_length=9)
+    password = forms.CharField(widget=forms.PasswordInput)
     next = forms.CharField(widget=forms.HiddenInput, initial="/")
 
 class FormSignUp(forms.ModelForm):

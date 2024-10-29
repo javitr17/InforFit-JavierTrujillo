@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="login-container">
+<br>
+<br>
+<br><br>
+
+
+        <h2>Iniciar Sesión</h2>
+
+        <!-- Muestra mensajes de error generales si hay problemas en el formulario -->
+        {% if form.errors %}
+            <div class="error">
+                <p>Por favor, corrige los errores a continuación:</p>
+            </div>
+        {% endif %}
+
+        <!-- Formulario de inicio de sesión -->
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Campo DNI -->
+            <div class="form-group">
+
+                {{ form.dni }}
+                {% if form.dni.errors %}
+                    <div class="error">{{ form.dni.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Campo Contraseña -->
+            <div class="form-group">
+
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="error">{{ form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Botón de Inicio de Sesión -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            </div>
+        </form>
+</div>
+
+{% endblock %}
