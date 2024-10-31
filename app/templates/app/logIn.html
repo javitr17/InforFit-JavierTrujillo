@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="{% static 'css/estilosBase.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilosCabecera.css' %}">
     <link rel="stylesheet" href="{% static 'css/estilosLogin.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -20,30 +21,41 @@
         <a href="#" class="navNutricion">NUTRICIÓN</a>
     </div>
     <div class="navDer">
-      <div class="loginIniciarSesion">ACCEDER / INICIAR SESIÓN</div>
+        <div class="logoPerfil"><a href="{% url 'login' %}"><i class="fa-regular fa-user"></i></a></div>
+        <a href="" class="loginIniciarSesion">INICIAR SESIÓN</a>
+
+
+
     </div>
 
 </div>
-    <h1>Iniciar Sesión</h1>
+    <div class="fondoBienvenida"></div>
 
-    <!-- Formulario de inicio de sesión -->
+<div class="loginSeccionPrincipal">
+    <div class="loginContenedor">
+
+        <div class="loginDatosAcceso">TUS DATOS DE ACCESO</div>
+
     <form method="post" action="{% url 'login' %}">
+
         {% csrf_token %}
-        
-        <!-- Campo DNI -->
-        <div>
-            <label for="id_dni">DNI:</label>
+
+        <div class="loginCampos">
+
             {{ form.dni }}
         </div>
 
-        <!-- Campo Contraseña -->
-        <div>
-            <label for="id_password">Contraseña:</label>
+        <div class="loginCampos">
             {{ form.password }}
+        </div>
+        <div class="loginRecaptcha">
+             {{ form.captcha }}
         </div>
 
         <!-- Campo Oculto 'next' para redireccionamiento -->
         {{ form.next }}
+
+
 
         <!-- Mostrar errores si existen -->
         {% if form.non_field_errors %}
@@ -51,10 +63,16 @@
                 {{ form.non_field_errors }}
             </div>
         {% endif %}
-
+        <div class="loginBotonyEnlace">
         <!-- Botón de Envío -->
-        <button type="submit">Iniciar Sesión</button>
+            <button type="submit">INICIAR SESIÓN</button>
+            <a href="{% url 'signup' %">Hazte socio</a>
+        </div>
     </form>
+</div>
+
+</div>
+
 <div class="footer">
     <div class="logos">
         <a href="https://www.instagram.com/?hl=es" target="_blank"><i class="fa-brands fa-instagram"></i></a>

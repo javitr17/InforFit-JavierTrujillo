@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'InForFit',
+    'django_recaptcha',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+RECAPTCHA_PUBLIC_KEY = '6LcgdXEqAAAAAFvdpPG1TU8IeihXuwHZf1mUCfIj'
+RECAPTCHA_PRIVATE_KEY = '6LcgdXEqAAAAAEZNZdxw-pKJqpwFR9U1DDIcsxfA'

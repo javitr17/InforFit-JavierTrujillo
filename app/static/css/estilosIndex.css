@@ -10,7 +10,7 @@
 }
 
 .seccionInfo {
-height: 18.5vw;
+height: 15vw;
 }
 
 .infoSuscripcion {
@@ -18,8 +18,8 @@ height: 18.5vw;
     position: absolute;
     top: 75vh;
     left: 11vw;
-    width: 38vw; /* Ajusta el tamaño según sea necesario */
-    height: 23vw;
+    width: 35%; /* Ajusta el tamaño según sea necesario */
+    height: 47%;
     /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);*/
     /*box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);*/
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -90,7 +90,7 @@ padding: 2.5rem;
 }
 
 .seccionOpciones{
-    height: 33vw;
+    height: 29vw;
     width: 100vw;
     background-image: url("../imagenes/quebuscas.png");
     background-position: top; /* Posiciona la imagen en la parte superior */
@@ -140,7 +140,7 @@ padding: 2.5rem;
     gap: 4rem;
     position: absolute;
     left: 13vw;
-    top: 12vw;
+    top: 8vw;
 }
 
 .seccionOpcionesContainer div a{
