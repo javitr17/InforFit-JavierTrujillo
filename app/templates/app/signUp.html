@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
+    <link rel="stylesheet" href="{% static 'css/estilosBase.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilosRegistro1.css' %}">
+
+
 </head>
 <body>
-    <h1>Registrarse</h1>
-    <form method="post" action="{% url 'signup' %}">
-        {% csrf_token %}
-        <!-- Renderizar los campos del formulario -->
-        <div>
-            <label for="id_dni">DNI:</label>
-            {{ form.dni }}
+    
+    <div class="registroCabecera">
+        <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>
+        <div></div>
+        <div class="registroNavDer">
+            <div class="registroNum">1 <div class="registroSubrayado"></div></div>
+            <div class="registroNum">2</div>
+            <div class="registroNum">3</div>
         </div>
-        
-        <div>
-            <label for="id_password">Contraseña:</label>
-            {{ form.password }}
+    </div>
+    
+    <div class="fondoRegistro1">
+        <div class="registroSeccionIzq1">
+            <div class="registroPlanSeccion1"></div>
+            <div class="registroDatosSeccion1"></div>
+            <div class="registroDetallesPagoSeccion1"></div>
         </div>
+        <div class="registroSeccionDer1"></div>
         
-        <!-- Campo oculto 'next' para redireccionamiento -->
-        {{ form.next }}
-
-        <button type="submit">Registrarse</button>
-    </form>
+    </div>
 </body>
 </html>
