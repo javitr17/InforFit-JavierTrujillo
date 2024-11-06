@@ -58,23 +58,23 @@ margin-top: 0.3rem;
     position: relative;
     margin-top: 3.5rem;
     display: grid;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 67% 33%;
     gap:2rem;
 
 
 }
 
 .registroSeccionIzq1{
-   margin:8rem 0rem 4rem 10rem;
+   margin:6rem 0rem 4rem 10rem;
     opacity: 90%;
 
 
 }
 .registroPlanSeccion1{
     width: 100%;
-    height: 70%;
+    height: 75%;
     background-color: #222E39;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
 
 
 }
@@ -91,15 +91,113 @@ margin-top: 0.3rem;
 
 .registroSeccionDer1{
     background-color: #222E39;
-    margin: 8rem 10rem 4rem 0rem;
-    height: 25%;
+    margin: 6rem 12rem 4rem 0rem;
+    height: 30%;
     opacity: 90%;
     backdrop-filter: blur(10px);
 }
+.registroPlanSeccion1Contenedor{
+    padding: 2rem;
+}
+.registroSeleccionaPlan{
+    color: #FFFFFF;
+    font-size: 40px;
+    font-weight: 800;
+
+
+}
+.registroEligeSuscripcion{
+    color: #FFFFFF;
+    font-weight: 400;
+    font-size: 25px;
+    padding-top: 1rem;
+}
+.registroPlanes{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    height:23vw;
+    padding-top:2rem;
+}
+.registroPlan{
+        background-color: #FFFFFF;
+        color: #222E39;
+}
+
+.registroPlanSeccion{
+    padding: 2rem;
+}
+
+.registroPlanTitulo{
+    font-size: 40px;
+    font-weight: 800;
+}
+.registroVentaja{
+    padding-top: 2rem;
+    font-weight: 200;
+    font-size: 20px;
+}
+.registroPrecio{
+    font-size: 40px;
+    font-weight: 800;
+    display: flex;
+
+}
+.registro1mes{
+    margin-top: 2.4rem;
+    margin-left: 0.3rem;
+    font-size:20px;
+
+}
+.registroEuros{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    width: fit-content;
 
 
 
+}
+.registroVentajas{
+    padding-top: 2rem;
+    border-top: 1px solid #222E39;
+}
 
+.registroVentajas li{
+    padding-top: 0.7rem;
+list-style: none
+}
+.registroTusdatos,.registroDetallesPago {
+    color: #B3B7BA;
+    font-size: 35px;
+    font-weight: 800;
+    padding-top:1.3rem;
+    padding-left: 2rem;
+}
+.registroSeccionDer1Contenedor{
+    padding-top: 2rem;
+    padding-left: 3rem;
+}
+.registroInformacionGeneral{
+    color:#FFFFFF;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.registroBoton a{
+     background-color: #7D6C28;
+    padding: 1rem 6.3rem;
+    border: none;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 1.3rem;
+    text-decoration: none;
+
+}
+
+.registroBoton{
+    margin-top:3rem ;
+}
 
 
 
