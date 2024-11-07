@@ -133,6 +133,8 @@ margin-top: 0.3rem;
     font-size: 40px;
     font-weight: 800;
 }
+
+
 .registroVentaja{
     padding-top: 2rem;
     font-weight: 200;
@@ -169,7 +171,7 @@ list-style: none
 }
 .registroTusdatos,.registroDetallesPago {
     color: #B3B7BA;
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 800;
     padding-top:1.3rem;
     padding-left: 2rem;
