@@ -92,7 +92,7 @@ margin-top: 0.3rem;
 .registroSeccionDer1{
     background-color: #222E39;
     margin: 6rem 12rem 4rem 0rem;
-    height: 30%;
+    height: 32%;
     opacity: 90%;
     backdrop-filter: blur(10px);
 }
@@ -121,17 +121,22 @@ margin-top: 0.3rem;
     padding-top:2rem;
 }
 .registroPlan{
+        cursor:pointer;
         background-color: #FFFFFF;
         color: #222E39;
 }
 
 .registroPlanSeccion{
+    height: max-content;
     padding: 2rem;
+
+
 }
 
 .registroPlanTitulo{
     font-size: 40px;
     font-weight: 800;
+
 }
 
 
@@ -158,7 +163,6 @@ margin-top: 0.3rem;
     width: fit-content;
 
 
-
 }
 .registroVentajas{
     padding-top: 2rem;
@@ -173,21 +177,21 @@ list-style: none
     color: #B3B7BA;
     font-size: 30px;
     font-weight: 800;
-    padding-top:1.3rem;
+    padding-top:1.5rem;
     padding-left: 2rem;
 }
 .registroSeccionDer1Contenedor{
-    padding-top: 2rem;
-    padding-left: 3rem;
+  padding: 3rem;
 }
 .registroInformacionGeneral{
     color:#FFFFFF;
     font-size: 25px;
     font-weight: 800;
+    padding-bottom: 2rem;
 }
 
 .registroBoton a{
-     background-color: #7D6C28;
+    background-color: #7D6C28;
     padding: 1rem 6.3rem;
     border: none;
     color: #222E39;
@@ -195,10 +199,42 @@ list-style: none
     font-size: 1.3rem;
     text-decoration: none;
 
+
 }
 
 .registroBoton{
     margin-top:3rem ;
+}
+.registroPlanDetalle{
+    display: flex;
+    color: #FFFFFF;
+    width: 100%;
+    justify-content: space-between;
+
+}
+.registroTexto{
+margin-top: 1rem;
+
+}
+.registroValor{
+margin-top: 1rem;
+    text-align: right;
+
+}
+.registroCuotaMensual{
+    padding-top: 1rem;
+    color: #FFFFFF;
+    font-size: 17px;
+    font-weight: 800;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.registroCuotaMensualTexto{
+width: 50%;
+}
+.registroCuotMensualValor{
+
 }
 
 

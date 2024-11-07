@@ -3,9 +3,72 @@ document.addEventListener("DOMContentLoaded", function() {
 
     planSections.forEach(plan => {
         plan.addEventListener('click', function() {
-            const contrato = plan.querySelector('.registroPlanTitulo').textContent;
+            // Limpiar el borde de todos los elementos `.registroPlan`
+            document.querySelectorAll('.registroPlan').forEach(elemento => {
+                elemento.style.border = "none";  // Elimina el borde
+            });
+            //recuperación del html del nombre del contrato
+            let contrato = plan.querySelector('.registroPlanTitulo').textContent;
+            contrato = contrato.charAt(0).toUpperCase() + contrato.slice(1).toLowerCase();
 
+            //deducimos el valor de duracion y el precio en funcion del nombre del contrato
+            if (contrato=='Anual'){
+                duracion='12 meses'
+                renovacion='tras 12 meses indefinidamente'
+                precio='24.99€'
+
+            }
+            if(contrato=='Mensual'){
+                duracion='1 mes'
+                renovacion='tras 1 mes indefinidamente'
+                precio='38.99€'
+
+            }
+            if(contrato=='Semestral'){
+                duracion='6 meses'
+                renovacion='tras 6 meses indefinidamente'
+                precio='32.99€'
+
+
+            }
+
+            //introducimos en el html el valor de contrato
+            document.querySelectorAll('.registroTexto')[0].textContent= 'Contrato';
             document.querySelectorAll('.registroValor')[0].textContent = contrato;
+            document.querySelectorAll('.registroValor')[0].closest('.registroPlanDetalle').style.cssText='padding-bottom: 1rem;';
+
+
+
+            //introducimos en el html el valor de duracion y estilos
+            document.querySelectorAll('.registroTexto')[1].textContent= 'Duración:';
+            const duracionContrato=document.querySelectorAll('.registroValor')[1]
+            duracionContrato.textContent = duracion;
+            const duracionContratoAñadirEstilos=duracionContrato.closest('.registroPlanDetalle')
+            duracionContratoAñadirEstilos.style.cssText='border-top:1px solid #FFFFFF';
+
+            //introducimos en el html el precio de inscripción
+            document.querySelectorAll('.registroTexto')[2].textContent= 'Cuota de inscripción:';
+            document.querySelectorAll('.registroValor')[2].textContent = '15.00€';
+
+             //introducimos en el html el plazo de cancelación
+            document.querySelectorAll('.registroTexto')[3].textContent= 'Renovación:';
+            document.querySelectorAll('.registroValor')[3].textContent = renovacion;
+
+            //introducimos en el html el plazo de cancelación
+            document.querySelectorAll('.registroTexto')[4].textContent= 'Recisión:';
+            document.querySelectorAll('.registroValor')[4].textContent = '14 días antes del fin del contrato';
+             document.querySelectorAll('.registroValor')[4].closest('.registroPlanDetalle').style.cssText='padding-bottom:1rem; border-bottom:1px solid #FFFFFF;';
+            //introducimos en el html el precio del cotrato
+            document.querySelector('.registroCuotaMensualTexto').textContent= 'CUOTA MENSUAL';
+            document.querySelector('.registroCuotMensualValor').textContent = precio;
+
+            //cambiar el color de fondo del botón
+            document.querySelector('.registroBoton a').style.cssText='background-color: #FFCC00;';
+            document.querySelector('.registroSeccionDer1').style.height='46%'
+
+            //poner borde de seccion seleccionada en amarillo
+            const ponerBordeAmarillo = plan.closest('.registroPlan');
+            ponerBordeAmarillo.style.border = "5px solid #FFCC00";
         });
     });
 });
