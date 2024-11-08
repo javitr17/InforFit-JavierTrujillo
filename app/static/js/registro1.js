@@ -71,6 +71,13 @@ document.addEventListener("DOMContentLoaded", function() {
             ponerBordeAmarillo.style.border = "5px solid #FFCC00";
             //habilitamos el contenedor
             document.querySelector('.registroPlanDetalles').style.display='block'
+            //añadimos un parametro a la url del boton para pasar el contenedor que se selecciona a
+            //la vista del siguiente template
+            document.querySelector('.registroBoton a').href='{% url \'signupDatos\' %}'
+            console.log(document.querySelector('.registroBoton a'))
+
+
+
 
         });
     });

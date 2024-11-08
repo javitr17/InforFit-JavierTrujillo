@@ -2,34 +2,14 @@ from ..forms import *
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponse
 from django.views import View
+from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from ..autenticacion_dni import *
 
-class signUpPlan(View):
+class signUpPlan(TemplateView):
     template_name = 'app/signUpPlan.html'
-    form_class = FormSignUp
 
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name,
-                      {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-
-        if form.is_valid():
-            dni = form.cleaned_data['dni']
-            password = form.cleaned_data['password']
-            print(dni)
-            print(password)
-            user = User(username=dni)
-            user.set_password(password)
-            user.save()
-
-            login(request, user)
-            return redirect('welcome')
-        return render(request, self.template_name, {'form': form})
 
 class signUpDatos(View):
     template_name = 'app/signUpDatos.html'

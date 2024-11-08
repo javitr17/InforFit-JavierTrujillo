@@ -3,11 +3,11 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-image: url("../imagenes/registroFondo.png");
+    background-image: url("../imagenes/registroFondoOscuroAcortado.png");
     background-position: top; /* Posiciona la imagen en la parte superior */
     background-repeat: no-repeat;
     background-size: cover;
-    background-attachment: fixed;
+
 
 }
 
