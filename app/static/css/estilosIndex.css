@@ -226,7 +226,7 @@ padding: 2.5rem;
     .indexInfogymContainer{
     margin-left: 41vw;
     font-weight: 900;
-    color: #222E39;
+    color: #D9D9D9;
     display: grid;
     gap: 1.5rem;
     grid-template-columns: repeat(2, 1fr);

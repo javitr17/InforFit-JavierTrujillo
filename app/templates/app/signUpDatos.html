@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="{% static 'css/estilosBase.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilosRegistro1.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+
+    <div class="registroCabecera">
+        <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>
+        <div></div>
+        <div class="registroNavDer">
+            <div class="registroNum">1 <div class="registroSubrayado"></div></div>
+            <div class="registroNum">2</div>
+            <div class="registroNum">3</div>
+        </div>
+    </div>
+
+    <div class="fondoRegistro1">
+        <div class="registroSeccionIzq1">
+            <div class="registroPlanSeccion1">
+                <div class="registroPlanSeccion1Contenedor">
+
+                </div>
+            </div>
+            <div class="registroDatosSeccion1">
+                <div class="registroTusdatos">2 TUS DATOS</div>
+            </div>
+            <div class="registroDetallesPagoSeccion1">
+                <div class="registroDetallesPago">3 DETALLES DE PAGO</div>
+            </div>
+        </div>
+        <div class="registroSeccionDer1">
+            <div class="registroSeccionDer1Contenedor">
+                <div class="registroInformacionGeneral">INFORMACIÓN GENERAL</div>
+                <div class="registroPlanDetalles">
+                    <div class="registroPlanDetalle">
+                        <div class="registroTexto"></div>
+                        <div class="registroValor"></div>
+                    </div>
+                    <div class="registroPlanDetalle">
+                        <div class="registroTexto"></div>
+                        <div class="registroValor"></div>
+                    </div>
+                    <div class="registroPlanDetalle">
+                        <div class="registroTexto"></div>
+                        <div class="registroValor"></div>
+                    </div>
+                    <div class="registroPlanDetalle">
+                        <div class="registroTexto"></div>
+                        <div class="registroValor"></div>
+                    </div>
+                    <div class="registroPlanDetalle">
+                        <div class="registroTexto"></div>
+                        <div class="registroValor"></div>
+                    </div>
+                    <div class="registroCuotaMensual">
+                        <div class="registroCuotaMensualTexto"></div>
+                        <div class="registroCuotMensualValor"></div>
+                    </div>
+                </div>
+                <div  class="registroBoton"><a href="{% url 'signupPago' %}">CONFIRMAR</a></div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="{% static 'js/registro1.js' %}"></script>
+
+</body>
+</html>

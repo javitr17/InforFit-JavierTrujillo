@@ -30,9 +30,9 @@
 .registroNum{
     display: block;
     color: #B3B7BA;
-    font-size: 30px;
+    font-size: 25px;
     margin-top: 1rem;
-    width: 50%;
+    width: 40%;
     height: 100%;
 
 }
@@ -50,7 +50,7 @@ margin-top: 0.3rem;
 
 .fondoRegistro1{
      width: 100%;
-    height: 100vh;
+    height: 110vh;
     background-image: url("../imagenes/registroFondo.png");
     background-position: top; /* Posiciona la imagen en la parte superior */
     background-repeat: no-repeat;
@@ -60,6 +60,7 @@ margin-top: 0.3rem;
     display: grid;
     grid-template-columns: 67% 33%;
     gap:2rem;
+    background-attachment: fixed;
 
 
 }
@@ -72,7 +73,7 @@ margin-top: 0.3rem;
 }
 .registroPlanSeccion1{
     width: 100%;
-    height: 75%;
+    height: 66%;
     background-color: #222E39;
     backdrop-filter: blur(5px);
 
@@ -85,14 +86,13 @@ margin-top: 0.3rem;
     margin-top: 2rem;
     backdrop-filter: blur(10px);
 
-
-
 }
+
 
 .registroSeccionDer1{
     background-color: #222E39;
     margin: 6rem 12rem 4rem 0rem;
-    height: 32%;
+    height: 21%;
     opacity: 90%;
     backdrop-filter: blur(10px);
 }
@@ -137,7 +137,17 @@ margin-top: 0.3rem;
     font-size: 40px;
     font-weight: 800;
 
+
 }
+.registroPlanTitulo, .registroVentaja,.registroPrecio{
+    display:flex;
+    justify-content: center;
+}
+.registroVentajas{
+margin-left: 1rem;
+}
+
+
 
 
 .registroVentaja{
@@ -149,6 +159,7 @@ margin-top: 0.3rem;
     font-size: 40px;
     font-weight: 800;
     display: flex;
+    border-bottom: 1px solid #222E39;
 
 }
 .registro1mes{
@@ -166,7 +177,7 @@ margin-top: 0.3rem;
 }
 .registroVentajas{
     padding-top: 2rem;
-    border-top: 1px solid #222E39;
+
 }
 
 .registroVentajas li{
@@ -177,7 +188,7 @@ list-style: none
     color: #B3B7BA;
     font-size: 30px;
     font-weight: 800;
-    padding-top:1.5rem;
+    padding-top:1.8rem;
     padding-left: 2rem;
 }
 .registroSeccionDer1Contenedor{
@@ -198,12 +209,16 @@ list-style: none
     font-weight: 800;
     font-size: 1.3rem;
     text-decoration: none;
-
-
 }
-
+.registroVentajas li i{
+    padding-right:1rem ;
+}
 .registroBoton{
     margin-top:3rem ;
+}
+.registroPlanDetalles{
+    display: none;
+
 }
 .registroPlanDetalle{
     display: flex;

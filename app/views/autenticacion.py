@@ -6,8 +6,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from ..autenticacion_dni import *
 
-class signUp(View):
-    template_name = 'app/signUp.html'
+class signUpPlan(View):
+    template_name = 'app/signUpPlan.html'
     form_class = FormSignUp
 
     def get(self, request):
@@ -31,6 +31,30 @@ class signUp(View):
             return redirect('welcome')
         return render(request, self.template_name, {'form': form})
 
+class signUpDatos(View):
+    template_name = 'app/signUpDatos.html'
+    form_class = FormSignUp
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name,
+                      {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            dni = form.cleaned_data['dni']
+            password = form.cleaned_data['password']
+            print(dni)
+            print(password)
+            user = User(username=dni)
+            user.set_password(password)
+            user.save()
+
+            login(request, user)
+            return redirect('welcome')
+        return render(request, self.template_name, {'form': form})
 
 class logIn(View):
     form_class = FormLogIn

@@ -64,11 +64,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
             //cambiar el color de fondo del botón
             document.querySelector('.registroBoton a').style.cssText='background-color: #FFCC00;';
-            document.querySelector('.registroSeccionDer1').style.height='46%'
+            document.querySelector('.registroSeccionDer1').style.height='42%'
 
             //poner borde de seccion seleccionada en amarillo
             const ponerBordeAmarillo = plan.closest('.registroPlan');
             ponerBordeAmarillo.style.border = "5px solid #FFCC00";
+            //habilitamos el contenedor
+            document.querySelector('.registroPlanDetalles').style.display='block'
+
         });
     });
 });
