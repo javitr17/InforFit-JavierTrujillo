@@ -202,14 +202,21 @@ list-style: none
 }
 
 .registroBoton a{
-    background-color: #7D6C28;
+    background-color: #FFCC00;
     padding: 1rem 6.3rem;
     border: none;
     color: #222E39;
     font-weight: 800;
     font-size: 1.3rem;
     text-decoration: none;
+
 }
+.confirmar-boton[disabled] {
+    pointer-events: none; /* Desactiva clics */
+    opacity: 0.5; /* Cambia el estilo para parecer desactivado */
+    cursor: not-allowed;
+}
+
 .registroVentajas li i{
     padding-right:1rem ;
 }
@@ -248,10 +255,18 @@ margin-top: 1rem;
 .registroCuotaMensualTexto{
 width: 50%;
 }
-.registroCuotMensualValor{
+.registroCuotaMensual{
 
 }
 
+.registroPlanDetalle:nth-child(1){
+    padding-bottom: 1rem;
+    border-bottom:1px solid #FFFFFF;
+}
+.registroPlanDetalle:nth-child(5){
+    padding-bottom: 1rem;
+    border-bottom:1px solid #FFFFFF;
+}
 
 
 

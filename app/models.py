@@ -5,6 +5,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Socio(models.Model):
+    genero = models.CharField(
+        max_length=10,
+        choices=[('Hombre', 'Hombre'), ('Mujer', 'Mujer'), ('Otro', 'Otro')],
+        default='Otro'
+    )
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=50)
     apellidos = models.CharField(max_length=100)

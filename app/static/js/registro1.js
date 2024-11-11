@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
     const planSections = document.querySelectorAll('.registroPlanSeccion');
+    const botonConfirmar = document.querySelector('.registroBoton a');
+
+    // Deshabilitamos el botón al cargar la página
+    botonConfirmar.setAttribute("disabled", true);
 
     planSections.forEach(plan => {
         plan.addEventListener('click', function() {
@@ -35,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function() {
             //introducimos en el html el valor de contrato
             document.querySelectorAll('.registroTexto')[0].textContent= 'Contrato';
             document.querySelectorAll('.registroValor')[0].textContent = contrato;
-            document.querySelectorAll('.registroValor')[0].closest('.registroPlanDetalle').style.cssText='padding-bottom: 1rem;';
 
 
 
@@ -44,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const duracionContrato=document.querySelectorAll('.registroValor')[1]
             duracionContrato.textContent = duracion;
             const duracionContratoAñadirEstilos=duracionContrato.closest('.registroPlanDetalle')
-            duracionContratoAñadirEstilos.style.cssText='border-top:1px solid #FFFFFF';
+
 
             //introducimos en el html el precio de inscripción
             document.querySelectorAll('.registroTexto')[2].textContent= 'Cuota de inscripción:';
@@ -57,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function() {
             //introducimos en el html el plazo de cancelación
             document.querySelectorAll('.registroTexto')[4].textContent= 'Recisión:';
             document.querySelectorAll('.registroValor')[4].textContent = '14 días antes del fin del contrato';
-             document.querySelectorAll('.registroValor')[4].closest('.registroPlanDetalle').style.cssText='padding-bottom:1rem; border-bottom:1px solid #FFFFFF;';
             //introducimos en el html el precio del cotrato
             document.querySelector('.registroCuotaMensualTexto').textContent= 'CUOTA MENSUAL';
             document.querySelector('.registroCuotMensualValor').textContent = precio;
@@ -73,8 +75,11 @@ document.addEventListener("DOMContentLoaded", function() {
             document.querySelector('.registroPlanDetalles').style.display='block'
             //añadimos un parametro a la url del boton para pasar el contenedor que se selecciona a
             //la vista del siguiente template
-            document.querySelector('.registroBoton a').href='{% url \'signupDatos\' %}'
+            document.querySelector('.registroBoton a').href = '/InForFit/signUpDatos?contrato=' + encodeURIComponent(contrato);
             console.log(document.querySelector('.registroBoton a'))
+
+            // Habilitamos el botón de confirmación cuando se selecciona un plan
+            botonConfirmar.removeAttribute("disabled");
 
 
 
