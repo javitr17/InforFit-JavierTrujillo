@@ -1,6 +1,7 @@
 .imagenFondoPrincipal {
     width: 100%;
-    height: 80vh;
+    height: auto;
+    min-height: 700px;
     background-image: url("../imagenes/fondoweb.png");
     background-position: top; /* Posiciona la imagen en la parte superior */
     background-repeat: no-repeat;
@@ -10,21 +11,25 @@
 }
 
 .seccionInfo {
-height: 15vw;
+    height: auto;
+    min-height: 150px;
+    width: 100%;
+    overflow: hidden;
+    justify-items: right;
 }
 
-.seccionInfoGym{
-width: 16rem;
-    margin-left: 4rem;
+.indexDeshabilitar{
+    display: none;
 }
 
 .infoSuscripcion {
     background-color: #ffffff;
     position: absolute;
-    top: 75vh;
-    left: 11vw;
-    width: 35%; /* Ajusta el tamaño según sea necesario */
-    height: 45%;
+    top: 91%;
+    left: 11%;
+    height: auto;
+    min-height: 410px;
+    min-width: 591px;
     /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);*/
     /*box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);*/
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -76,7 +81,11 @@ width: 16rem;
 padding: 2.5rem;
 }
 .infoGym{
+    width:40%;
     padding: 4rem;
+    margin-right: 5%;
+
+
 }
 .tituloInfogym{
     font-size: 28px;
@@ -91,7 +100,7 @@ padding: 2.5rem;
 }
 
 .indexInfogymContainer{
-    margin-left: 48vw;
+   width: 100%;
     font-weight: 900;
     color: #D9D9D9;
     display: grid;
@@ -99,11 +108,13 @@ padding: 2.5rem;
     grid-template-columns: repeat(2, 1fr);
     text-align: center;
 
+
 }
 
 .seccionOpciones{
-    height: 29vw;
-    width: 100vw;
+    height: auto;
+    width: 100%;
+    min-height: 500px;
     background-image: url("../imagenes/quebuscas.png");
     background-position: top; /* Posiciona la imagen en la parte superior */
     background-repeat: no-repeat;
@@ -113,10 +124,12 @@ padding: 2.5rem;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 
 
+
 }
 .seccionOpcionesContainer div{
-    width: 15vw;
-    height: 15vw;
+    width:255px;
+    height: 255px;
+
     background-position: top; /* Posiciona la imagen en la parte superior */
     background-repeat: no-repeat;
     background-size: cover;
@@ -146,13 +159,16 @@ padding: 2.5rem;
 
 
 .seccionOpcionesContainer{
-    width: fit-content;
+    justify-content: space-between;
+    width: 80%;
     height: fit-content;
     display:flex;
-    gap: 4rem;
+    flex-wrap: wrap;
     position: absolute;
-    left: 13vw;
-    top: 8vw;
+    top:29%;
+    left: 10%;
+    right: 10%;
+
 }
 
 .seccionOpcionesContainer div a{
@@ -160,87 +176,145 @@ padding: 2.5rem;
     height: 50px;
 }
 
-
-@media (min-width: 769px) and (max-width: 1850px) {
+@media (max-width: 1461px) {
+.seccionInfo{
+   justify-items: center;
+    min-height:600px ;
+}
     .infoSuscripcion{
-        height: 43% ;
+        top: 110%;
+         left: 50%; /* Posiciona el borde izquierdo al 50% del contenedor */
+    transform: translateX(-50%); /* Mueve el elemento hacia la izquierda para centrarlo */
     }
-}
-
-@media (min-width: 769px) and (max-width: 1765px) {
-    .infoSuscripcion{
-        height: 41% ;
-    }
-
-}
-
-@media (min-width: 769px) and (max-width: 1686px) {
-    .infoSuscripcion{
-        height: 43% ;
-    }
-    .indexBoton a{
-        padding: 1.5rem 7.5rem;
-        font-size: 1rem;
+    .infoGym{
+     justify-items: center;
+        margin-top: 450px;
+      margin-right: 0%;
+        padding-right: 0%;
+        padding-left: 0%;
+        width: 50%;
 
     }
-    .seccionInfo {
-        height: 17vw;
-}
 
 }
 
-@media (min-width: 769px) and (max-width: 1590px) {
-    .infoSuscripcion{
-        height: 43% ;
+@media (max-width: 1300px) {
+   .seccionOpcionesContainer{
+       justify-content: center;
+       gap: 2rem;
+       top: 20%;
+
+   }
+    .seccionOpciones{
+          min-height: 800px;
+          background-image: url("../imagenes/quebuscas2.png");
     }
 
-    .seccionInfo {
-        height: 19vw;
-}
 
 }
-@media (min-width: 769px) and (max-width: 1430px) {
-    .infoSuscripcion{
-        height: 44% ;
-    }
 
-    .seccionInfo {
-        height: 21vw;
-}
-.imagenFondoPrincipal {
+@media (max-width: 1178px) {
+    .imagenFondoPrincipal {
 
     background-image: url("../imagenes/fondowebresponsive1.png");
 
 }
-.indexInfogymContainer{
-    margin-left: 45vw;
+}
+@media (max-width: 883px) {
+    .imagenFondoPrincipal {
+
+    background-image: url("../imagenes/fondowebresponsive2.png");
+
+}
+    .infoGym{
+    width: 100%;
+    padding-right: 2rem;
+    padding-left: 2rem;
 }
 
 }
+@media (max-width: 670px) {
+    .imagenFondoPrincipal {
 
-@media (min-width: 769px) and (max-width: 1367px) {
+    background-image: url("../imagenes/fondowebresponsive3.png");
+
+}
+}
+@media (max-width: 677px) {
+
+ .seccionOpciones{
+
+     min-height: 1320px;
+     background-image: url("../imagenes/quebuscas3.png");
+
+    }
+    .seccionOpcionesContainer{
+
+       top: 10%;
+
+   }
+    .infoGym{
+         margin-top: 300px;
+
+    }
+
     .infoSuscripcion{
-        height: 42% ;
-    }
-     .indexBoton a{
-        padding: 1rem 5.5rem;
-        font-size: 1rem;
+
+        min-width:300px;
+        min-height: 230px;
 
     }
-    .indexInfogymContainer{
-    margin-left: 41vw;
-    font-weight: 900;
-    color: #D9D9D9;
+
+    .indexSuscripcionContainer{
+        padding: 1rem;
+        height: fit-content;
+    }
+    .indexSuscripcion{
+    font-size: 32px;
+
+    }
+    .indexMensual{
+        font-size: 18px;
+
+    }
+
+    .index2499{
+        font-size: 35px;
+        padding-bottom: 1rem;
+
+    }
+    .indexBoton a{
+         background-color: #FFCC00;
+        padding: 1rem 4rem;
+        border: none;
+        color: #222E39;
+        font-weight: 800;
+        font-size: 0.8rem;
+        text-decoration: none;
+    }
+
+  .tituloInfogym{
+    font-size: 22px;
+    padding-bottom: 0;
+
+    }
+  .descInfoGym{
+    width:100%;
+    font-size: 14px;
+    padding: 0;
+
+    }
+  .indexDeshabilitar{
+      display: block;
+  }
+  .indexInfogymContainer{
+
     display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 5% 85% 10%;
+
     text-align: center;
 
-}
-
-
 
 }
-
-
+}
 

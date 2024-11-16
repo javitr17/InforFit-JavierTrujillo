@@ -29,6 +29,9 @@ body {
     top: 0;
     left: 0;
 }
+.cabeceraResponsive{
+    display: none;
+}
 
 
 .cabecera img {
@@ -118,7 +121,7 @@ body {
 .contenidoFooter1{
     padding-top:1rem ;
     display: grid;
-    grid-template-columns:22% 70% 7%;
+    grid-template-columns:15% 70% 15%;
     width: 100%;
     font-size: 18px;
 
@@ -129,13 +132,17 @@ body {
 }
 .bold{
     font-weight: 800;
-    color: #FFFFFF;
+    color: #B3B7BA;
 }
 
 .footerSuperior{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
+    gap: 1rem;
+
+}
+.footerSuperior div{
+    margin-left: 30%;
 }
 
 .contenidoFooter2{
@@ -152,6 +159,8 @@ border-top: 1px solid #B3B7BA;
     padding-top: 1rem;
     display: flex;
     justify-content: space-between;
+    padding-bottom: 1rem;
+    gap:2rem;
 
 }
 
@@ -159,3 +168,78 @@ border-top: 1px solid #B3B7BA;
     width: fit-content;
 
 }
+
+@media (max-width: 1100px) {
+.cabecera{
+    display: none;
+}
+.cabeceraResponsive{
+ background-color: #222E39;
+    color: #D9D9D9;
+    display: grid;
+    grid-template-columns: 2fr 6fr 2fr; /* Mantiene la proporción de 10% 70% 20% */
+    font-weight: 600;
+    text-align: center;
+    padding: 0.8rem;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+
+}
+.navBoton{
+    justify-content: center;
+}
+.indexMenu i{
+    color: #FFFFFF ;
+    font-size: 20px;
+
+}
+.indexMenu {
+display: flex;
+ align-items: center;
+    justify-content: center;
+
+}
+}
+
+@media (max-width: 677px) {
+    .contenidoFooter1{
+
+    font-size: 14px;
+}
+    .contenidoFooter2{
+            font-size: 14px;
+
+    }
+    .logos{
+          font-size: 12px;
+         gap: 1rem;
+
+    }
+    .footerCopyright{
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 450px) {
+ .footerSuperior{
+     grid-template-columns: 100%;
+ }
+    .footerSuperior div:nth-child(4){
+       grid-row: 2/3;
+    }
+    .footerSuperior div:nth-child(7){
+         grid-row: 3/4;
+     }
+    .footerSuperior div:nth-child(5){
+         grid-row: 5/6;
+     }
+    .footerSuperior div:nth-child(8){
+         grid-row: 6/7;
+     }
+    .footerSuperior div{
+    margin-left: 20%;
+}
+}
+
