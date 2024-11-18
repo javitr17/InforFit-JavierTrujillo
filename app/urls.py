@@ -6,7 +6,7 @@ urlpatterns = [
     path('', index.as_view(), name='index'),
     path('signUpPlan', signUpPlan.as_view(), name='signupPlan'),
     path('signUpDatos', signUpDatos.as_view(), name='signupDatos'),
-    path('signUpPago', signUpPlan.as_view(), name='signupPago'),
+    path('signUpPago', signUpPago.as_view(), name='signupPago'),
     path('logIn', logIn.as_view(), name='login'),
     path('logOut', logOut.as_view(), name='logout'),
 

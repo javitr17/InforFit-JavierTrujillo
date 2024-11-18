@@ -28,9 +28,10 @@ class FormRegistro(forms.ModelForm):
     fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Fecha Nacimiento'}))
     telefono = forms.CharField(max_length=15, widget=forms.TextInput(attrs={'placeholder': 'Teléfono'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
-    genero = forms.ChoiceField(
+    genero=forms.ChoiceField(
         choices=[('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')],
-        widget=forms.RadioSelect
+        widget=forms.RadioSelect,
+        initial='O',
     )
     # Campos de Datos Domicilio
     dni = forms.CharField(max_length=9, widget=forms.TextInput(attrs={'placeholder': 'DNI'}))

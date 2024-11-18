@@ -38,70 +38,13 @@
             </div>
             <div class="registroDatosSeccion2">
                 <div class="registroDatosSeccion2Contenedor">
-                    <div class="registroDatosSeccion2titulo">TUS DATOS</div>
-                     <form method="post">
-                    {% csrf_token %}
-                         
-                         <div class="registroDatosFormularioTituloDatosPersonales">DATOS PERSONALES</div>
-                         
-                          <div>
-                    
-                              <div class="registroFormularioRadios">
-    {{ form.genero }}
-</div>
-    </div>
+                   
+                </div>
                   
-                  <div class="registroFormularioDatosPersonales">     
+              
 
                     <!-- Campos del Formulario -->
-                    <div class="campo-formulario">
-                        {{ form.nombre }}
-                    </div>
-
-                    <div class="campo-formulario">
-                        {{ form.apellidos }}
-                    </div>
-
-                    <div class="campo-formulario">
-                        {{ form.fecha_nacimiento }}
-                    </div>
-
-                    <div class="campo-formulario">
-                        {{ form.telefono }}
-                    </div>
-
-                    <div class="campo-formulario">
-                        {{ form.email }}
-                    </div>
-                </div>        
-                         
-                 <div class="registroDatosFormularioTituloDatosDomicilio">DATOS DOMICILIO</div>
-                 <div class="registroFormularioDomicilio">      
-                         <div class="campo-formulario">
-                        {{ form.dni }}
-                    </div>
-
-                    <div class="campo-formulario">
-                        {{ form.calle }}
-                    </div>
-
-                    <div class="campo-formulario">
-                        {{ form.ciudad }}
-                    </div>
-
-                    <div class="campo-formulario">
-                        {{ form.codigo_postal }}
-                    </div>
-
-                    <div class="campo-formulario">
-                        {{ form.pais }}
-                    </div>
-                 </div>  
-
-                    <button type="submit" class="btn-confirmar">CONTINUAR</button>
-                    </form>
-                </div>
-            </div>
+                    
           
             <div class="registroDetallesPagoSeccion1">
                 <div class="registroDetallesPago">3 DETALLES DE PAGO</div>

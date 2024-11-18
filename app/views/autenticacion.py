@@ -60,6 +60,9 @@ class signUpDatos(View):
             'form_domicilio': formDomicilio,
         }
         return render(request, self.template_name, context)
+
+class signUpPago(TemplateView):
+    template_name = 'app/signUpPago.html'
 class signUpDatos(View):
     template_name = 'app/signUpDatos.html'
 
@@ -115,9 +118,14 @@ class signUpDatos(View):
     def post(self, request):
         form = FormRegistro(request.POST)
         if form.is_valid():
-            # Guardar los datos de socio y domicilio
-            form.save()
-            return redirect('some-success-page')  # Redirigir a una página de éxito
+            print(request.POST)
+            form.save(commit=False)  # No guarda en la base de datos
+            # Almacenar temporalmente la instancia en la sesión
+            request.session['form_data'] = form.cleaned_data
+            print('formulario valido')
+            return redirect('signPago')  # Redirigir a una página de éxito
+        else:
+            print(form.errors)
         return render(request, self.template_name, {'form': form})
 
 class logIn(View):

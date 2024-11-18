@@ -12,14 +12,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Verificar si la clase bodyResponsive está presente
         if (body.classList.contains('bodyResponsive')) {
-            console.log('contiene bodyResponsive');
 
             // Si la clase .bodyResponsive está presente, quitarla
             body.classList.remove('bodyResponsive');
 
             // Restaurar todos los elementos a display:block
             Array.from(hijosBody).forEach(hijoBody => {
-                console.log('Restaurando hijo:', hijoBody);
                 hijoBody.style.display = ''; // Elimina el estilo en línea para que vuelva a los valores por defecto
             });
              if (botonInscripcion) {
@@ -30,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         } else {
-            console.log('no contiene bodyResponsive');
 
             // Si la clase .bodyResponsive no está, agregarla
             body.classList.add('bodyResponsive');
