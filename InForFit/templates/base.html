@@ -10,8 +10,24 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
 
 
+
 </head>
 <body>
+<div class="cabeceraResponsive">
+    <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>
+    <div class="navBoton"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+    <div class="indexMenu"><i class="fa-solid fa-bars"></i></div>
+</div>
+<div class="contenidoBodyResponsive">
+<div class="navegacionResponsive">
+    <div class="entrenamientoResponsive">ENTRENAMIENTO</div>
+    <div class="progresoResponsive">PROGRESO</div>
+    <div class="clubsResponsive">CLUBS</div>
+    <div class="nutricionResponsive">NUTRICIÓN</div>
+</div>
+    <div class="navBotonResponsive"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+
+</div>
 <div class="cabecera">
     <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>
     <div class="barraNav">
@@ -33,12 +49,7 @@
     </div>
 
 </div>
-<div class="cabeceraResponsive">
-    <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>
-    <div class="navBoton"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
-    <div class="indexMenu"><i class="fa-solid fa-bars"></i></div>
 
-</div>
 
 {% block content %}
 
@@ -81,6 +92,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="{% static 'js/menuBase.js' %}"></script>
 
 </body>
 </html>
