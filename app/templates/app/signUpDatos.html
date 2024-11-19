@@ -44,12 +44,22 @@
                          
                          <div class="registroDatosFormularioTituloDatosPersonales">DATOS PERSONALES</div>
                          
-                          <div>
+                         
                     
-                              <div class="registroFormularioRadios">
-    {{ form.genero }}
-</div>
-    </div>
+                              <div class="registroFormularioRadios">          
+                     <div class="registroFormularioRadio">       
+                        <input data-cy="radio-bttn-male" type="radio" class="form-check-input" id="input-gender-male" name="genero" value="Hombre" required data-msg-required="Este campo es obligatorio">
+                        <label for="input-gender-male">Masculino</label>
+                     </div>
+                     <div class="registroFormularioRadio">     
+                        <input data-cy="radio-bttn-female" type="radio" class="form-check-input" id="input-gender-female" name="genero" value="Mujer" required data-msg-required="Este campo es obligatorio">
+                        <label for="input-gender-female">Femenino</label>
+                     </div>  
+                     <div class="registroFormularioRadio">       
+                        <input data-cy="radio-bttn-other" type="radio" class="form-check-input" id="input-gender-other" name="genero" value="Otro" required data-msg-required="Este campo es obligatorio">
+                        <label for="input-gender-other">Otro</label>
+                     </div>
+                    </div>
                   
                   <div class="registroFormularioDatosPersonales">     
 

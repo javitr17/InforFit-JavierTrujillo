@@ -18,13 +18,13 @@ class Socio(models.Model):
     email = models.EmailField()
 
 class DatosFisicos(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(Socio, on_delete=models.CASCADE)
     peso = models.DecimalField(max_digits=5, decimal_places=2)  # Peso con decimales
     altura = models.DecimalField(max_digits=3, decimal_places=2)  # Altura en metros, con decimales
     imc = models.DecimalField(max_digits=4, decimal_places=2)  # IMC calculado, con decimales
 
 class Suscripción(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(Socio, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)  # Nombre de la suscripción
     precio = models.DecimalField(max_digits=6, decimal_places=2)  # Precio de la suscripción
     duracion = models.IntegerField()  # Duración en días, por ejemplo
@@ -33,7 +33,7 @@ class Suscripción(models.Model):
     vencimiento_notificado = models.BooleanField(default=False)  # Notificación si fue avisado del vencimiento
 
 class DatosDomicilio(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(Socio, on_delete=models.CASCADE)
     dni = models.CharField(max_length=9)
     calle = models.CharField(max_length=100)
     ciudad = models.CharField(max_length=50)
@@ -41,7 +41,7 @@ class DatosDomicilio(models.Model):
     pais = models.CharField(max_length=50)
 
 class TarjetaPago(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(Socio, on_delete=models.CASCADE)
     token_stripe = models.CharField(max_length=255)  # Token de Stripe
     ult_cuatro_digitos = models.CharField(max_length=4)  # Últimos cuatro dígitos de la tarjeta
     fecha_ven_parcial = models.CharField(max_length=5)  # Fecha de vencimiento en formato MM/AA
@@ -58,12 +58,12 @@ class HorarioClase(models.Model):
     hora_fin = models.TimeField()
 
 class ReservaClase(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(Socio, on_delete=models.CASCADE)
     id_horario_clase = models.ForeignKey(HorarioClase, on_delete=models.CASCADE)  # Relación con el horario de la clase
     fecha_reserva = models.DateField()
 
 class Asistencia(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(Socio, on_delete=models.CASCADE)
     fecha_asistencia = models.DateField()
 
 

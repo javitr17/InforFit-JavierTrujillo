@@ -61,10 +61,83 @@ class signUpDatos(View):
         }
         return render(request, self.template_name, context)
 
-class signUpPago(TemplateView):
-    template_name = 'app/signUpPago.html'
 class signUpDatos(View):
     template_name = 'app/signUpDatos.html'
+
+    def get(self, request):
+        contrato = request.GET.get('contrato')
+        print(contrato)
+
+        contrato_info = {
+            'Mensual': {
+                'duracion': '1 mes',
+                'cuota_inscripcion': '15.00€',
+                'renovacion': 'tras 1 mes indefinidamente',
+                'recision': '14 días antes del fin del contrato',
+                'cuota_mensual': '38.99€',
+            },
+            'Semestral': {
+                'duracion': '6 meses',
+                'cuota_inscripcion': '15.00€',
+                'renovacion': 'tras 6 meses indefinidamente',
+                'recision': '14 días antes del fin del contrato',
+                'cuota_mensual': '32.99€',
+            },
+            'Anual': {
+                'duracion': '12 meses',
+                'cuota_inscripcion': '15.00€',
+                'renovacion': 'tras 12 meses indefinidamente',
+                'recision': '14 días antes del fin del contrato',
+                'cuota_mensual': '24.99€',
+            }
+        }
+
+        form = FormRegistro()
+        detalles_contrato = contrato_info.get(contrato, {})
+
+        context = {
+            'contrato': contrato,
+            'duracion': detalles_contrato.get('duracion'),
+            'cuota_inscripcion': detalles_contrato.get('cuota_inscripcion'),
+            'renovacion': detalles_contrato.get('renovacion'),
+            'recision': detalles_contrato.get('recision'),
+            'cuota_mensual': detalles_contrato.get('cuota_mensual'),
+            'form': form,
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        contrato = request.GET.get('contrato')  # Recupera el contrato de la URL
+
+        form = FormRegistro(request.POST)
+        if form.is_valid():
+            data = form.save(commit=False)
+
+            request.session['socio_data'] = {
+                'nombre': data['socio'].nombre,
+                'apellidos': data['socio'].apellidos,
+                'fecha_nacimiento': str(data['socio'].fecha_nacimiento),
+                'telefono': data['socio'].telefono,
+                'email': data['socio'].email,
+                'genero': data['socio'].genero,
+            }
+            request.session['domicilio_data'] = {
+                'dni': data['domicilio'].dni,
+                'calle': data['domicilio'].calle,
+                'ciudad': data['domicilio'].ciudad,
+                'codigo_postal': data['domicilio'].codigo_postal,
+                'pais': data['domicilio'].pais,
+            }
+
+            # Redirige a la próxima vista con el parámetro contrato
+            return redirect(f'/InForFit/signUpPago?contrato={contrato}')
+        else:
+            form = FormRegistro()
+
+        return render(request, self.template_name, {'form': form})
+class signUpPago(View):
+    template_name = 'app/signUpPago.html'
 
     def get(self, request):
         # Obtener el parámetro 'contrato' de la URL
@@ -96,13 +169,15 @@ class signUpDatos(View):
             }
         }
 
-        # Crear una instancia del formulario unificado
-        form = FormRegistro()
+        # Recuperar datos de la sesión
+        socio_data = request.session.get('socio_data', {})
+        nombre = socio_data.get('nombre', '')
+        apellidos = socio_data.get('apellidos', '')
 
         # Recuperar los detalles según el contrato seleccionado
         detalles_contrato = contrato_info.get(contrato, {})
 
-        # Pasar los detalles al contexto del template
+        # Pasar los datos al contexto del template
         context = {
             'contrato': contrato,
             'duracion': detalles_contrato.get('duracion'),
@@ -110,7 +185,8 @@ class signUpDatos(View):
             'renovacion': detalles_contrato.get('renovacion'),
             'recision': detalles_contrato.get('recision'),
             'cuota_mensual': detalles_contrato.get('cuota_mensual'),
-            'form': form,  # El formulario unificado se pasa al contexto
+            'nombre': nombre,  # Agregar el nombre al contexto
+            'apellidos': apellidos,  # Agregar los apellidos al contexto
         }
 
         return render(request, self.template_name, context)
@@ -118,15 +194,31 @@ class signUpDatos(View):
     def post(self, request):
         form = FormRegistro(request.POST)
         if form.is_valid():
-            print(request.POST)
-            form.save(commit=False)  # No guarda en la base de datos
-            # Almacenar temporalmente la instancia en la sesión
-            request.session['form_data'] = form.cleaned_data
-            print('formulario valido')
-            return redirect('signPago')  # Redirigir a una página de éxito
+            data = form.save(commit=False)
+
+            # Almacena los objetos en la sesión para su uso posterior
+            request.session['socio_data'] = {
+                'nombre': data['socio'].nombre,
+                'apellidos': data['socio'].apellidos,
+                'fecha_nacimiento': str(data['socio'].fecha_nacimiento),
+                'telefono': data['socio'].telefono,
+                'email': data['socio'].email,
+                'genero': data['socio'].genero,
+            }
+            request.session['domicilio_data'] = {
+                'dni': data['domicilio'].dni,
+                'calle': data['domicilio'].calle,
+                'ciudad': data['domicilio'].ciudad,
+                'codigo_postal': data['domicilio'].codigo_postal,
+                'pais': data['domicilio'].pais,
+            }
+
+            # Redirige a la próxima vista
+            return redirect('signupPago')
         else:
-            print(form.errors)
-        return render(request, self.template_name, {'form': form})
+            form = FormRegistro()
+
+        return render(request, 'template_form.html', {'form': form})
 
 class logIn(View):
     form_class = FormLogIn

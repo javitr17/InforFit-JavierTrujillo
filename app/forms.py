@@ -23,15 +23,20 @@ class FormSignUp(forms.Form):
 
 class FormRegistro(forms.ModelForm):
     # Campos de Socio
-    nombre = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Nombre'}))
-    apellidos = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Apellidos'}))
+    GENERO_SOCIO = [
+        ('Hombre', 'Hombre'),
+        ('Mujer', 'Mujer'),
+        ('Otro', 'Otro'),
+    ]
+    nombre = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Nombre','autocomplete': 'given-name'}))
+    apellidos = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Apellidos', 'autocomplete': 'family-name'}))
     fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Fecha Nacimiento'}))
-    telefono = forms.CharField(max_length=15, widget=forms.TextInput(attrs={'placeholder': 'Teléfono'}))
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+    telefono = forms.CharField(max_length=15, widget=forms.TextInput(attrs={'placeholder': 'Teléfono', 'autocomplete': 'tel'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email', 'autocomplete': 'email'}))
     genero=forms.ChoiceField(
-        choices=[('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')],
+        choices=GENERO_SOCIO,
         widget=forms.RadioSelect,
-        initial='O',
+        initial='Otro',
     )
     # Campos de Datos Domicilio
     dni = forms.CharField(max_length=9, widget=forms.TextInput(attrs={'placeholder': 'DNI'}))
@@ -45,21 +50,21 @@ class FormRegistro(forms.ModelForm):
         fields = ['nombre', 'apellidos', 'fecha_nacimiento', 'telefono', 'email', 'genero']
 
     # Añadir campos de DatosDomicilio
-    def save(self, commit=True):
-        # Guardar el socio
-        socio = super().save(commit=False)
-        if commit:
-            socio.save()
+    def save(self, commit=False):  # Usamos commit=False para evitar guardar en la base de datos
+        socio = super().save(commit=False)  # Crea el objeto Socio pero no lo guarda en la base de datos
+        socio.user = None  # Asegúrate de que no intente relacionar un usuario aún
 
-        # Crear y guardar los datos del domicilio
-        domicilio_data = self.cleaned_data
-        DatosDomicilio.objects.create(
-            user=socio,  # Asumiendo que el socio y domicilio están vinculados por el usuario
-            dni=domicilio_data['dni'],
-            calle=domicilio_data['calle'],
-            ciudad=domicilio_data['ciudad'],
-            codigo_postal=domicilio_data['codigo_postal'],
-            pais=domicilio_data['pais']
+        # Crea un objeto DatosDomicilio no guardado
+        domicilio = DatosDomicilio(
+            dni=self.cleaned_data['dni'],
+            calle=self.cleaned_data['calle'],
+            ciudad=self.cleaned_data['ciudad'],
+            codigo_postal=self.cleaned_data['codigo_postal'],
+            pais=self.cleaned_data['pais'],
         )
 
-        return socio  # Retorna el objeto Socio guardado
+        # Devuelve los objetos como un diccionario
+        return {
+            'socio': socio,
+            'domicilio': domicilio
+        }
