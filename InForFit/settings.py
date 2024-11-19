@@ -134,3 +134,5 @@ RECAPTCHA_PRIVATE_KEY = '6LcgdXEqAAAAAEZNZdxw-pKJqpwFR9U1DDIcsxfA'
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'app/static')
 ]
+
+ALLOWED_HOSTS = ["*"]
