@@ -1,1 +1,1 @@
-web: gunicorn InForFit.wsgi
+web: gunicorn InForFit.wsgi:application --bind 0.0.0.0:51834
