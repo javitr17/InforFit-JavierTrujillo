@@ -1,1 +1,1 @@
-web: gunicorn InForFit.wsgi:application --bind 0.0.0.0:51834
+web: python manage.py collectstatic && gunicorn InForFit.wsgi:application --bind 0.0.0.0:51834

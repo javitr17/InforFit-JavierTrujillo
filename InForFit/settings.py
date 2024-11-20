@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'app',
     'InForFit',
     'django_recaptcha',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -127,7 +129,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT=os.path.join(BASE_DIR, 'app/staticfiles')
 
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -137,7 +146,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 RECAPTCHA_PUBLIC_KEY = '6LcgdXEqAAAAAFvdpPG1TU8IeihXuwHZf1mUCfIj'
 RECAPTCHA_PRIVATE_KEY = '6LcgdXEqAAAAAEZNZdxw-pKJqpwFR9U1DDIcsxfA'
 
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR, 'app/static')
-]
+
+
+
 
