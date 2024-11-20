@@ -79,8 +79,13 @@ WSGI_APPLICATION = 'InForFit.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'DATABASE_URL': 'postgresql://postgres:CnAvHGTXqtwwdJlPrSfiNqeFGliAFvGr@postgres.railway.internal:51834/railway',
+        'PASSWORD': 'CnAvHGTXqtwwdJlPrSfiNqeFGliAFvGr',
+        'HOST': 'autorack.proxy.rlwy.net',
+        'PORT': '51834',
     }
 }
 
@@ -135,4 +140,5 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'app/static')
 ]
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'inforfit-javiertrujillo-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS=['https://inforfit-javiertrujillo-production.up.railway.app']
