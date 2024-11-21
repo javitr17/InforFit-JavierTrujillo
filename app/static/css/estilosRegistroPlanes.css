@@ -51,7 +51,7 @@ margin-top: 0.3rem;
 
 .fondoRegistro1{
      width: 100%;
-    height: 110vh;
+    height: auto;
     background-image: url("../imagenes/registroFondo.png");
     background-position: top; /* Posiciona la imagen en la parte superior */
     background-repeat: no-repeat;
@@ -112,38 +112,39 @@ margin-top: 0.3rem;
     font-weight: 400;
     font-size: 25px;
     padding-top: 1rem;
+    padding-bottom: 2rem;
 }
 .registroPlanes{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual ancho */
     gap: 1.5rem;
     width: 100%;
-    height:500px;
-    padding-top:2rem;
+    height: auto; /* Ajustar a la altura del contenido */
 }
 .registroPlan{
         cursor:pointer;
         background-color: #FFFFFF;
         color: #222E39;
     height: 100%;
-    max-width: 350px;
+
 }
 
 .registroPlanSeccion{
-    width: 100%;
-    min-height: 450px;
+    width: clamp(200px, 100%, 100%); /* Mínimo 200px, máximo 100% del contenedor */
+    min-height: 440px; /* Mantener el alto mínimo */
     height: auto;
     padding: 2rem;
+    box-sizing: border-box; /* Incluye padding en el cálculo del ancho */
 
 
 }
 
-.registroPlanTitulo{
-    font-size: 40px;
+.registroPlanTitulo {
+    font-size: clamp(20px, 2vw, 40px); /* Entre 20px y 40px */
     font-weight: 800;
-
-
+    text-align: center;
 }
+
 .registroPlanTitulo, .registroVentaja,.registroPrecio{
     display:flex;
     justify-content: center;
@@ -157,19 +158,20 @@ margin-left: 1rem;
 
 .registroVentaja{
     padding-top: 2rem;
+     font-size: clamp(12px, 1.5vw, 20px); /* Entre 12px y 20px */
     font-weight: 200;
-    font-size: 20px;
+    text-align: center;
 }
 .registroPrecio{
-    font-size: 40px;
+    font-size: clamp(18px, 2vw, 40px); /* Entre 18px y 40px */
     font-weight: 800;
-    display: flex;
     border-bottom: 1px solid #222E39;
+    text-align: center;
 
 }
 .registro1mes{
-    margin-top: 2.4rem;
-    margin-left: 0.3rem;
+  align-content: center;
+    padding-left: 0.5rem;
     font-size:20px;
 
 }
@@ -186,14 +188,18 @@ margin-left: 1rem;
 }
 
 .registroVentajas li{
-    padding-top: 0.7rem;
-list-style: none
+        padding-top: 0.7rem;
+    list-style: none;
+
+
 }
 .registroTusdatos,.registroDetallesPago {
     color: #B3B7BA;
     font-size: 30px;
     font-weight: 800;
-    padding-top:1.8rem;
+    height: 80px;
+    width: 100%;
+    align-content: center;
     padding-left: 2rem;
 }
 .registroSeccionDer1Contenedor{
@@ -273,8 +279,51 @@ width: 50%;
     border-bottom:1px solid #FFFFFF;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1657px) {
+.fondoRegistro1{
 
+    display: flex;
+    flex-direction: column;
+    gap:0rem;
+
+}
+    .registroSeccionIzq1{
+        margin: 6rem 10rem 2rem 10rem;
+    }
+    .registroSeccionDer1{
+        margin: 0rem 10rem 6rem 10rem;
+        height: 300px;
+
+    }
+    .registroBoton{
+         width: 100%;
+    display: flex;
+    justify-content: center;
+        text-align: center;
+    }
+    .registroBoton a{
+    background-color: #FFCC00;
+    width: 100%;
+    border: none;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 1.3rem;
+    text-decoration: none;
+    padding-left:  0;
+    padding-top: 1rem;
+        padding-bottom: 3rem;
+        padding-right: 0;
+
+    height: 40px;
+    }
+    .registroInformacionGeneral{
+        text-align: center;
+        font-size: 25px;
+
+    }
+    .registroBoton{
+        justify-items: center;
+    }
 }
 
 
