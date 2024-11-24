@@ -1,8 +1,12 @@
-
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 .registroCabecera {
     display: grid;
     width: 100%;
-    grid-template-columns:15% 70% 15%;
+    grid-template-columns: 1.5fr 7fr 1.5fr;
     background-color: #222E39;
     color: #D9D9D9;
     font-weight: 600;
@@ -12,8 +16,12 @@
     top: 0;
     left: 0;
     padding: 0.5rem;
+min-height: 71px;
 
+}
 
+.registroCabecera a{
+    align-content: center;
 }
 
 .registroCabecera img {
@@ -49,26 +57,36 @@ margin-top: 0.3rem;
     color: #ffffff;
 }
 
-.fondoRegistro1{
-     width: 100%;
-    height: auto;
+body{
+
     background-image: url("../imagenes/registroFondo.png");
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     background-position: top; /* Posiciona la imagen en la parte superior */
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
-    margin-top: 3.5rem;
-    display: grid;
-    grid-template-columns: 67% 33%;
-    gap:2rem;
     background-attachment: fixed;
 
 
 }
 
+.fondoRegistro1{
+    display: grid;
+grid-template-columns: 67% 33% ;
+    height: auto;
+    width: 100%;
+    justify-items: center;
+    margin-top: 130px;
+}
+
 .registroSeccionIzq1{
-   margin:6rem 0rem 4rem 10rem;
-    opacity: 90%;
+  width: auto; /* Permitir que el ancho se ajuste */
+    max-width: 80%; /* Evita que sean demasiado grandes */
+    min-height: 900px; /* Fija una altura mínima para evitar que el alto cambie */
+    height: auto; /* Permite el crecimiento si el contenido excede el alto mínimo */
 
 
 }
@@ -77,7 +95,6 @@ margin-top: 0.3rem;
     height: 680px;
     background-color: #222E39;
     backdrop-filter: blur(5px);
-
 
 }
 .registroDatosSeccion1, .registroDetallesPagoSeccion1{
@@ -92,10 +109,14 @@ margin-top: 0.3rem;
 
 .registroSeccionDer1{
     background-color: #222E39;
-    margin: 6rem 12rem 4rem 0rem;
-    height: 21%;
+    width: auto;
+    max-width: 80%; /* Evita que sean demasiado grandes */
+    min-height: 500px; /* Fija una altura mínima para evitar que el alto cambie */
+    height: auto; /* Permite el crecimiento si el contenido excede el alto mínimo */
     opacity: 90%;
     backdrop-filter: blur(10px);
+    justify-items: center;
+
 }
 .registroPlanSeccion1Contenedor{
     padding: 2rem;
@@ -281,18 +302,24 @@ width: 50%;
 
 @media (max-width: 1657px) {
 .fondoRegistro1{
-
+    justify-content: center;
+    align-items: center; /* Asegura la alineación vertical */
     display: flex;
     flex-direction: column;
     gap:0rem;
 
 }
     .registroSeccionIzq1{
-        margin: 6rem 10rem 2rem 10rem;
+        max-width: 100%; /* Ajusta el ancho al contenedor */
+        min-height: 900px; /* Mantén una altura fija */
+        margin: 0 auto; /* Centra horizontalmente */
     }
     .registroSeccionDer1{
-        margin: 0rem 10rem 6rem 10rem;
-        height: 300px;
+min-width: 1058px;
+        width: auto;
+       max-width: 100%; /* Ajusta el ancho al contenedor */
+        min-height: 300px; /* Mantén una altura fija */
+        margin: 0 auto; /* Centra horizontalmente */
 
     }
     .registroBoton{
@@ -324,9 +351,42 @@ width: 50%;
     .registroBoton{
         justify-items: center;
     }
+    .registroPlanSeccion1 {
+        height: auto; /* Esto es opcional, asegúrate de que sea constante */
+    }
 }
 
+@media (max-width: 1244px) {
+    .registroSeccionIzq1, .registroSeccionDer1{
+        min-width: 500px;
+    }
 
+    .registroSeccionDer1{
+        margin-top: 2rem;
+        min-width: 561px;
+    }
+  .registroPlanes {
+        grid-template-columns: none;
+        grid-template-rows: repeat(3, auto); /* Cambia a valores fijos si necesario */
+        gap: 1.5rem;
+        width: 100%;
+    }
+
+    .registroPlan {
+        height: 380px; /* Mantén la altura fija */
+    }
+
+
+    .fondoRegistro1{
+    display: flex;
+    flex-direction: column;
+    gap:0rem;
+
+
+
+
+}
+}
 
 
 
