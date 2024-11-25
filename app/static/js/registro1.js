@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             //cambiar el color de fondo del botón
             document.querySelector('.registroBoton a').style.cssText='background-color: #FFCC00;';
-            document.querySelector('.registroSeccionDer1').style.height='42%'
+            document.querySelector('.registroSeccionDer1').style.height='520px'
 
             //poner borde de seccion seleccionada en amarillo
             const ponerBordeAmarillo = plan.closest('.registroPlan');
