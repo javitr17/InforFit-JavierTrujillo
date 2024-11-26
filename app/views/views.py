@@ -13,3 +13,4 @@ from django.contrib.auth.decorators import login_required
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class index(View):
     template_name = 'index.html'
+

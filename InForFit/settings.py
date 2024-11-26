@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import stripe
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -145,6 +147,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 RECAPTCHA_PUBLIC_KEY = '6LcgdXEqAAAAAFvdpPG1TU8IeihXuwHZf1mUCfIj'
 RECAPTCHA_PRIVATE_KEY = '6LcgdXEqAAAAAEZNZdxw-pKJqpwFR9U1DDIcsxfA'
+
+STRIPE_TEST_PUBLIC_KEY = "pk_test_51Q536CLaSaEx78s1doplQ1OHKHb5vk4XnoEWGG8dJdd3tIjEo37rvTPReNhkpnuA3PmcA4wMuQmYq6Fp07kVyEmx00x0bDwt4Z"
+STRIPE_TEST_SECRET_KEY = "sk_test_51Q536CLaSaEx78s1vaAbzMgf3s8YYSHeq2ImuLF740p4eF0t21HDqY4hrEjrUMOhDz8JIdmpa1vs4beBTxbhYhZG00cwQPFSAV"
 
 
 

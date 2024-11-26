@@ -1,0 +1,34 @@
+<!-- charge.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado del Pago</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Estado del Pago</h1>
+        {% if payment_status == 'success' %}
+            <div class="alert alert-success mt-4">
+                <h4 class="alert-heading">¡Pago Exitoso!</h4>
+                <p>Tu pago fue procesado exitosamente.</p>
+                <p><strong>Monto:</strong> {{ amount }} {{ currency }}</p>
+                <p>Gracias por tu compra. ¡Disfruta de nuestros servicios!</p>
+            </div>
+        {% elif payment_status == 'failed' %}
+            <div class="alert alert-danger mt-4">
+                <h4 class="alert-heading">Error en el Pago</h4>
+                <p>{{ message }}</p>
+                <p>Por favor, intenta de nuevo o contacta con el soporte.</p>
+            </div>
+        {% else %}
+            <div class="alert alert-warning mt-4">
+                <p>No se pudo determinar el estado del pago.</p>
+            </div>
+        {% endif %}
+        <a href="/" class="btn btn-primary mt-4">Volver a la página principal</a>
+    </div>
+</body>
+</html>
