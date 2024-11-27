@@ -48,7 +48,7 @@
 
             <div class="registroDetallesPagoSeccion3">
                 <div class="registroDetallesPago">DETALLES DE PAGO</div>
-                <form id="payment-form" method="POST" action="{% url 'index' %}">
+                <form id="payment-form" method="POST">
                     {% csrf_token %}
                     <label for="card-number">Número de tarjeta:</label>
                     <div id="card-number"></div>
@@ -65,6 +65,11 @@
                     <button type="submit">Pagar ahora</button>
                 </form>
             </div>
+            {% if mensaje %}
+    <div class="alert">
+        <p>{{ mensaje }}</p>
+    </div>
+{% endif %}
         </div>
 
         <div class="registroSeccionDer2">
