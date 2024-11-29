@@ -26,7 +26,8 @@ class DatosFisicos(models.Model):
 class Suscripción(models.Model):
     user = models.ForeignKey(Socio, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)  # Nombre de la suscripción
-    precio = models.DecimalField(max_digits=6, decimal_places=2)  # Precio de la suscripción
+    precio_suscripcion = models.DecimalField(max_digits=6, decimal_places=2)  # Precio de la suscripción
+    precio_inscripcion= models.DecimalField(max_digits=6, decimal_places=2)
     duracion = models.IntegerField()  # Duración en días, por ejemplo
     fecha_inicio = models.DateField()
     fecha_vencimiento = models.DateField()

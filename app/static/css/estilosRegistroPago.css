@@ -76,3 +76,50 @@
     margin-top: 0.5rem;
     font-size: 20px;
 }
+/* Capa oscurecida para dar énfasis al mensaje */
+.overlay {
+    position: fixed; /* Ocupa toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que esté encima de todo el contenido */
+}
+
+/* Estilo para el contenedor del mensaje */
+.message-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+}
+
+/* Estilos adicionales para el mensaje */
+.message-container p {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+}
+
+/* Estilos para los detalles del pago */
+.payment-details {
+    margin-top: 20px;
+    text-align: left;
+    font-size: 16px;
+    color: #444;
+}
+
+.payment-details p {
+    margin: 8px 0;
+}
+
+.payment-details strong {
+    color: #007bff; /* Color para resaltar las etiquetas */
+}
+

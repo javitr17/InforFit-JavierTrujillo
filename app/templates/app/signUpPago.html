@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
@@ -13,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <div class="registroCabecera">
         <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>
         <div></div>
@@ -26,6 +24,7 @@
 
     <div class="fondoRegistro1">
         <div class="registroSeccionIzq1">
+            <!-- Plan Section -->
             <div class="registroPlanSeccion2">
                 <div class="registroPlanContenido2">
                     <i class="fa-solid fa-check"></i>
@@ -37,6 +36,7 @@
                 </div>
             </div>
 
+            <!-- User Data Section -->
             <div class="registroDatosSeccion3">
                 <i class="fa-solid fa-check"></i>
                 <div>
@@ -46,30 +46,46 @@
                 <a href="{% url 'signupDatos' %}?contrato={{ contrato }}">Editar</a>
             </div>
 
+            <!-- Payment Details Section -->
             <div class="registroDetallesPagoSeccion3">
                 <div class="registroDetallesPago">DETALLES DE PAGO</div>
-                <form id="payment-form" method="POST">
+                <form id="payment-form">
                     {% csrf_token %}
-                    <label for="card-number">Número de tarjeta:</label>
-                    <div id="card-number"></div>
-                    <div id="card-number-errors"></div>
-
-                    <label for="expiry-date">Fecha de vencimiento:</label>
-                    <div id="expiry-date"></div>
-                    <div id="expiry-date-errors"></div>
-
-                    <label for="cvv">CVV:</label>
-                    <div id="cvv"></div>
-                    <div id="cvv-errors"></div>
-
-                    <button type="submit">Pagar ahora</button>
+                    <div id="card-element"></div>
+                    <div id="card-errors" role="alert"></div>
+                    <button id="submit-button" type="submit">Pagar ahora</button>
                 </form>
             </div>
-            {% if mensaje %}
-    <div class="alert">
-        <p>{{ mensaje }}</p>
-    </div>
-{% endif %}
+
+            <!-- Success or Error Message -->
+           {% if mensaje %}
+                <div class="overlay">
+                    <div class="message-container">
+                        {% if mensaje == 'success' %}
+                            <p>Pago realizado con éxito. ¡Gracias!</p>
+                            <div class="payment-details">
+                                <p><strong>Cuota Mensual:</strong> {{ cuota_mensual }}</p>
+                                <p><strong>Cuota Inscripción:</strong> {{ cuota_inscripcion }}</p>
+                                <p><strong>Total Pagado:</strong> {{ monto_total }}</p>
+                            </div>
+                            <div><a href="{% url 'welcome' %}">PAGINA PRINCIPAL</a></div>
+                        {% elif mensaje == 'cancel' %}
+                            <p>Error en el pago. Por favor, verifica los datos e inténtalo de nuevo.</p>
+
+                            <!-- Aquí cambiamos el enlace según el valor de 'contrato' -->
+                            {% if contrato == 'Semestral' %}
+                                <a href="{% url 'signupPago' %}?contrato=Semestral">VOLVER</a>
+                            {% elif contrato == 'Anual' %}
+                                <a href="{% url 'signupPago' %}?contrato=Anual">VOLVER</a>
+                            {% else %}
+                                <!-- Si el contrato no es ni semestral ni anual, podrías poner un valor por defecto -->
+                                <a href="{% url 'signupPago' %}?contrato=Mensual">VOLVER</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
         </div>
 
         <div class="registroSeccionDer2">
@@ -110,41 +126,59 @@
 <script src="https://js.stripe.com/v3/"></script>
 
 <script>
-    // Configura Stripe
-    var stripe = Stripe('{{ stripe_public_key }}');  // Usando la clave pública
-    var elements = stripe.elements();
+    document.addEventListener("DOMContentLoaded", function () {
+        var stripe = Stripe("{{ stripe_public_key }}");
+        var elements = stripe.elements();
+        var cardElement = elements.create("card");
+        cardElement.mount("#card-element");
 
-    // Crear los campos de Stripe Elements
-    var cardNumber = elements.create('cardNumber');
-    var expiryDate = elements.create('cardExpiry');
-    var cvv = elements.create('cardCvc');
+        var form = document.getElementById("payment-form");
+        var submitButton = document.getElementById("submit-button");
 
-    // Monta los campos en el formulario
-    cardNumber.mount('#card-number');
-    expiryDate.mount('#expiry-date');
-    cvv.mount('#cvv');
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
 
-    // Maneja el envío del formulario
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
+            submitButton.disabled = true; // Deshabilitar botón mientras se procesa el pago
+            stripe.createPaymentMethod({
+                type: 'card',
+                card: cardElement,
+            }).then(function (result) {
+                if (result.error) {
+                    // Muestra los errores al usuario
+                    document.getElementById('card-errors').textContent = result.error.message;
+                    submitButton.disabled = false; // Rehabilitar botón en caso de error
+                } else {
+                    // Envía el Payment Method ID al backend
+                    fetch("{% url 'signupPago' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        body: JSON.stringify({
+                            payment_method_id: result.paymentMethod.id,
+                            monto_total: {{ monto_total }},
+                            contrato: "{{ contrato }}",
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Redirige al usuario a la página de éxito sin mostrar un alert
+                                window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=success";
+                            } else {
+                                window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=cancel";
 
-        // Crea un token con los datos de la tarjeta
-        stripe.createToken(cardNumber).then(function(result) {
-            if (result.error) {
-                // Si hay errores, muestra los mensajes
-                document.getElementById('card-number-errors').textContent = result.error.message;
-            } else {
-                // Si todo es correcto, agrega el token al formulario y envíalo
-                var tokenInput = document.createElement('input');
-                tokenInput.type = 'hidden';
-                tokenInput.name = 'stripeToken';
-                tokenInput.value = result.token.id;
-                form.appendChild(tokenInput);
+                            }
 
-                // Envía el formulario al backend para procesar el pago
-                form.submit();
-            }
+                        })
+
+                        .catch(error => {
+                            console.error("Error al procesar el pago:", error);
+                            submitButton.disabled = false; // Rehabilitar botón
+                        });
+                }
+            });
         });
     });
 </script>

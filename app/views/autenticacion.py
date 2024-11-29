@@ -12,63 +12,17 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import stripe
 from django.conf import settings
+import json
+from django.urls import reverse
+import secrets
+
+
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
 
 class signUpPlan(TemplateView):
     template_name = 'app/signUpPlan.html'
-
-
-class signUpDatos(View):
-    template_name = 'app/signUpDatos.html'
-
-
-    def get(self, request):
-        # Obtener el parámetro 'contrato' de la URL
-        contrato = request.GET.get('contrato')
-        print(contrato)
-        # Definir los detalles de cada tipo de contrato
-        contrato_info = {
-            'Mensual': {
-                'duracion': '1 mes',
-                'cuota_inscripcion': '15.00€',
-                'renovacion': 'tras 1 mes indefinidamente',
-                'recision': '14 días antes del fin del contrato',
-                'cuota_mensual': '38.99€',
-            },
-            'Semestral': {
-                'duracion': '6 meses',
-                'cuota_inscripcion': '15.00€',
-                'renovacion': 'tras 6 meses indefinidamente',
-                'recision': '14 días antes del fin del contrato',
-                'cuota_mensual': '32.99€',
-            },
-            'Anual': {
-                'duracion': '12 meses',
-                'cuota_inscripcion': '15.00€',
-                'renovacion': 'tras 12 meses indefinidamente',
-                'recision': '14 días antes del fin del contrato',
-                'cuota_mensual': '24.99€',
-            }
-        }
-        formSocio = FormDatosSocio()
-        formDomicilio=FormDatosDomicilio()
-        # Recuperar los detalles según el contrato seleccionado
-        detalles_contrato = contrato_info.get(contrato, {})
-
-        # Pasar los detalles al contexto del template
-        context = {
-            'contrato': contrato,
-            'duracion': detalles_contrato.get('duracion'),
-            'cuota_inscripcion': detalles_contrato.get('cuota_inscripcion'),
-            'renovacion': detalles_contrato.get('renovacion'),
-            'recision': detalles_contrato.get('recision'),
-            'cuota_mensual': detalles_contrato.get('cuota_mensual'),
-            'form_socio': formSocio,
-            'form_domicilio': formDomicilio,
-        }
-        return render(request, self.template_name, context)
 
 class signUpDatos(View):
     template_name = 'app/signUpDatos.html'
@@ -154,7 +108,7 @@ class signUpPago(View):
         # Recuperamos el contrato y mensaje de los parámetros de la URL
         contrato = request.GET.get('contrato')
         mensaje = request.GET.get('mensaje')  # Aquí obtenemos el mensaje de la URL
-
+        print(f'MENSAJE GET: {mensaje}')
         # Obtenemos los datos del socio desde la sesión
         socio_data = request.session.get('socio_data', {})
         nombre = socio_data.get('nombre', '')
@@ -187,15 +141,13 @@ class signUpPago(View):
 
         # Recuperar detalles del contrato basado en la selección
         detalles_contrato = contrato_info.get(contrato, {})
-        if not detalles_contrato:
-            # Si no se encuentra el contrato, redirigimos al formulario de selección
-            return redirect('signupPlan')
-
         # Calcular el monto total en centavos
         cuota_mensual = detalles_contrato.get('cuota_mensual', 0.0)
         cuota_inscripcion = detalles_contrato.get('cuota_inscripcion', 0.0)
         monto_total = int((cuota_mensual + cuota_inscripcion) * 100)
 
+        if mensaje in ['success', 'cancel']:
+            monto_total = f"{monto_total / 100:.2f}€"
         # Añadimos la información de pago y contrato al contexto
         context = {
             'contrato': contrato,
@@ -214,53 +166,134 @@ class signUpPago(View):
         return render(request, self.template_name, context)
 
     def post(self, request):
-        # Recuperar el token de Stripe
-        token = request.POST.get('stripeToken')
-        contrato = request.GET.get('contrato')  # Recuperamos el contrato de la URL
-
-        if not token:
-            return JsonResponse({'status': 'error', 'message': 'Token no proporcionado'})
-
         try:
-            # Crear la sesión de pago en Stripe
-            session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
-                line_items=[
-                    {
-                        'price_data': {
-                            'currency': 'eur',
-                            'product_data': {'name': f"Plan {contrato}"},
-                            'unit_amount': int(cuota_mensual * 100),  # Convertir a centavos
-                        },
-                        'quantity': 1,
-                    },
-                    {
-                        'price_data': {
-                            'currency': 'eur',
-                            'product_data': {'name': 'Cuota de inscripción'},
-                            'unit_amount': int(cuota_inscripcion * 100),  # Convertir a centavos
-                        },
-                        'quantity': 1,
-                    },
-                ],
-                mode='payment',
-                success_url=request.build_absolute_uri(f'/InForFit/signUpPago?contrato={contrato}&mensaje=Pago%20exitoso'),
-                cancel_url=request.build_absolute_uri(f'/InForFit/signUpPago?contrato={contrato}&mensaje=Pago%20cancelado'),
+            # Parsear datos de la solicitud JSON
+            data = json.loads(request.body)
+            monto_total = data.get('monto_total', 0)
+            contrato = data.get('contrato', 'Mensual')
+
+            # Obtener información del socio de la sesión
+            socio_data = request.session.get('socio_data', {})
+            nombre = socio_data.get('nombre', '')
+            apellidos = socio_data.get('apellidos', '')
+            print(f'SOCIO_DTA POST: {socio_data}')
+
+            # Detalles del contrato
+            contrato_info = {
+                'Mensual': {
+                    'cuota_mensual': 38.99,
+                    'duracion': '1 mes',
+                    'cuota_inscripcion': 15.00,
+                    'renovacion': 'tras 1 mes indefinidamente',
+                    'recision': '14 días antes del fin del contrato',
+                },
+                'Semestral': {
+                    'cuota_mensual': 32.99,
+                    'duracion': '6 meses',
+                    'cuota_inscripcion': 15.00,
+                    'renovacion': 'tras 6 meses indefinidamente',
+                    'recision': '14 días antes del fin del contrato',
+                },
+                'Anual': {
+                    'cuota_mensual': 24.99,
+                    'duracion': '12 meses',
+                    'cuota_inscripcion': 15.00,
+                    'renovacion': 'tras 12 meses indefinidamente',
+                    'recision': '14 días antes del fin del contrato',
+                },
+            }
+            detalles_contrato = contrato_info.get(contrato, {})
+            cuota_mensual = detalles_contrato.get('cuota_mensual', 0.0)
+            cuota_inscripcion = detalles_contrato.get('cuota_inscripcion', 0.0)
+            print(cuota_mensual)
+            print(cuota_inscripcion)
+            return_url = f"{request.build_absolute_uri(reverse('signupPago'))}?contrato={contrato}&mensaje=success&cuota_mensual={cuota_mensual}&cuota_inscripcion={cuota_inscripcion}"
+            print(return_url)
+
+            intent = stripe.PaymentIntent.create(
+                amount=monto_total,
+                currency='eur',
+                payment_method=data['payment_method_id'],
+                confirmation_method='manual',
+                confirm=True,
+                return_url=return_url
             )
 
-            # Redirigir al pago en Stripe
-            return redirect(session.url)
+            if intent.status == 'succeeded':
+                # Si el pago fue exitoso, guardar en la base de datos
+                print('SUCCEDED')
+                # Recuperamos los datos del socio desde la sesión
+                domicilio_data = request.session.get('domicilio_data', {})
+# Recuperamos los datos de domicilio desde la sesión
+                email=domicilio_data['email']
+                dni=domicilio_data['dni']
+                print(f'SOCIO DATA: {socio_data}')
+                print(f'DOMICILIO DATA: {domicilio_data}')
+
+                try:
+                    usuario_existente = User.objects.filter(username=dni).exists() or User.objects.filter(
+                        email=email).exists()
+
+                    if usuario_existente:
+                        return JsonResponse({'usuario_existente': True})
+
+                    # Si no existe, crear uno nuevo
+                    password = secrets.token_urlsafe(8)  # Contraseña aleatoria segura
+                    nuevo_usuario = User.objects.create_user(
+                        username=dni,
+                        email=email,
+                        password=password,
+                        first_name=socio_data['nombre'],
+                        last_name=socio_data['apellidos'],
+                    )
+
+                    # Crear instancia de Socio
+                    socio_obj = Socio.objects.create(
+                        user=nuevo_usuario,
+                        nombre=socio_data['nombre'],
+                        apellidos=socio_data['apellidos'],
+                        fecha_nacimiento=socio_data['fecha_nacimiento'],
+                        telefono=socio_data['telefono'],
+                        email=email,
+                        genero=socio_data['genero'],
+                    )
+
+                    # Crear instancia de DatosDomicilio
+                    DatosDomicilio.objects.create(
+                        user=socio_obj,
+                        dni=dni,
+                        calle=domicilio_data['calle'],
+                        ciudad=domicilio_data['ciudad'],
+                        codigo_postal=domicilio_data['codigo_postal'],
+                        pais=domicilio_data['pais'],
+                    )
+
+                    # Proceso de suscripción
+                    duraciones = {'Mensual': 30, 'Semestral': 180, 'Anual': 365}
+                    duracion_contrato = duraciones.get(contrato, 30)
+                    fecha_inicio = timezone.now().date()
+                    fecha_vencimiento = fecha_inicio + timezone.timedelta(days=duracion_contrato)
+
+                    Suscripción.objects.create(
+                        user=socio_obj,
+                        nombre=contrato,
+                        precio_suscripcion=data['cuota_mensual'],
+                        precio_inscripcion=data['cuota_inscripcion'],
+                        duracion=duracion_contrato,
+                        fecha_inicio=fecha_inicio,
+                        fecha_vencimiento=fecha_vencimiento,
+                    )
+
+                    return JsonResponse({'usuario_existente': False, 'status': 'success'})
+
+                except Exception as e:
+                    print(f"Error al procesar los datos: {e}")
+                    return JsonResponse({'status': 'error', 'message': 'Error al procesar los datos'})
 
         except stripe.error.CardError as e:
-            # Error al procesar el pago
-            return render(request, self.template_name, {
-                'error': f"Error al procesar el pago: {e.user_message}"
-            })
+            return JsonResponse({'status': 'cancel', 'message': str(e)})
         except Exception as e:
-            # Otros errores
-            return render(request, self.template_name, {
-                'error': f"Error desconocido: {str(e)}"
-            })
+            return JsonResponse({'status': 'cancel', 'message': 'Hubo un error procesando el pago'})
 
 class logIn(View):
     form_class = FormLogIn
