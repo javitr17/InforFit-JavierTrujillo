@@ -107,10 +107,12 @@ class signUpPago(View):
     def get(self, request):
         # Recuperamos el contrato y mensaje de los parámetros de la URL
         contrato = request.GET.get('contrato')
-        mensaje = request.GET.get('mensaje')  # Aquí obtenemos el mensaje de la URL
+        mensaje = request.GET.get('mensaje')  # Obtenemos el mensaje de la URL
         print(f'MENSAJE GET: {mensaje}')
+
         # Obtenemos los datos del socio desde la sesión
         socio_data = request.session.get('socio_data', {})
+        print(f"Socio data en GET: {socio_data}")
         nombre = socio_data.get('nombre', '')
         apellidos = socio_data.get('apellidos', '')
 
@@ -146,8 +148,10 @@ class signUpPago(View):
         cuota_inscripcion = detalles_contrato.get('cuota_inscripcion', 0.0)
         monto_total = int((cuota_mensual + cuota_inscripcion) * 100)
 
+        # Formatear el mensaje si ya existe uno
         if mensaje in ['success', 'cancel']:
             monto_total = f"{monto_total / 100:.2f}€"
+
         # Añadimos la información de pago y contrato al contexto
         context = {
             'contrato': contrato,
@@ -167,133 +171,131 @@ class signUpPago(View):
 
     def post(self, request):
         try:
-            # Parsear datos de la solicitud JSON
-            data = json.loads(request.body)
-            monto_total = data.get('monto_total', 0)
-            contrato = data.get('contrato', 'Mensual')
-
-            # Obtener información del socio de la sesión
+            # Obtener datos de la sesión
             socio_data = request.session.get('socio_data', {})
-            nombre = socio_data.get('nombre', '')
-            apellidos = socio_data.get('apellidos', '')
-            print(f'SOCIO_DTA POST: {socio_data}')
+            domicilio_data = request.session.get('domicilio_data', {})
+            print(f"[DEBUG] Socio Data POST: {socio_data}")
+            print(f"[DEBUG] Domicilio Data POST: {domicilio_data}")
+
+            # Parsear datos del cuerpo de la solicitud
+            data = json.loads(request.body)
+            print(f"[DEBUG] Datos del cliente: {data}")
+
+            monto_total = data.get('monto_total')
+            contrato = data.get('contrato')
+            payment_method_id = data.get('payment_method_id')
+
+            if not all([monto_total, contrato, payment_method_id]):
+                print("[ERROR] Faltan datos requeridos para procesar el pago.")
+                return JsonResponse({'status': 'cancel', 'message': 'Faltan datos requeridos.'})
 
             # Detalles del contrato
             contrato_info = {
-                'Mensual': {
-                    'cuota_mensual': 38.99,
-                    'duracion': '1 mes',
-                    'cuota_inscripcion': 15.00,
-                    'renovacion': 'tras 1 mes indefinidamente',
-                    'recision': '14 días antes del fin del contrato',
-                },
-                'Semestral': {
-                    'cuota_mensual': 32.99,
-                    'duracion': '6 meses',
-                    'cuota_inscripcion': 15.00,
-                    'renovacion': 'tras 6 meses indefinidamente',
-                    'recision': '14 días antes del fin del contrato',
-                },
-                'Anual': {
-                    'cuota_mensual': 24.99,
-                    'duracion': '12 meses',
-                    'cuota_inscripcion': 15.00,
-                    'renovacion': 'tras 12 meses indefinidamente',
-                    'recision': '14 días antes del fin del contrato',
-                },
+                'Mensual': {'cuota_mensual': 38.99, 'cuota_inscripcion': 15.00},
+                'Semestral': {'cuota_mensual': 32.99, 'cuota_inscripcion': 15.00},
+                'Anual': {'cuota_mensual': 24.99, 'cuota_inscripcion': 15.00},
             }
             detalles_contrato = contrato_info.get(contrato, {})
-            cuota_mensual = detalles_contrato.get('cuota_mensual', 0.0)
-            cuota_inscripcion = detalles_contrato.get('cuota_inscripcion', 0.0)
-            print(cuota_mensual)
-            print(cuota_inscripcion)
-            return_url = f"{request.build_absolute_uri(reverse('signupPago'))}?contrato={contrato}&mensaje=success&cuota_mensual={cuota_mensual}&cuota_inscripcion={cuota_inscripcion}"
-            print(return_url)
+            print(f"[DEBUG] Detalles del contrato: {detalles_contrato}")
+
+            # Crear intento de pago
+            return_url = f"{request.build_absolute_uri(reverse('signupPago'))}?contrato={contrato}"
+            print(f"[DEBUG] URL de retorno: {return_url}")
 
             intent = stripe.PaymentIntent.create(
                 amount=monto_total,
                 currency='eur',
-                payment_method=data['payment_method_id'],
+                payment_method=payment_method_id,
                 confirmation_method='manual',
                 confirm=True,
                 return_url=return_url
             )
+            print(f"[DEBUG] Stripe PaymentIntent creado: {intent}")
 
+            # Manejo del intento de pago
             if intent.status == 'succeeded':
-                # Si el pago fue exitoso, guardar en la base de datos
-                print('SUCCEDED')
-                # Recuperamos los datos del socio desde la sesión
-                domicilio_data = request.session.get('domicilio_data', {})
-# Recuperamos los datos de domicilio desde la sesión
-                email=domicilio_data['email']
-                dni=domicilio_data['dni']
-                print(f'SOCIO DATA: {socio_data}')
-                print(f'DOMICILIO DATA: {domicilio_data}')
+                print("[INFO] Pago completado exitosamente.")
 
-                try:
-                    usuario_existente = User.objects.filter(username=dni).exists() or User.objects.filter(
-                        email=email).exists()
+                # Validar existencia del usuario
+                email = socio_data.get('email')
+                dni = domicilio_data.get('dni')
+                usuarios = User.objects.all()
+                print(f'USUARIOS REGISTRADOS YA:')
+                for usuario in usuarios:
+                    print(f'Usuario: {usuario.username}, Email: {usuario.email}')
+                print('----------')
+                if User.objects.filter(username=dni).exists() or User.objects.filter(email=email).exists():
 
-                    if usuario_existente:
-                        return JsonResponse({'usuario_existente': True})
+                    print(f"[WARNING] Usuario con DNI: {dni} o email: {email} ya existe.")
+                    return JsonResponse({'usuario_existente': True})
 
-                    # Si no existe, crear uno nuevo
-                    password = secrets.token_urlsafe(8)  # Contraseña aleatoria segura
-                    nuevo_usuario = User.objects.create_user(
-                        username=dni,
-                        email=email,
-                        password=password,
-                        first_name=socio_data['nombre'],
-                        last_name=socio_data['apellidos'],
-                    )
+                # Crear usuario y datos relacionados
+                password = secrets.token_urlsafe(8)
+                nuevo_usuario = User.objects.create_user(
+                    username=dni,
+                    email=email,
+                    password=password,
+                    first_name=socio_data['nombre'],
+                    last_name=socio_data['apellidos'],
+                )
+                print(f"[INFO] Usuario creado: {nuevo_usuario}")
 
-                    # Crear instancia de Socio
-                    socio_obj = Socio.objects.create(
-                        user=nuevo_usuario,
-                        nombre=socio_data['nombre'],
-                        apellidos=socio_data['apellidos'],
-                        fecha_nacimiento=socio_data['fecha_nacimiento'],
-                        telefono=socio_data['telefono'],
-                        email=email,
-                        genero=socio_data['genero'],
-                    )
+                socio_obj = Socio.objects.create(
+                    user=nuevo_usuario,
+                    nombre=socio_data['nombre'],
+                    apellidos=socio_data['apellidos'],
+                    fecha_nacimiento=socio_data['fecha_nacimiento'],
+                    telefono=socio_data['telefono'],
+                    email=email,
+                    genero=socio_data['genero'],
+                )
+                print(f"[INFO] Socio creado: {socio_obj}")
 
-                    # Crear instancia de DatosDomicilio
-                    DatosDomicilio.objects.create(
-                        user=socio_obj,
-                        dni=dni,
-                        calle=domicilio_data['calle'],
-                        ciudad=domicilio_data['ciudad'],
-                        codigo_postal=domicilio_data['codigo_postal'],
-                        pais=domicilio_data['pais'],
-                    )
+                DatosDomicilio.objects.create(
+                    user=socio_obj,
+                    dni=dni,
+                    calle=domicilio_data['calle'],
+                    ciudad=domicilio_data['ciudad'],
+                    codigo_postal=domicilio_data['codigo_postal'],
+                    pais=domicilio_data['pais'],
+                )
+                print("[INFO] Datos de domicilio creados.")
 
-                    # Proceso de suscripción
-                    duraciones = {'Mensual': 30, 'Semestral': 180, 'Anual': 365}
-                    duracion_contrato = duraciones.get(contrato, 30)
-                    fecha_inicio = timezone.now().date()
-                    fecha_vencimiento = fecha_inicio + timezone.timedelta(days=duracion_contrato)
+                # Calcular fechas de la suscripción
+                duraciones = {'Mensual': 30, 'Semestral': 180, 'Anual': 365}
+                duracion_contrato = duraciones.get(contrato, 30)
+                fecha_inicio = timezone.now().date()
+                fecha_vencimiento = fecha_inicio + timezone.timedelta(days=duracion_contrato)
 
-                    Suscripción.objects.create(
-                        user=socio_obj,
-                        nombre=contrato,
-                        precio_suscripcion=data['cuota_mensual'],
-                        precio_inscripcion=data['cuota_inscripcion'],
-                        duracion=duracion_contrato,
-                        fecha_inicio=fecha_inicio,
-                        fecha_vencimiento=fecha_vencimiento,
-                    )
+                Suscripción.objects.create(
+                    user=socio_obj,
+                    nombre=contrato,
+                    precio_suscripcion=detalles_contrato['cuota_mensual'],
+                    precio_inscripcion=detalles_contrato['cuota_inscripcion'],
+                    duracion=duracion_contrato,
+                    fecha_inicio=fecha_inicio,
+                    fecha_vencimiento=fecha_vencimiento,
+                )
+                print("[INFO] Suscripción creada exitosamente.")
 
-                    return JsonResponse({'usuario_existente': False, 'status': 'success'})
+                return JsonResponse({'usuario_existente': False, 'status': 'success'})
 
-                except Exception as e:
-                    print(f"Error al procesar los datos: {e}")
-                    return JsonResponse({'status': 'error', 'message': 'Error al procesar los datos'})
+            else:
+                print(f"[WARNING] Intento de pago fallido: {intent.status}")
+                return JsonResponse({'status': 'cancel', 'message': 'Error en el intento de pago.'})
 
         except stripe.error.CardError as e:
+            print(f"[ERROR] Stripe CardError: {str(e)}")
             return JsonResponse({'status': 'cancel', 'message': str(e)})
+
+        except stripe.error.StripeError as e:
+            print(f"[ERROR] StripeError: {str(e)}")
+            return JsonResponse({'status': 'cancel', 'message': 'Error en el servicio de pago.'})
+
         except Exception as e:
-            return JsonResponse({'status': 'cancel', 'message': 'Hubo un error procesando el pago'})
+            print(f"[ERROR] Excepción no manejada: {str(e)}")
+            return JsonResponse({'status': 'cancel', 'message': 'Error inesperado al procesar el pago.'})
+
 
 class logIn(View):
     form_class = FormLogIn

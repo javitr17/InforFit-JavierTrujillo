@@ -81,6 +81,10 @@
                                 <!-- Si el contrato no es ni semestral ni anual, podrías poner un valor por defecto -->
                                 <a href="{% url 'signupPago' %}?contrato=Mensual">VOLVER</a>
                             {% endif %}
+                        {% elif mensaje == 'usuario_existente' %}  
+                            <p>Ya hay un usuario existente para los datos que has introducido. Por favor, verifica que sean correctos</p>
+                            <div>                <a href="{% url 'signupDatos' %}?contrato={{ contrato }}">IR A DATOS</a></div>
+
                         {% endif %}
                     </div>
                 </div>
@@ -163,15 +167,15 @@
                     })
                         .then(response => response.json())
                         .then(data => {
-                            if (data.status === 'success') {
-                                // Redirige al usuario a la página de éxito sin mostrar un alert
-                                window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=success";
-                            } else {
-                                window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=cancel";
-
-                            }
-
-                        })
+                            if (data.usuario_existente) {
+                            window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=usuario_existente";
+                        } else if (data.status === 'success') {
+                            // Redirige al usuario a la página de éxito sin mostrar un alert
+                            window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=success";
+                        } else {
+                            window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=cancel";
+                        }
+                    })
 
                         .catch(error => {
                             console.error("Error al procesar el pago:", error);
