@@ -64,7 +64,7 @@ class TarjetaPago(models.Model):
     nombre_titular = models.CharField(max_length=100)
 
     def __str__(self):
-        return f" {self.user}, DNI: {self.dni}, Ciudad: {self.ciudad,}, Calle: {self.calle}"
+        return f" {self.user}"
 
 class ClaseColectiva(models.Model):
     nombre = models.CharField(max_length=100)  # Nombre de la clase

@@ -184,19 +184,11 @@ class signUpPago(View):
             monto_total = data.get('monto_total')
             contrato = data.get('contrato')
             payment_method_id = data.get('payment_method_id')
+            card_holder_name = data.get('card_holder_name')  # Recuperar el nombre del titular
 
-            if not all([monto_total, contrato, payment_method_id]):
+            if not all([monto_total, contrato, payment_method_id, card_holder_name]):
                 print("[ERROR] Faltan datos requeridos para procesar el pago.")
                 return JsonResponse({'status': 'cancel', 'message': 'Faltan datos requeridos.'})
-
-            # Detalles del contrato
-            contrato_info = {
-                'Mensual': {'cuota_mensual': 38.99, 'cuota_inscripcion': 15.00},
-                'Semestral': {'cuota_mensual': 32.99, 'cuota_inscripcion': 15.00},
-                'Anual': {'cuota_mensual': 24.99, 'cuota_inscripcion': 15.00},
-            }
-            detalles_contrato = contrato_info.get(contrato, {})
-            print(f"[DEBUG] Detalles del contrato: {detalles_contrato}")
 
             # Crear intento de pago
             return_url = f"{request.build_absolute_uri(reverse('signupPago'))}?contrato={contrato}"
@@ -216,16 +208,19 @@ class signUpPago(View):
             if intent.status == 'succeeded':
                 print("[INFO] Pago completado exitosamente.")
 
+                # Obtener los detalles del cargo utilizando `latest_charge`
+                charge_id = intent.get('latest_charge')
+                if not charge_id:
+                    print("[ERROR] No se encontró un cargo asociado al intento de pago.")
+                    return JsonResponse({'status': 'cancel', 'message': 'Error al procesar el pago.'})
+
+                charge = stripe.Charge.retrieve(charge_id)
+                print(f"[DEBUG] Detalles del cargo: {charge}")
+
                 # Validar existencia del usuario
                 email = socio_data.get('email')
                 dni = domicilio_data.get('dni')
-                usuarios = User.objects.all()
-                print(f'USUARIOS REGISTRADOS YA:')
-                for usuario in usuarios:
-                    print(f'Usuario: {usuario.username}, Email: {usuario.email}')
-                print('----------')
                 if User.objects.filter(username=dni).exists() or User.objects.filter(email=email).exists():
-
                     print(f"[WARNING] Usuario con DNI: {dni} o email: {email} ya existe.")
                     return JsonResponse({'usuario_existente': True})
 
@@ -238,8 +233,6 @@ class signUpPago(View):
                     first_name=socio_data['nombre'],
                     last_name=socio_data['apellidos'],
                 )
-                print(f"[INFO] Usuario creado: {nuevo_usuario}")
-
                 socio_obj = Socio.objects.create(
                     user=nuevo_usuario,
                     nombre=socio_data['nombre'],
@@ -249,8 +242,6 @@ class signUpPago(View):
                     email=email,
                     genero=socio_data['genero'],
                 )
-                print(f"[INFO] Socio creado: {socio_obj}")
-
                 DatosDomicilio.objects.create(
                     user=socio_obj,
                     dni=dni,
@@ -259,24 +250,16 @@ class signUpPago(View):
                     codigo_postal=domicilio_data['codigo_postal'],
                     pais=domicilio_data['pais'],
                 )
-                print("[INFO] Datos de domicilio creados.")
 
-                # Calcular fechas de la suscripción
-                duraciones = {'Mensual': 30, 'Semestral': 180, 'Anual': 365}
-                duracion_contrato = duraciones.get(contrato, 30)
-                fecha_inicio = timezone.now().date()
-                fecha_vencimiento = fecha_inicio + timezone.timedelta(days=duracion_contrato)
-
-                Suscripción.objects.create(
+                # Crear tarjeta de pago
+                TarjetaPago.objects.create(
                     user=socio_obj,
-                    nombre=contrato,
-                    precio_suscripcion=detalles_contrato['cuota_mensual'],
-                    precio_inscripcion=detalles_contrato['cuota_inscripcion'],
-                    duracion=duracion_contrato,
-                    fecha_inicio=fecha_inicio,
-                    fecha_vencimiento=fecha_vencimiento,
+                    token_stripe=payment_method_id,
+                    ult_cuatro_digitos=charge.payment_method_details.card.last4,
+                    fecha_ven_parcial=f"{charge.payment_method_details.card.exp_month}/{str(charge.payment_method_details.card.exp_year)[-2:]}",
+                    nombre_titular=card_holder_name,  # Guardar el nombre del titular
                 )
-                print("[INFO] Suscripción creada exitosamente.")
+                print("[INFO] Tarjeta de pago registrada.")
 
                 return JsonResponse({'usuario_existente': False, 'status': 'success'})
 
