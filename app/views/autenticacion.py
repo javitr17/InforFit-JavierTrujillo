@@ -171,26 +171,23 @@ class signUpPago(View):
 
     def post(self, request):
         try:
-            # Obtener datos de la sesión
             socio_data = request.session.get('socio_data', {})
             domicilio_data = request.session.get('domicilio_data', {})
             print(f"[DEBUG] Socio Data POST: {socio_data}")
             print(f"[DEBUG] Domicilio Data POST: {domicilio_data}")
 
-            # Parsear datos del cuerpo de la solicitud
             data = json.loads(request.body)
             print(f"[DEBUG] Datos del cliente: {data}")
 
             monto_total = data.get('monto_total')
             contrato = data.get('contrato')
             payment_method_id = data.get('payment_method_id')
-            card_holder_name = data.get('card_holder_name')  # Recuperar el nombre del titular
+            card_holder_name = data.get('card_holder_name')
 
             if not all([monto_total, contrato, payment_method_id, card_holder_name]):
                 print("[ERROR] Faltan datos requeridos para procesar el pago.")
                 return JsonResponse({'status': 'cancel', 'message': 'Faltan datos requeridos.'})
 
-            # Crear intento de pago
             return_url = f"{request.build_absolute_uri(reverse('signupPago'))}?contrato={contrato}"
             print(f"[DEBUG] URL de retorno: {return_url}")
 
@@ -204,11 +201,9 @@ class signUpPago(View):
             )
             print(f"[DEBUG] Stripe PaymentIntent creado: {intent}")
 
-            # Manejo del intento de pago
             if intent.status == 'succeeded':
                 print("[INFO] Pago completado exitosamente.")
 
-                # Obtener los detalles del cargo utilizando `latest_charge`
                 charge_id = intent.get('latest_charge')
                 if not charge_id:
                     print("[ERROR] No se encontró un cargo asociado al intento de pago.")
@@ -217,49 +212,49 @@ class signUpPago(View):
                 charge = stripe.Charge.retrieve(charge_id)
                 print(f"[DEBUG] Detalles del cargo: {charge}")
 
-                # Validar existencia del usuario
                 email = socio_data.get('email')
                 dni = domicilio_data.get('dni')
                 if User.objects.filter(username=dni).exists() or User.objects.filter(email=email).exists():
                     print(f"[WARNING] Usuario con DNI: {dni} o email: {email} ya existe.")
                     return JsonResponse({'usuario_existente': True})
 
-                # Crear usuario y datos relacionados
-                password = secrets.token_urlsafe(8)
-                nuevo_usuario = User.objects.create_user(
-                    username=dni,
-                    email=email,
-                    password=password,
-                    first_name=socio_data['nombre'],
-                    last_name=socio_data['apellidos'],
-                )
-                socio_obj = Socio.objects.create(
-                    user=nuevo_usuario,
-                    nombre=socio_data['nombre'],
-                    apellidos=socio_data['apellidos'],
-                    fecha_nacimiento=socio_data['fecha_nacimiento'],
-                    telefono=socio_data['telefono'],
-                    email=email,
-                    genero=socio_data['genero'],
-                )
-                DatosDomicilio.objects.create(
-                    user=socio_obj,
-                    dni=dni,
-                    calle=domicilio_data['calle'],
-                    ciudad=domicilio_data['ciudad'],
-                    codigo_postal=domicilio_data['codigo_postal'],
-                    pais=domicilio_data['pais'],
-                )
-
-                # Crear tarjeta de pago
-                TarjetaPago.objects.create(
-                    user=socio_obj,
-                    token_stripe=payment_method_id,
-                    ult_cuatro_digitos=charge.payment_method_details.card.last4,
-                    fecha_ven_parcial=f"{charge.payment_method_details.card.exp_month}/{str(charge.payment_method_details.card.exp_year)[-2:]}",
-                    nombre_titular=card_holder_name,  # Guardar el nombre del titular
-                )
-                print("[INFO] Tarjeta de pago registrada.")
+                # Envolver en una transacción atómica
+                with transaction.atomic():
+                    # Crear usuario y datos relacionados
+                    password = secrets.token_urlsafe(8)
+                    nuevo_usuario = User.objects.create_user(
+                        username=dni,
+                        email=email,
+                        password=password,
+                        first_name=socio_data['nombre'],
+                        last_name=socio_data['apellidos'],
+                    )
+                    socio_obj = Socio.objects.create(
+                        user=nuevo_usuario,
+                        nombre=socio_data['nombre'],
+                        apellidos=socio_data['apellidos'],
+                        fecha_nacimiento=socio_data['fecha_nacimiento'],
+                        telefono=socio_data['telefono'],
+                        email=email,
+                        genero=socio_data['genero'],
+                    )
+                    DatosDomicilio.objects.create(
+                        user=socio_obj,
+                        dni=dni,
+                        calle=domicilio_data['calle'],
+                        ciudad=domicilio_data['ciudad'],
+                        codigo_postal=domicilio_data['codigo_postal'],
+                        pais=domicilio_data['pais'],
+                    )
+                    # Crear tarjeta de pago
+                    TarjetaPago.objects.create(
+                        user=socio_obj,
+                        token_stripe=payment_method_id,
+                        ult_cuatro_digitos=charge.payment_method_details.card.last4,
+                        fecha_ven_parcial=f"{charge.payment_method_details.card.exp_month}/{str(charge.payment_method_details.card.exp_year)[-2:]}",
+                        nombre_titular=card_holder_name,
+                    )
+                    print("[INFO] Tarjeta de pago registrada.")
 
                 return JsonResponse({'usuario_existente': False, 'status': 'success'})
 
@@ -278,7 +273,6 @@ class signUpPago(View):
         except Exception as e:
             print(f"[ERROR] Excepción no manejada: {str(e)}")
             return JsonResponse({'status': 'cancel', 'message': 'Error inesperado al procesar el pago.'})
-
 
 class logIn(View):
     form_class = FormLogIn
