@@ -6,6 +6,7 @@
 
 .registroSeccionIzq1{
    min-width: 980px;
+
 }
 .registroNavDer3{
       display: grid;
@@ -41,10 +42,13 @@
 
 .registroDetallesPagoSeccion3{
     width: 100%;
-    height: 630px;
+    height: 310px;
     background-color: #222E39;
     opacity: 90%;
     backdrop-filter: blur(10px);
+}
+.registroDetallesPago{
+    padding-top: 2rem;
 }
 
 .registroDatosSeccion3{
@@ -62,6 +66,7 @@
     margin-left: 1rem;
 
 }
+
 .registroDatosSeccion3titulo{
     font-size: 18px;
     font-weight: 600;
@@ -121,4 +126,84 @@
 
 .payment-details strong {
     color: #007bff; /* Color para resaltar las etiquetas */
+}
+
+.registroTotalAPagarTexto{
+    margin-top: 1rem;
+}
+.registroTotalAPagarValor {
+    margin-top: 1rem;
+}
+
+.registroCuotaMensual{
+    padding-bottom: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid #FFFFFF;
+    font-size: 16px;
+
+}
+
+.registroPlanDetalle:nth-child(5) {
+    border-bottom: none;
+    padding-bottom: unset;
+}
+
+
+.registroTotalAPagar{
+
+    color: #FFFFFF;
+    font-size: 25px;
+    font-weight: 800;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#card-holder-name {
+    width: 100%;
+    background-color: #222E39;
+    color: #FFFFFF;
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    font-size: 20px;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+    color: #FFFFFF;
+    margin-top: 2rem;
+
+}
+
+.stripe-input{
+    padding: 0.5rem;
+    border-bottom: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    font-size: 20px;
+}
+
+#card-holder-name:focus, .stripe-input:focus{
+    outline: none;
+    color: #FFFFFF;
+}
+
+#card-holder-name::placeholder {
+    color: #B3B7BA; /* Cambia el color del placeholder a blanco */
+    opacity: 1;     /* Asegúrate de que el placeholder tenga opacidad completa */
+}
+
+.InputElement.is-empty.Input.Input--empty::placeholder {
+    color: #FFFFFF;
+}
+
+
+@media (max-width: 1657px) {
+    .registroSeccionDer2 {
+
+        min-height: 590px;
+    }
+
+    .registroSeccionIzq1 {
+        min-height: 575px;
+
+    }
+
 }

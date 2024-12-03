@@ -147,7 +147,7 @@ class signUpPago(View):
         cuota_mensual = detalles_contrato.get('cuota_mensual', 0.0)
         cuota_inscripcion = detalles_contrato.get('cuota_inscripcion', 0.0)
         monto_total = int((cuota_mensual + cuota_inscripcion) * 100)
-
+        total_pagar=f"{monto_total / 100:.2f}€"
         # Formatear el mensaje si ya existe uno
         if mensaje in ['success', 'cancel']:
             monto_total = f"{monto_total / 100:.2f}€"
@@ -164,7 +164,8 @@ class signUpPago(View):
             'monto_total': monto_total,
             'renovacion': detalles_contrato.get('renovacion'),  # Nueva clave para renovacion
             'recision': detalles_contrato.get('recision'),  # Nueva clave para recision
-            'mensaje': mensaje  # Aquí agregamos el mensaje al contexto
+            'mensaje': mensaje,  # Aquí agregamos el mensaje al contexto
+            'total_pagar': total_pagar
         }
 
         return render(request, self.template_name, context)
@@ -255,6 +256,9 @@ class signUpPago(View):
                         nombre_titular=card_holder_name,
                     )
                     print("[INFO] Tarjeta de pago registrada.")
+                    login(request, nuevo_usuario)
+                    print("[INFO] Usuario autenticado automáticamente.")
+
 
                 return JsonResponse({'usuario_existente': False, 'status': 'success'})
 

@@ -12,34 +12,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        form {
-            height: 20px;
-            border-bottom: 2px solid #9ca3af;
-            padding-bottom: 1.5rem;
-        }
+      
 
         .centrarFormularioStripe {
             display: grid;
             grid-template-columns: 5% 90% 5%;
         }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
+        
 
         #card-errors {
             color: red;
@@ -88,8 +68,7 @@
                         {% csrf_token %}
                         <!-- Campo para el titular de la tarjeta -->
                         <div class="form-group">
-                            <label for="card-holder-name">Titular de la tarjeta</label>
-                            <input type="text" id="card-holder-name" name="card_holder_name" placeholder="Nombre completo" required>
+                            <input type="text" id="card-holder-name" name="card_holder_name" placeholder="Titular tarjeta" required>
                         </div>
                         <!-- Campo de Stripe -->
                         <div id="card-element" class="stripe-input"></div>
@@ -147,8 +126,12 @@
                         <div class="registroValor">{{ recision }}</div>
                     </div>
                     <div class="registroCuotaMensual">
-                        <div class="registroCuotaMensualTexto">CUOTA MENSUAL</div>
+                        <div class="registroCuotaMensualTexto">Cuota mensual</div>
                         <div class="registroCuotaMensualValor">{{ cuota_mensual }}</div>
+                    </div>
+                     <div class="registroTotalAPagar">
+                        <div class="registroTotalAPagarTexto">TOTAL A PAGAR</div>
+                        <div class="registroTotalAPagarValor">{{ total_pagar }}</div>
                     </div>
                 </div>
                 <div class="registroBoton2" id="boton-pagar" style="pointer-events: none; opacity: 0.5;">
