@@ -45,6 +45,16 @@ class FormRegistro(forms.ModelForm):
     codigo_postal = forms.CharField(max_length=10, widget=forms.TextInput(attrs={'placeholder': 'Código postal'}))
     pais = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'País'}))
 
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña', 'autocomplete': 'new-password'}),
+        min_length=8,
+        required=True
+    )
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirmar Contraseña', 'autocomplete': 'new-password'}),
+        required=True
+    )
+
     class Meta:
         model = Socio
         fields = ['nombre', 'apellidos', 'fecha_nacimiento', 'telefono', 'email', 'genero']

@@ -16,8 +16,6 @@ import json
 from django.urls import reverse
 import secrets
 
-
-
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
 
@@ -92,6 +90,9 @@ class signUpDatos(View):
                 'codigo_postal': data['domicilio'].codigo_postal,
                 'pais': data['domicilio'].pais,
             }
+
+            password = form.cleaned_data.get('password')  # Aquí obtenemos la contraseña
+            request.session['password'] = password
 
             # Redirige a la próxima vista con el parámetro contrato
             return redirect(f'/InForFit/signUpPago?contrato={contrato}')
@@ -174,6 +175,7 @@ class signUpPago(View):
         try:
             socio_data = request.session.get('socio_data', {})
             domicilio_data = request.session.get('domicilio_data', {})
+            password = request.session.get('password')
             print(f"[DEBUG] Socio Data POST: {socio_data}")
             print(f"[DEBUG] Domicilio Data POST: {domicilio_data}")
 
@@ -222,7 +224,7 @@ class signUpPago(View):
                 # Envolver en una transacción atómica
                 with transaction.atomic():
                     # Crear usuario y datos relacionados
-                    password = secrets.token_urlsafe(8)
+
                     nuevo_usuario = User.objects.create_user(
                         username=dni,
                         email=email,

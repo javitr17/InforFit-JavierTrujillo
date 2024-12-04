@@ -6,7 +6,11 @@
             <div class="indexSuscripcion">SUSCRIPCIÓN</div>
             <div class="indexMensual">MENSUAL</div>
             <div class="index2499">24,99€</div>
-            <div class="indexBoton"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+            {% if user.is_authenticated %}
+                 <div class="indexBoton"><a href="{% url 'login' %}">INSCRÍBETE AHORA</a></div>
+                {% else %}
+                <div class="indexBoton"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+            {% endif %}
         </div>
     </div>
 </div>

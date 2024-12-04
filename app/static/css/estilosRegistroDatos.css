@@ -98,7 +98,7 @@ display: block;}
 
 .registroDatosSeccion2{
     width: 100%;
-    height: 800px;
+    height: 1000px;
     background-color: #222E39;
      opacity: 90%;
     backdrop-filter: blur(10px);
@@ -123,14 +123,14 @@ display: block;}
     font-weight: 800;
 }
 
-.registroDatosFormularioTituloDatosPersonales, .registroDatosFormularioTituloDatosDomicilio{
+.registroDatosFormularioTituloDatosPersonales, .registroDatosFormularioTituloDatosDomicilio, .registroDatosFormularioTituloDatosContraseña{
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-size: 25px;
     font-weight: 400;
 
 }
-.registroDatosFormularioTituloDatosDomicilio{
+.registroDatosFormularioTituloDatosDomicilio, .registroDatosFormularioTituloDatosContraseña{
     padding-top: 2rem;
 }
 .registroDatosFormularioTituloDatosPersonales{
@@ -202,6 +202,12 @@ display: block;}
     display: flex;
     gap: 1rem;
 }
+.registroFormularioContraseña{
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+}
+
 
 @media (max-width: 1657px) {
     .registroSeccionDer2{
