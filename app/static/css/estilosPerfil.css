@@ -1,0 +1,206 @@
+body{
+    justify-items: center;
+    background-image: url("../imagenes/registroFondo.png");
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-position: center; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-attachment: fixed;
+
+}
+
+.perfilCabecera{
+     width: 100%;
+    display: grid;
+    grid-template-columns: 1.5fr 9fr 0.5fr;
+    background-color: #222E39;
+    color: #D9D9D9;
+    font-weight: 600;
+    text-align: center;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    padding: 0.4rem;
+
+
+    align-items: center;
+
+}
+
+.perfilCabecera a img{
+    width: 100%;
+    height: auto;
+}
+.logoPerfil{
+    height: 100%;
+}
+
+.perfilContenedorImagen{
+    margin-top: 7rem;
+    background-image: url("../imagenes/perfilAñadirImagen.png");
+    width: 95%;
+    height: 520px;
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    justify-items: center;
+
+}
+
+.perfilAñadirImagen{
+    font-size: 35px;
+    color: #FFFFFF;
+    padding-top: 15%;
+    padding-left: 3%;
+
+}
+
+.perfilAñadirImagen i{
+    cursor: pointer;
+}
+
+.perfilNombreSocio{
+    font-size: 35px;
+    color: #FFFFFF;
+    font-weight: 800;
+    padding-top: 20%;
+
+}
+
+.perfilIdSocio{
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 25px;
+}
+
+.perfilContenedorSuscripcion{
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    width: 95%;
+    height: 500px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.perfilSuscripcionPadding{
+    padding:2rem;
+    color: #FFFFFF;
+}
+
+.perfilSuscripcionTitulo{
+    font-size: 35px;
+    font-weight: 700;
+    padding-bottom: 2rem;
+
+}
+
+.perfilDatosSuscripcion{
+    font-size: 18px;
+}
+
+.perfilDatoSuscripcion{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-top: 1px solid #FFFFFF;
+    padding-top: 1rem;
+}
+
+.perfilDatoSuscripcion:nth-child(1){
+    border: none;
+    padding-top: unset;
+}
+
+.perfilsuscripcionBotones{
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    height: 50px;
+}
+.perfilSuscripcionBoton {
+    background-color: #FFCC00;
+    text-align:center;
+    align-items: center;
+    padding: 1rem;
+
+}
+
+.perfilSuscripcionBoton a{
+    color: #222E39;
+    font-weight: 800;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+
+
+@media (min-width: 1140px) {
+.perfilAñadirImagen{
+    font-size: 35px;
+    color: #FFFFFF;
+    padding-top: 12%;
+    padding-left: 2%;
+}
+     .perfilNombreSocio{
+    padding-top: 18%;
+}
+
+}
+@media (min-width: 1020px) {
+    .perfilNombreSocio{
+    padding-top: 18%;
+}
+
+}
+
+@media (min-width: 1230px) {
+  .perfilAñadirImagen{
+
+    padding-top: 10%;
+}
+     .perfilNombreSocio{
+    padding-top: 17%;
+}
+
+}
+@media (min-width: 1400px) {
+  .perfilAñadirImagen{
+
+    padding-top: 10%;
+}
+     .perfilNombreSocio{
+    padding-top: 14%;
+}
+
+}
+
+@media (min-width: 1600px) {
+    .perfilContenedorImagen{
+        height: 600px;
+    }
+
+    .perfilNombreSocio{
+    padding-top: 16%;
+}
+
+
+}
+
+
+@media (min-width: 1780px) {
+    .perfilContenedorImagen{
+        height: 600px;
+    }
+
+    .perfilNombreSocio{
+    padding-top: 13%;
+}
+
+
+}

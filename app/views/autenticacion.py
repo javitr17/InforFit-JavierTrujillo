@@ -15,6 +15,7 @@ from django.conf import settings
 import json
 from django.urls import reverse
 import secrets
+from datetime import timedelta
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
@@ -184,6 +185,37 @@ class signUpPago(View):
 
             monto_total = data.get('monto_total')
             contrato = data.get('contrato')
+            print(f'CONTRATO: {contrato}')
+            if contrato== 'Anual':
+                precio_suscripcion =24.99
+                precio_inscripcion =15.00
+                duracion ='12 meses'
+                fecha_inicio =timezone.now()
+                fecha_vencimiento =fecha_inicio + timedelta(days=365)
+                proximo_pago=fecha_inicio + timedelta(days=30)
+            elif contrato == 'Semestral':
+                precio_suscripcion = 32.99
+                precio_inscripcion = 15.00
+                duracion = '6 meses'
+                fecha_inicio = timezone.now()
+                fecha_vencimiento = fecha_inicio + timedelta(days=180)
+                proximo_pago = fecha_inicio + timedelta(days=30)
+            elif contrato == 'Mensual':
+                precio_suscripcion = 38.99
+                precio_inscripcion = 15.00
+                duracion = '1 mes'
+                fecha_inicio = timezone.now()
+                fecha_vencimiento = fecha_inicio + timedelta(days=30)
+                proximo_pago = fecha_inicio + timedelta(days=30)
+
+            print(f'fecha_inicio: {fecha_inicio}')
+            print(f'fecha_vencimiento: {fecha_vencimiento}')
+            print(f'proximo_pago: {proximo_pago}')
+
+
+
+
+
             payment_method_id = data.get('payment_method_id')
             card_holder_name = data.get('card_holder_name')
 
@@ -241,6 +273,18 @@ class signUpPago(View):
                         email=email,
                         genero=socio_data['genero'],
                     )
+
+                    Suscripción.objects.create(
+                        user=socio_obj,
+                        nombre=contrato,
+                        precio_suscripcion= precio_suscripcion,
+                        precio_inscripcion=precio_inscripcion,
+                        duracion=duracion,
+                        fecha_inicio= fecha_inicio,
+                        fecha_vencimiento= fecha_vencimiento,
+                        proximo_pago= proximo_pago,
+                    )
+
                     DatosDomicilio.objects.create(
                         user=socio_obj,
                         dni=dni,

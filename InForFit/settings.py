@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processors.socio_imagen_context',
             ],
         },
     },
@@ -151,6 +152,8 @@ RECAPTCHA_PRIVATE_KEY = '6LcgdXEqAAAAAEZNZdxw-pKJqpwFR9U1DDIcsxfA'
 STRIPE_TEST_PUBLIC_KEY = "pk_test_51Q536CLaSaEx78s1doplQ1OHKHb5vk4XnoEWGG8dJdd3tIjEo37rvTPReNhkpnuA3PmcA4wMuQmYq6Fp07kVyEmx00x0bDwt4Z"
 STRIPE_TEST_SECRET_KEY = "sk_test_51Q536CLaSaEx78s1vaAbzMgf3s8YYSHeq2ImuLF740p4eF0t21HDqY4hrEjrUMOhDz8JIdmpa1vs4beBTxbhYhZG00cwQPFSAV"
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 

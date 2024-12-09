@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="{% static 'css/estilosBase.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilosPerfil.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="perfilCabecera">
+        <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>
+        <div></div>
+         <div class="imagenSocioPerfilContenedor">
+            {% if socio_con_imagen %}
+                  <div class="imagenSocioPerfilContenedor">
+                      <a href="{% url 'perfil' %}"><div class="imagenSocioPerfil" style="background-image: url('{{ url_imagen_socio }}');"></div></a>
+                  </div>
+            {% else %}
+                  <div class="logoPerfil"><a href="{% url 'perfil' %}"><i class="fa-regular fa-user"></i></a></div>
+            {% endif %}
+         </div>
+    </div>
+
+    <div class="perfilContenedorImagen">
+        <div class="perfilAñadirImagen"><i class="fa-solid fa-plus"></i></div>
+        <div class="perfilNombreSocio">{{ nombre}} {{ apellidos }}</div>
+        <div class="perfilIdSocio">ID MIEMBRO: {{ id }}</div>
+    </div>
+
+    <div class="perfilContenedorSuscripcion">
+        <div class="perfilSuscripcionPadding">
+        <div class="perfilSuscripcionTitulo">MI SUSCRIPCIÓN</div>
+        <div class="perfilDatosSuscripcion">
+            <div class="perfilDatoSuscripcion">
+                <div>Contrato</div>
+                <div>{{ contrato }}</div>
+            </div>
+            <div class="perfilDatoSuscripcion">
+                <div>Cuota</div>
+                <div>{{ precio_suscripcion }}</div>
+            </div>
+            <div class="perfilDatoSuscripcion">
+                <div>Fecha de inicio</div>
+                <div>{{ fecha_inicio }}</div>
+            </div>
+            <div class="perfilDatoSuscripcion">
+                <div>Fecha de vencimiento</div>
+                <div>{{ fecha_vencimiento }}</div>
+            </div>
+             <div class="perfilDatoSuscripcion">
+                <div>Próximo pago</div>
+                <div>{{ proximo_pago }}</div>
+            </div>
+        </div>
+            <div class="perfilsuscripcionBotones">
+                <div class="perfilSuscripcionBoton"><a href="{% url 'perfil' %}">CAMBIAR PLAN</a></div>
+                <div class="perfilSuscripcionBoton"><a href="{% url 'perfil' %}">DARME DE BAJA</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="perfilContenedorDatosPersonales"></div>
+
+    <div class="perfilContenedorDatosDomicilio"></div>
+
+    <div class="perfilContenedorContraseña"></div>
+
+
+</body>
+</html>

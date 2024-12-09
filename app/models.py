@@ -18,6 +18,7 @@ class Socio(models.Model):
     fecha_nacimiento = models.DateField()
     telefono = models.CharField(max_length=15)  # Teléfono como cadena, puede ajustarse el max_length
     email = models.EmailField()
+    imagen = models.ImageField(upload_to='imagenes_socios/', blank=True, null=True)  # Nueva línea
 
     def __str__(self):
         return f"Usuario: {self.user.username}, Nombre: {self.nombre}, Apellidos: {self.apellidos}"
@@ -37,10 +38,12 @@ class Suscripción(models.Model):
     nombre = models.CharField(max_length=100)  # Nombre de la suscripción
     precio_suscripcion = models.DecimalField(max_digits=6, decimal_places=2)  # Precio de la suscripción
     precio_inscripcion= models.DecimalField(max_digits=6, decimal_places=2)
-    duracion = models.IntegerField()  # Duración en días, por ejemplo
+    duracion = models.CharField(max_length=100)  # Duración en días, por ejemplo
     fecha_inicio = models.DateField()
     fecha_vencimiento = models.DateField()
+    proximo_pago=models.DateField()
     vencimiento_notificado = models.BooleanField(default=False)  # Notificación si fue avisado del vencimiento
+
 
     def __str__(self):
         return f" {self.user}, Suscripción: {self.nombre}"

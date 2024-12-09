@@ -37,13 +37,22 @@
         <a href="#" class="navNutricion">NUTRICIÓN</a>
     </div>
     <div class="navDer">
-        <div class="logoPerfil"><a href="{% url 'login' %}"><i class="fa-regular fa-user"></i></a></div>
+         {# Aqui tengo que implementar desde la vista que se almacene en una variable true o false dependiendo lo que devuelva una consulta a la base de datos#}
+         {# referente a si existe una imagen para el socio, y dependiendo de si es true o false se muestra el icono de perfil o la imagen #}
+
          {% if user.is_authenticated %}
              <div class="navBoton"><a href="{% url 'logout' %}">CERRAR SESIÓN</a></div>
+              {% if socio_con_imagen %}
+                  <div class="imagenSocioPerfilContenedor">
+                      <a href="{% url 'perfil' %}"><div class="imagenSocioPerfil" style="background-image: url('{{ url_imagen_socio }}');"></div></a>
+                  </div>
+              {% else %}
+                  <div class="logoPerfil"><a href="{% url 'perfil' %}"><i class="fa-regular fa-user"></i></a></div>
+              {% endif %}
          {% else %}
-             <div class="navBoton"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+             <div class="navBoton"><a href="{% url 'signupPlan' %}">INSCRIBIRSE</a></div>
+             <div class="logoPerfil"><a href="{% url 'login' %}"><i class="fa-regular fa-user"></i></a></div>
          {% endif %}
-
 
 
 
