@@ -2,6 +2,7 @@ from .models import *
 from django import forms
 from django_recaptcha.fields import ReCaptchaField
 from django_recaptcha.widgets import ReCaptchaV2Checkbox
+from django.core.validators import MinLengthValidator
 
 class FormLogIn(forms.Form):
     dni = forms.CharField(
@@ -31,7 +32,11 @@ class FormRegistro(forms.ModelForm):
     nombre = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Nombre','autocomplete': 'given-name'}))
     apellidos = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Apellidos', 'autocomplete': 'family-name'}))
     fecha_nacimiento = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Fecha Nacimiento'}))
-    telefono = forms.CharField(max_length=15, widget=forms.TextInput(attrs={'placeholder': 'Teléfono', 'autocomplete': 'tel'}))
+    telefono = forms.CharField(
+        max_length=16,
+        validators=[MinLengthValidator(9)],
+        widget=forms.TextInput(attrs={'placeholder': 'Teléfono', 'autocomplete': 'tel'})
+    )
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email', 'autocomplete': 'email'}))
     genero=forms.ChoiceField(
         choices=GENERO_SOCIO,

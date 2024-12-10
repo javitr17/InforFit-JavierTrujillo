@@ -62,11 +62,98 @@
         </div>
     </div>
 
-    <div class="perfilContenedorDatosPersonales"></div>
+    <div class="perfilContenedorDatosPersonales">
+        <div class="perfilDatosPersonalesPadding">
+            <div class="perfilDatosPersonalesTitulo">MIS DATOS PERSONALES</div>
+            <div>
+                <form method="post">
+                {% csrf_token %}
+               
+                <div class="campoFormularioDatos" id="sinBorde">
+                    <div>Nombre</div>
+                    <div>{{ form_datos.nombre }} <i class="fa-regular fa-pen-to-square"></i></div>
+                   
+                </div>
+                <div class="campoFormularioDatos">
+                     <div>Apellidos</div>
+                    <div>{{ form_datos.apellidos }} <i class="fa-regular fa-pen-to-square"></i></div>
+                </div>
+                <div class="campoFormularioDatos">
+                     <div>Fecha de Nacimiento</div>
+                    <div>{{ form_datos.fecha_nacimiento }} <i class="fa-regular fa-pen-to-square"></i></div>
+                </div>
+                <div class="campoFormularioDatos">
+                     <div>Teléfono</div>
+                    <div>{{ form_datos.telefono }} <i class="fa-regular fa-pen-to-square"></i></div>
+                </div>
+                <div class="campoFormularioDatos">
+                     <div>Email</div>
+                    <div>{{ form_datos.email }} <i class="fa-regular fa-pen-to-square"></i></div>
+                </div>
+                    <div class="campoFormularioDatos">    
+                     <div>Género</div>
+                    <div id="flex">{{ form_datos.genero }} <i class="fa-regular fa-pen-to-square"></i></div>
+                </div>
+                     {% if form_datos.errors %}
+                    <div class="error-messages">
+                        <ul>
+                            {% for field in form_datos %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <button class="perfilDatosBoton" type="submit">ACTUALIZAR INFORMACIÓN</button>
+            </form>
 
-    <div class="perfilContenedorDatosDomicilio"></div>
+            </div>
+        </div>
+    </div>
 
-    <div class="perfilContenedorContraseña"></div>
+    <div class="perfilContenedorDatosDomicilio"> 
+    <div class="perfilContenedorDatosDomicilioPadding">
+        <div class="perfilContenedorDatosDomicilioTitulo">DATOS DOMICILIARIOS</div>
+    
+
+        <!-- Mostrar formulario de domicilio -->
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="campoFormularioDatos" id="sinBorde">
+                <div>DNI</div>
+                <div>{{ form_domicilio.instance.dni }} <i class="fa-regular fa-pen-to-square"></i></div>
+            </div>
+            <div class="campoFormularioDatos">
+                <div>Calle</div>
+                <div>{{ form_domicilio.calle }} <i class="fa-regular fa-pen-to-square"></i></div>
+            </div>
+            <div class="campoFormularioDatos">
+                <div>Ciudad</div>
+                <div>{{ form_domicilio.instance.ciudad }} <i class="fa-regular fa-pen-to-square"></i></div>
+            </div>
+            <div class="campoFormularioDatos">
+                <div>Código Postal</div>
+                <div>{{ form_domicilio.instance.codigo_postal }} <i class="fa-regular fa-pen-to-square"></i></div>
+            </div>
+            <div class="campoFormularioDatos">
+                <div>País</div>
+                <div>{{ form_domicilio.instance.pais }} <i class="fa-regular fa-pen-to-square"></i></div>
+            </div>
+    
+            <div class="perfilContenedorBotones">
+                <button type="submit" class="perfilDomicilioBoton">ACTUALIZAR DATOS</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <div class="perfilContenedorContraseña">
+        <div class="perfilContenedorContraseñaPadding">
+            <div class="perfilContenedorContraseñaTitulo">CAMBIAR CONTRASEÑA</div>
+        </div>
+    </div>
 
 
 </body>

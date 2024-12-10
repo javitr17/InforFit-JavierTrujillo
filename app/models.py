@@ -16,7 +16,7 @@ class Socio(models.Model):
     nombre = models.CharField(max_length=50)
     apellidos = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField()
-    telefono = models.CharField(max_length=15)  # Teléfono como cadena, puede ajustarse el max_length
+    telefono = models.CharField(max_length=16)  # Teléfono como cadena, puede ajustarse el max_length
     email = models.EmailField()
     imagen = models.ImageField(upload_to='imagenes_socios/', blank=True, null=True)  # Nueva línea
 
