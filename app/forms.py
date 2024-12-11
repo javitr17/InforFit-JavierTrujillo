@@ -3,6 +3,8 @@ from django import forms
 from django_recaptcha.fields import ReCaptchaField
 from django_recaptcha.widgets import ReCaptchaV2Checkbox
 from django.core.validators import MinLengthValidator
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 class FormLogIn(forms.Form):
     dni = forms.CharField(
@@ -83,3 +85,30 @@ class FormRegistro(forms.ModelForm):
             'socio': socio,
             'domicilio': domicilio
         }
+
+
+class FormDatosDomicilio(forms.ModelForm):
+    class Meta:
+        model = DatosDomicilio
+        fields = ['dni', 'calle', 'ciudad', 'codigo_postal', 'pais']
+        widgets = {
+            'dni': forms.TextInput(attrs={'placeholder': 'DNI'}),
+            'calle': forms.TextInput(attrs={'placeholder': 'Calle'}),
+            'ciudad': forms.TextInput(attrs={'placeholder': 'Ciudad'}),
+            'codigo_postal': forms.TextInput(attrs={'placeholder': 'Código postal'}),
+            'pais': forms.TextInput(attrs={'placeholder': 'País'}),
+        }
+
+class FormCambioContraseña(PasswordChangeForm):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña actual'}),
+        label="Contraseña actual"
+    )
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Nueva contraseña'}),
+        label="Nueva contraseña"
+    )
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirmar nueva contraseña'}),
+        label="Confirmar nueva contraseña"
+    )

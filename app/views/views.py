@@ -19,7 +19,6 @@ class index(View):
     template_name = 'index.html'
 
 
-
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class perfil(TemplateView):
     template_name = 'app/perfil.html'
@@ -29,61 +28,58 @@ class perfil(TemplateView):
         socio = Socio.objects.filter(user=self.request.user).first()
 
         if socio:
-            # Crear formulario con los datos del socio
             form_datos = FormRegistro(instance=socio)
             domicilio = socio.datosdomicilio_set.first()
+            form_cambio_contraseña = FormCambioContraseña(user=self.request.user)
+
             if domicilio:
-                print(f"Datos de Domicilio: {domicilio.dni}, {domicilio.calle}")
+                form_domicilio = FormDatosDomicilio(instance=domicilio)
             else:
-                print("No hay domicilio asociado al socio.")
-            form_domicilio = FormRegistro(instance=socio.datosdomicilio_set.first())  # Obtiene el primer objeto de DatosDomicilio relacionado
-            print(f'FOMR DATOS: {form_datos}')
-            print(f'FOMR DOMICILIO: {form_domicilio}')
-            # DATOS SOCIO
-            form_datos.fields['dni'].required = False
-            form_datos.fields['calle'].required = False
-            form_datos.fields['ciudad'].required = False
-            form_datos.fields['codigo_postal'].required = False
-            form_datos.fields['pais'].required = False
-            form_datos.fields['password'].required = False
-            form_datos.fields['password_confirm'].required = False
+                form_domicilio = FormDatosDomicilio()
 
-            # DATOS DOMICILIO
-            form_domicilio.fields['nombre'].required = False
-            form_domicilio.fields['apellidos'].required = False
-            form_domicilio.fields['fecha_nacimiento'].required = False
-            form_domicilio.fields['telefono'].required = False
-            form_domicilio.fields['email'].required = False
-            form_domicilio.fields['genero'].required = False
-            form_domicilio.fields['password'].required = False
-            form_domicilio.fields['password_confirm'].required = False
+            context.update({
+                'form_datos': form_datos,
+                'form_domicilio': form_domicilio,
+                'form_cambio_contraseña': form_cambio_contraseña,
+                'nombre': socio.nombre.upper(),
+                'apellidos': socio.apellidos.upper(),
+                'id': socio.id,
+            })
 
-            # Agregar datos adicionales del socio y su suscripción al contexto
-            context['form_datos'] = form_datos
-            context['form_domicilio'] = form_domicilio
-            context['nombre'] = socio.nombre.upper()
-            context['apellidos'] = socio.apellidos.upper()
-            context['id'] = socio.id
-
-            # Obtener la suscripción y agregarla al contexto
             suscripcion = Suscripción.objects.filter(user=socio).first()
+            precios = {'Anual': 24.99, 'Semestral': 32.99, 'Mensual': 38.99}
+
             if suscripcion:
-                context['contrato'] = suscripcion.nombre
-                context['precio_suscripcion'] = suscripcion.precio_suscripcion
-                context['fecha_inicio'] = suscripcion.fecha_inicio.strftime('%d/%m/%Y')
-                context['fecha_vencimiento'] = suscripcion.fecha_vencimiento.strftime('%d/%m/%Y')
-                context['proximo_pago'] = suscripcion.proximo_pago.strftime('%d/%m/%Y')
+                planes_disponibles = ['Anual', 'Semestral', 'Mensual']
+                planes_disponibles.remove(suscripcion.nombre)
+
+                context.update({
+                    'contrato': suscripcion.nombre,
+                    'precio_suscripcion': precios[suscripcion.nombre],
+                    'fecha_inicio': suscripcion.fecha_inicio.strftime('%d/%m/%Y'),
+                    'fecha_vencimiento': suscripcion.fecha_vencimiento.strftime('%d/%m/%Y'),
+                    'proximo_pago': suscripcion.proximo_pago.strftime('%d/%m/%Y'),
+                    'otros_planes': planes_disponibles,
+                    'precios': precios,
+                    'fecha_vigencia': suscripcion.proximo_pago.strftime('%d/%m/%Y'),
+                })
             else:
-                context['contrato'] = None
-                context['precio_suscripcion'] = None
-                context['fecha_inicio'] = None
-                context['fecha_vencimiento'] = None
-                context['proximo_pago'] = None
+                context.update({
+                    'contrato': None,
+                    'precio_suscripcion': None,
+                    'fecha_inicio': None,
+                    'fecha_vencimiento': None,
+                    'proximo_pago': None,
+                    'otros_planes': [],
+                    'precios': precios,
+                    'fecha_vigencia': None,
+                })
         else:
             messages.error(self.request, "No se encontró un socio asociado al usuario.")
             return redirect('perfil')
 
         return context
+
 
     def post(self, request, *args, **kwargs):
         socio = Socio.objects.filter(user=request.user).first()
@@ -112,15 +108,22 @@ class perfil(TemplateView):
             return redirect(reverse('perfil'))
 
         # Si se actualizan los datos domiciliarios
-        form_domicilio = FormRegistro(request.POST, instance=socio.datosdomicilio_set.first())
-        if form_domicilio.is_valid():
-            # Guardar los datos domiciliarios
-            datos_domicilio = form_domicilio.save(commit=False)
-            datos_domicilio.user = socio
-            datos_domicilio.save()
+        domicilio = socio.datosdomicilio_set.first()
+        form_domicilio = FormDatosDomicilio(request.POST, instance=domicilio)
 
+        # Validar y guardar los datos de domicilio
+        if form_domicilio.is_valid():
+            form_domicilio.save()
             messages.success(request, "Tus datos domiciliarios se han actualizado correctamente.")
             return redirect(reverse('perfil'))
+
+        form_cambio_contraseña = FormCambioContraseña(user=request.user, data=request.POST)
+        if form_cambio_contraseña.is_valid():
+            form_cambio_contraseña.save()
+            messages.success(request, "Tu contraseña se ha actualizado correctamente.")
+            return redirect(reverse('perfil'))
+
+
         else:
             # Muestra los errores de validación
             messages.error(request, "Por favor, corrige los errores en el formulario.")

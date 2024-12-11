@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load filters %}
+
 
 <head>
     <meta charset="UTF-8">
@@ -40,7 +42,7 @@
             </div>
             <div class="perfilDatoSuscripcion">
                 <div>Cuota</div>
-                <div>{{ precio_suscripcion }}</div>
+                <div>{{ precio_suscripcion }} €</div>
             </div>
             <div class="perfilDatoSuscripcion">
                 <div>Fecha de inicio</div>
@@ -56,11 +58,52 @@
             </div>
         </div>
             <div class="perfilsuscripcionBotones">
-                <div class="perfilSuscripcionBoton"><a href="{% url 'perfil' %}">CAMBIAR PLAN</a></div>
+                <div class="perfilSuscripcionBoton"><a href="" id="cambiarPlanEnlace">CAMBIAR PLAN</a></div>
                 <div class="perfilSuscripcionBoton"><a href="{% url 'perfil' %}">DARME DE BAJA</a></div>
             </div>
         </div>
     </div>
+    
+        <div class="perfilContenedorCambiarSuscripcion" style="display:none;">
+    <div class="perfilCambiarSuscripcionPadding">
+        <div class="perfilCambiarSuscripcionTitulo">CAMBIAR PLAN</div>
+        <form method="post" id="formCambioPlan">
+            {% csrf_token %}
+            <div class="perfilCambiarSuscripcionPlanes">
+                <div class="perfilCambiarSuscripcionPlan" id="sinBorde">
+                    <div>Plan Actual</div>
+                    <div>{{ contrato }}</div>
+                </div>
+                <div class="perfilCambiarSuscripcionPlan">
+                    <div>Nuevo Plan</div>
+                    <select name="nuevo_plan" id="nuevo_plan" required>
+                        <option value="" disabled selected>Selecciona un plan</option>
+                        {% for plan in otros_planes %}
+                            <option value="{{ plan }}" data-cuota="{{ precios|get_item:plan }}" data-vigencia="{{ fecha_vigencia }}">
+                                {{ plan }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="perfilCambiarSuscripcionPlan" style="display:none;">
+                    <div>Nueva Cuota Mensual</div>
+                    <div id="nuevaCuota"></div>
+                </div>
+                <div class="perfilCambiarSuscripcionPlan" style="display:none;">
+                    <div>Fecha de Vigencia del Nuevo Plan</div>
+                    <div id="nuevaFechaVigencia"></div>
+                </div>
+            </div>
+            <div class="perfilsuscripcionBotones">
+                
+                    <button class="perfilSuscripcionBoton" type="submit" id="guardarCambioPlan">GUARDAR CAMBIOS</button>
+                    <button  class="perfilSuscripcionBoton" type="button" id="cancelarCambioPlan">CANCELAR</button>
+               
+            </div>
+        </form>
+    </div>
+</div>
 
     <div class="perfilContenedorDatosPersonales">
         <div class="perfilDatosPersonalesPadding">
@@ -123,7 +166,7 @@
             
             <div class="campoFormularioDatos" id="sinBorde">
                 <div>DNI</div>
-                <div>{{ form_domicilio.instance.dni }} <i class="fa-regular fa-pen-to-square"></i></div>
+                <div>{{ form_domicilio.dni }} <i class="fa-regular fa-pen-to-square"></i></div>
             </div>
             <div class="campoFormularioDatos">
                 <div>Calle</div>
@@ -131,15 +174,15 @@
             </div>
             <div class="campoFormularioDatos">
                 <div>Ciudad</div>
-                <div>{{ form_domicilio.instance.ciudad }} <i class="fa-regular fa-pen-to-square"></i></div>
+                <div>{{ form_domicilio.ciudad }} <i class="fa-regular fa-pen-to-square"></i></div>
             </div>
             <div class="campoFormularioDatos">
                 <div>Código Postal</div>
-                <div>{{ form_domicilio.instance.codigo_postal }} <i class="fa-regular fa-pen-to-square"></i></div>
+                <div>{{ form_domicilio.codigo_postal }} <i class="fa-regular fa-pen-to-square"></i></div>
             </div>
             <div class="campoFormularioDatos">
                 <div>País</div>
-                <div>{{ form_domicilio.instance.pais }} <i class="fa-regular fa-pen-to-square"></i></div>
+                <div>{{ form_domicilio.pais }} <i class="fa-regular fa-pen-to-square"></i></div>
             </div>
     
             <div class="perfilContenedorBotones">
@@ -150,10 +193,144 @@
 </div>
 
     <div class="perfilContenedorContraseña">
-        <div class="perfilContenedorContraseñaPadding">
-            <div class="perfilContenedorContraseñaTitulo">CAMBIAR CONTRASEÑA</div>
-        </div>
+    <div class="perfilContenedorContraseñaPadding">
+        <div class="perfilContenedorContraseñaTitulo">CAMBIAR CONTRASEÑA</div>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="perfilCampoContraseña">
+                <input type="password" name="old_password" id="old_password" placeholder="Contraseña Actual" required>
+                <span class="toggle-password" data-target="old_password">
+                    <i class="fa fa-eye"></i>
+                </span>
+            </div>
+            
+            <div class="perfilCampoContraseña">
+                <input type="password" name="new_password1" id="new_password1" placeholder="Nueva Contraseña" required>
+                <span class="toggle-password" data-target="new_password1">
+                    <i class="fa fa-eye"></i>
+                </span>
+            </div>
+            
+            <div class="perfilCampoContraseña">
+                <input type="password" name="new_password2" id="new_password2" placeholder="Confirmar Nueva Contraseña" required>
+                <span class="toggle-password" data-target="new_password2">
+                    <i class="fa fa-eye"></i>
+                </span>
+            </div>
+
+            <button type="submit" class="perfilDomicilioBoton">ACTUALIZAR CONTRASEÑA</button>
+        </form>    
     </div>
+</div>
+
+
+<script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Elementos del DOM
+        const cambiarPlanEnlace = document.getElementById('cambiarPlanEnlace');
+        const cancelarCambioPlan = document.getElementById('cancelarCambioPlan');
+        const contenedorSuscripcion = document.querySelector('.perfilContenedorSuscripcion');
+        const contenedorCambiarSuscripcion = document.querySelector('.perfilContenedorCambiarSuscripcion');
+        const nuevoPlanSelect = document.getElementById('nuevo_plan');
+        const nuevaCuota = document.getElementById('nuevaCuota');
+        const nuevaFechaVigencia = document.getElementById('nuevaFechaVigencia');
+
+        // Mostrar el contenedor para cambiar plan
+        cambiarPlanEnlace.addEventListener('click', function (e) {
+            e.preventDefault(); // Evita que el enlace navegue
+            contenedorSuscripcion.style.display = 'none'; // Oculta el contenedor original
+            contenedorCambiarSuscripcion.style.display = 'block'; // Muestra el nuevo contenedor
+        });
+
+        // Cancelar el cambio de plan
+        cancelarCambioPlan.addEventListener('click', function () {
+            contenedorCambiarSuscripcion.style.display = 'none'; // Oculta el nuevo contenedor
+            contenedorSuscripcion.style.display = 'block'; // Vuelve a mostrar el contenedor original
+        });
+
+       // Actualizar detalles del nuevo plan en base a la selección
+    nuevoPlanSelect.addEventListener('change', function () {
+        const selectedOption = nuevoPlanSelect.options[nuevoPlanSelect.selectedIndex];
+        const perfilCambiarSuscripcionPlan3=document.querySelector('.perfilCambiarSuscripcionPlan:nth-child(3)')
+        const perfilCambiarSuscripcionPlan4=document.querySelector('.perfilCambiarSuscripcionPlan:nth-child(4)')
+        perfilCambiarSuscripcionPlan3.style.display='flex';
+        perfilCambiarSuscripcionPlan4.style.display='flex';
+
+        // Obtener la cuota de la opción seleccionada
+        const cuota = selectedOption.getAttribute('data-cuota');
+        // Mostrar el precio de la nueva cuota
+        nuevaCuota.textContent = cuota + ' €';
+        
+        // Actualizar la fecha de vigencia
+        const vigencia = selectedOption.getAttribute('data-vigencia');
+        nuevaFechaVigencia.textContent = vigencia;
+    });
+    });
+   document.querySelectorAll('.toggle-password').forEach(button => {
+    button.addEventListener('click', () => {
+        const targetInput = document.getElementById(button.dataset.target);
+        const icon = button.querySelector('i');
+        if (targetInput.type === 'password') {
+            targetInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            targetInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    // Elementos del DOM
+    const cambiarPlanEnlace = document.getElementById('cambiarPlanEnlace');
+    const cancelarCambioPlan = document.getElementById('cancelarCambioPlan');
+    const contenedorSuscripcion = document.querySelector('.perfilContenedorSuscripcion');
+    const contenedorCambiarSuscripcion = document.querySelector('.perfilContenedorCambiarSuscripcion');
+    const nuevoPlanSelect = document.getElementById('nuevo_plan');
+    const nuevaCuota = document.getElementById('nuevaCuota');
+    const nuevaFechaVigencia = document.getElementById('nuevaFechaVigencia');
+
+    // Mostrar el contenedor para cambiar plan
+    cambiarPlanEnlace.addEventListener('click', function (e) {
+        e.preventDefault(); // Evita que el enlace navegue
+        contenedorSuscripcion.style.display = 'none'; // Oculta el contenedor original
+        contenedorCambiarSuscripcion.style.display = 'block'; // Muestra el nuevo contenedor
+    });
+
+    // Cancelar el cambio de plan
+    cancelarCambioPlan.addEventListener('click', function () {
+        contenedorCambiarSuscripcion.style.display = 'none'; // Oculta el nuevo contenedor
+        contenedorSuscripcion.style.display = 'block'; // Vuelve a mostrar el contenedor original
+    });
+
+    // Actualizar detalles del nuevo plan en base a la selección
+    nuevoPlanSelect.addEventListener('change', function () {
+        const selectedOption = nuevoPlanSelect.options[nuevoPlanSelect.selectedIndex];
+        nuevaCuota.textContent = selectedOption.getAttribute('data-cuota') + ' €';
+        nuevaFechaVigencia.textContent = selectedOption.getAttribute('data-vigencia');
+    });
+  });
+
+  // Mostrar u ocultar las contraseñas
+  document.querySelectorAll('.toggle-password').forEach(button => {
+    button.addEventListener('click', () => {
+        const targetInput = document.getElementById(button.dataset.target);
+        const icon = button.querySelector('i');
+        if (targetInput.type === 'password') {
+            targetInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            targetInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+  });
+
+</script>
 
 
 </body>

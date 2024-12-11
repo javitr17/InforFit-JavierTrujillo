@@ -79,19 +79,20 @@ body{
     font-size: 25px;
 }
 
-.perfilContenedorSuscripcion{
+.perfilContenedorSuscripcion, .perfilContenedorCambiarSuscripcion{
     background-image: linear-gradient(to right,#222E39, #171E26);
     width: 95%;
-    height: 480px;
+    height: fit-content;
+    padding-bottom: 1rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
-.perfilSuscripcionPadding, .perfilDatosPersonalesPadding, .perfilContenedorDatosDomicilioPadding, .perfilContenedorContraseñaPadding{
+.perfilSuscripcionPadding, .perfilDatosPersonalesPadding, .perfilContenedorDatosDomicilioPadding, .perfilContenedorContraseñaPadding, .perfilCambiarSuscripcionPadding{
     padding:2rem;
     color: #FFFFFF;
 }
 
-.perfilSuscripcionTitulo, .perfilDatosPersonalesTitulo, .perfilContenedorDatosDomicilioTitulo, .perfilContenedorContraseñaTitulo{
+.perfilSuscripcionTitulo, .perfilDatosPersonalesTitulo, .perfilContenedorDatosDomicilioTitulo, .perfilContenedorContraseñaTitulo, .perfilCambiarSuscripcionTitulo{
     font-size: 35px;
     font-weight: 700;
     padding-bottom: 2rem;
@@ -131,6 +132,7 @@ body{
     text-align:center;
     align-items: center;
     padding: 1rem;
+    cursor: pointer;
 }
 .perfilDatosBoton, .perfilDomicilioBoton{
     background-color: #FFCC00;
@@ -156,8 +158,9 @@ body{
 .perfilContenedorDatosPersonales{
     background-image: linear-gradient(to right,#222E39, #171E26);
     width: 95%;
-    height: 545px;
+    height: fit-content;
     margin-bottom:2rem;
+    padding-bottom: 0.5rem;
 }
 
 .campoFormularioDatos div input{
@@ -196,15 +199,181 @@ body{
 .perfilContenedorDatosDomicilio{
     background-image: linear-gradient(to right,#222E39, #171E26);
     width: 95%;
-    height: 480px;
+    height: fit-content;
+    padding-bottom: 0.6rem;
     margin-bottom:2rem;
 }
 .perfilContenedorContraseña{
     background-image: linear-gradient(to right,#222E39, #171E26);
     width: 95%;
-    height: 545px;
+    height: fit-content;
+    padding-bottom: 0.6rem;
     margin-bottom:2rem;
 }
+
+/* Estilo general */
+.perfilCampoContraseña {
+    margin-bottom: 20px;
+}
+
+
+/* Placeholder flotante como div */
+.input-placeholder {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #FFFFFF;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* Cuando el input tiene texto o está enfocado */
+.input-group input:focus + .input-placeholder,
+.input-group input:not(:placeholder-shown) + .input-placeholder {
+    top: -10px;
+    font-size: 12px;
+    color: #363535;
+    background-color: transparent;
+}
+
+/* Ícono del ojo */
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+}
+
+.toggle-password:hover {
+    color: #363535;
+}
+
+.toggle-password i {
+    font-size: 18px;
+}
+/* Estilo general */
+.perfilCampoContraseña {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Estilo del input */
+.perfilCampoContraseña input {
+    width: 100%;
+    padding: 10px 40px 10px 10px; /* Espacio para el ícono */
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    font-size: 18px;
+    outline: none;
+    background-color: transparent;
+    box-sizing: border-box;
+    color: #FFFFFF;
+}
+
+/* Efecto cuando el input está en foco */
+.perfilCampoContraseña input:focus {
+
+}
+
+/* Placeholder flotante */
+.perfilCampoContraseña input::placeholder {
+    color: transparent; /* Hacer el placeholder invisible */
+}
+
+.perfilCampoContraseña input:focus::placeholder {
+    color: transparent;
+}
+
+.perfilCampoContraseña input:not(:focus):not(:placeholder-shown) {
+    padding-top: 18px; /* Ajustar la posición cuando el texto está presente */
+}
+
+.perfilCampoContraseña input:not(:focus):not(:placeholder-shown) + .input-placeholder {
+    top: 10px;
+    font-size: 12px;
+    color: #363535;
+}
+
+/* Ícono del ojo */
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+}
+
+.toggle-password:hover {
+    color: #363535;
+}
+
+.toggle-password i {
+    font-size: 18px;
+}
+
+/* Asegúrate de que los placeholders sean visibles */
+.perfilCampoContraseña input::placeholder {
+    color:#FFFFFF; /* Puedes cambiar el color a uno más claro */
+    font-size: 18px;
+}
+
+.perfilCampoContraseña input:focus::placeholder {
+    color: #555; /* Cambiar el color cuando el campo está enfocado */
+}
+
+.perfilCambiarSuscripcionPlan{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-top: 1px solid #FFFFFF;
+    font-size: 18px;
+    padding-top: 1rem;
+}
+
+#nuevo_plan{
+    background-color: transparent;
+    color: #FFFFFF;
+    font-size: 18px;
+    border: none;
+    text-align: right;
+}
+
+.perfilCambiarSuscripcionPlan option{
+   text-align: right;
+}
+
+#nuevo_plan option{
+    background-color: #171E26;
+    color: #FFFFFF;
+    font-size: 18px;
+    border: none;
+    text-align: left;
+
+}
+#nuevo_plan:focus {
+    outline: none; /* Elimina el contorno cuando el select tiene el foco */
+}
+
+/* Opcional: Si necesitas eliminar el contorno cuando una opción está seleccionada */
+#nuevo_plan:active {
+    outline: none; /* Elimina el contorno cuando se hace clic en el select */
+}
+
+#guardarCambioPlan, #cancelarCambioPlan{
+    color: #222E39;
+    border: none;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+
+
+
 
 @media (min-width: 1140px) {
 .perfilAñadirImagen{
