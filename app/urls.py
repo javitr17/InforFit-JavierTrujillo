@@ -4,7 +4,6 @@ from .views.views import *
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', index.as_view(), name='index'),
     path('signUpPlan', signUpPlan.as_view(), name='signupPlan'),
     path('signUpDatos', signUpDatos.as_view(), name='signupDatos'),
     path('signUpPago', signUpPago.as_view(), name='signupPago'),

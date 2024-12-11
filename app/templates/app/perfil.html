@@ -59,13 +59,13 @@
         </div>
             <div class="perfilsuscripcionBotones">
                 <div class="perfilSuscripcionBoton"><a href="" id="cambiarPlanEnlace">CAMBIAR PLAN</a></div>
-                <div class="perfilSuscripcionBoton"><a href="{% url 'perfil' %}">DARME DE BAJA</a></div>
+                <div class="perfilSuscripcionBoton"><a href="javascript:void(0)" id="darseDeBajaEnlace">DARME DE BAJA</a></div>
             </div>
         </div>
     </div>
     
         <div class="perfilContenedorCambiarSuscripcion" style="display:none;">
-    <div class="perfilCambiarSuscripcionPadding">
+     <div class="perfilCambiarSuscripcionPadding">
         <div class="perfilCambiarSuscripcionTitulo">CAMBIAR PLAN</div>
         <form method="post" id="formCambioPlan">
             {% csrf_token %}
@@ -79,7 +79,7 @@
                     <select name="nuevo_plan" id="nuevo_plan" required>
                         <option value="" disabled selected>Selecciona un plan</option>
                         {% for plan in otros_planes %}
-                            <option value="{{ plan }}" data-cuota="{{ precios|get_item:plan }}" data-vigencia="{{ fecha_vigencia }}">
+                            <option value="{{ plan }}" data-cuota="{{ precios|get_item:plan }}" data-vigencia="{{ fecha_vigencia }}" data-duracion="{{ duraciones|get_item:plan }}">
                                 {{ plan }}
                             </option>
                         {% endfor %}
@@ -87,13 +87,19 @@
 
                 </div>
                 <div class="perfilCambiarSuscripcionPlan" style="display:none;">
-                    <div>Nueva Cuota Mensual</div>
+                    <div>Nueva Cuota</div>
                     <div id="nuevaCuota"></div>
+                </div>
+                 <div class="perfilCambiarSuscripcionPlan" style="display:none;">
+                    <div>Duración Nuevo Plan</div>
+                    <div id="nuevoPlanDuracion"></div>
                 </div>
                 <div class="perfilCambiarSuscripcionPlan" style="display:none;">
                     <div>Fecha de Vigencia del Nuevo Plan</div>
                     <div id="nuevaFechaVigencia"></div>
                 </div>
+               
+                
             </div>
             <div class="perfilsuscripcionBotones">
                 
@@ -104,6 +110,24 @@
         </form>
     </div>
 </div>
+    
+    <div class="perfilContenedorDarmeBaja" id="perfilContenedorDarmeBaja" style="display:none;">
+    <div class="perfilDarmeBajaPadding">
+        <div class="perfilDarmeBajaTitulo">DARME DE BAJA</div>
+        <div class="perfilDarmeBajaTexto">Estás apunto de darte de baja. Si lo haces, seguirás con tu contrato actual hasta que finalice y se dejará de prorrogar automáticamente.</div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="perfilsuscripcionBotones">
+                <div class="perfilSuscripcionBoton">
+                    <button type="submit" name="darme_baja" value="true" class="perfilSuscripcionBoton">CONFIRMAR</button>
+                </div>
+                <div class="perfilSuscripcionBoton">
+                    <a href="{% url 'perfil' %}">CANCELAR</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
 
     <div class="perfilContenedorDatosPersonales">
         <div class="perfilDatosPersonalesPadding">
@@ -235,6 +259,7 @@
         const nuevoPlanSelect = document.getElementById('nuevo_plan');
         const nuevaCuota = document.getElementById('nuevaCuota');
         const nuevaFechaVigencia = document.getElementById('nuevaFechaVigencia');
+        const duracionNuevoContrato = document.getElementById('nuevoPlanDuracion');
 
         // Mostrar el contenedor para cambiar plan
         cambiarPlanEnlace.addEventListener('click', function (e) {
@@ -254,17 +279,24 @@
         const selectedOption = nuevoPlanSelect.options[nuevoPlanSelect.selectedIndex];
         const perfilCambiarSuscripcionPlan3=document.querySelector('.perfilCambiarSuscripcionPlan:nth-child(3)')
         const perfilCambiarSuscripcionPlan4=document.querySelector('.perfilCambiarSuscripcionPlan:nth-child(4)')
+        const perfilCambiarSuscripcionPlan5=document.querySelector('.perfilCambiarSuscripcionPlan:nth-child(5)')
+
         perfilCambiarSuscripcionPlan3.style.display='flex';
         perfilCambiarSuscripcionPlan4.style.display='flex';
+        perfilCambiarSuscripcionPlan5.style.display='flex';
 
         // Obtener la cuota de la opción seleccionada
         const cuota = selectedOption.getAttribute('data-cuota');
         // Mostrar el precio de la nueva cuota
-        nuevaCuota.textContent = cuota + ' €';
+        nuevaCuota.textContent = cuota + ' € /mes';
         
         // Actualizar la fecha de vigencia
         const vigencia = selectedOption.getAttribute('data-vigencia');
-        nuevaFechaVigencia.textContent = vigencia;
+        nuevaFechaVigencia.textContent = vigencia
+        
+         const duracion = selectedOption.getAttribute('data-duracion');
+        // Mostrar el precio de la nueva cuota
+        duracionNuevoContrato.textContent = duracion;
     });
     });
    document.querySelectorAll('.toggle-password').forEach(button => {
@@ -308,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Actualizar detalles del nuevo plan en base a la selección
     nuevoPlanSelect.addEventListener('change', function () {
         const selectedOption = nuevoPlanSelect.options[nuevoPlanSelect.selectedIndex];
-        nuevaCuota.textContent = selectedOption.getAttribute('data-cuota') + ' €';
+        nuevaCuota.textContent = selectedOption.getAttribute('data-cuota') + ' € /mes';
         nuevaFechaVigencia.textContent = selectedOption.getAttribute('data-vigencia');
     });
   });
@@ -329,6 +361,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
   });
+  
+          document.addEventListener('DOMContentLoaded', function () {
+            const darmeDeBajaEnlace = document.getElementById('darseDeBajaEnlace');
+            const perfilContenedorDarmeBaja = document.getElementById('perfilContenedorDarmeBaja');
+            const cancelarBaja = document.getElementById('cancelarBaja');
+            const confirmarBaja = document.getElementById('confirmarBaja');
+
+            // Mostrar el contenedor de baja
+            darmeDeBajaEnlace.addEventListener('click', function (e) {
+                e.preventDefault(); // Evitar que se navegue
+                perfilContenedorDarmeBaja.style.display = 'flex'; // Mostrar el contenedor
+            });
+
+            // Cancelar la baja
+            cancelarBaja.addEventListener('click', function () {
+                perfilContenedorDarmeBaja.style.display = 'none'; // Ocultar el contenedor
+            });
+
+            // Confirmar baja (puedes agregar lógica para procesar la baja aquí)
+            confirmarBaja.addEventListener('click', function () {
+                // Aquí puedes enviar la solicitud de baja al servidor si es necesario.
+                alert('Baja confirmada');
+                perfilContenedorDarmeBaja.style.display = 'none'; // Ocultar el contenedor
+            });
+        });
+
 
 </script>
 

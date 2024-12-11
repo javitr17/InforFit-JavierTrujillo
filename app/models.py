@@ -43,7 +43,7 @@ class Suscripción(models.Model):
     fecha_vencimiento = models.DateField()
     proximo_pago=models.DateField()
     vencimiento_notificado = models.BooleanField(default=False)  # Notificación si fue avisado del vencimiento
-
+    suscripcion_activa=models.BooleanField(default=True)
 
     def __str__(self):
         return f" {self.user}, Suscripción: {self.nombre}"

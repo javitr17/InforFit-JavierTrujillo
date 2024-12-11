@@ -11,12 +11,10 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.utils import timezone
+from datetime import timedelta
 
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
-class index(View):
-    template_name = 'index.html'
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -48,7 +46,7 @@ class perfil(TemplateView):
 
             suscripcion = Suscripción.objects.filter(user=socio).first()
             precios = {'Anual': 24.99, 'Semestral': 32.99, 'Mensual': 38.99}
-
+            duraciones={'Anual': '12 meses', 'Semestral': '6 meses', 'Mensual': '1 mes'}
             if suscripcion:
                 planes_disponibles = ['Anual', 'Semestral', 'Mensual']
                 planes_disponibles.remove(suscripcion.nombre)
@@ -61,6 +59,7 @@ class perfil(TemplateView):
                     'proximo_pago': suscripcion.proximo_pago.strftime('%d/%m/%Y'),
                     'otros_planes': planes_disponibles,
                     'precios': precios,
+                    'duraciones':duraciones,
                     'fecha_vigencia': suscripcion.proximo_pago.strftime('%d/%m/%Y'),
                 })
             else:
@@ -72,6 +71,7 @@ class perfil(TemplateView):
                     'proximo_pago': None,
                     'otros_planes': [],
                     'precios': precios,
+                    'duraciones': duraciones,
                     'fecha_vigencia': None,
                 })
         else:
@@ -122,6 +122,33 @@ class perfil(TemplateView):
             form_cambio_contraseña.save()
             messages.success(request, "Tu contraseña se ha actualizado correctamente.")
             return redirect(reverse('perfil'))
+        nuevo_plan = request.POST.get('nuevo_plan')
+
+        if nuevo_plan:
+            precios = {'Anual': 24.99, 'Semestral': 32.99, 'Mensual': 38.99}
+            duraciones = {'Anual': 365, 'Semestral': 180, 'Mensual': 30}
+            suscripcion = Suscripción.objects.filter(user=socio).first()
+
+            if suscripcion:
+                suscripcion.nombre = nuevo_plan
+                suscripcion.precio = precios[nuevo_plan]
+                suscripcion.fecha_inicio = suscripcion.proximo_pago
+                suscripcion.fecha_vencimiento = suscripcion.proximo_pago + timedelta(days=duraciones[nuevo_plan])
+                suscripcion.proximo_pago = suscripcion.proximo_pago
+                suscripcion.save()
+
+                messages.success(request, "Tu plan de suscripción ha sido actualizado correctamente.")
+                return redirect(reverse('perfil'))
+
+        if 'darme_baja' in request.POST:  # Detectamos la solicitud de baja
+            suscripcion = Suscripción.objects.filter(user=socio).first()
+            if suscripcion:
+                print('BAJA CONFIRMADA')
+                suscripcion.suscripcion_activa = False  # Desactivamos la suscripción
+                suscripcion.save()
+
+                messages.success(request, "Tu suscripción ha sido cancelada.")
+                return redirect(reverse('perfil'))
 
 
         else:

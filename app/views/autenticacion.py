@@ -339,13 +339,41 @@ class logIn(View):
             # Obtener DNI y contraseña del formulario
             dni = form.cleaned_data.get('dni')
             password = form.cleaned_data.get('password')
-            print(dni)
-            print(password)
+
 
             # Autenticar usando el DNI
             user = authenticate(username=dni, password=password)
 
             if user is not None:
+                # Si el usuario es administrador, no verificamos suscripción
+                if user.is_superuser:
+                    login(request, user)
+                    next_url = request.GET.get('next', 'welcome')
+                    return redirect(next_url)
+
+                try:
+                    # Obtener el objeto Socio asociado al usuario
+                    socio = Socio.objects.get(user=user)
+
+                    # Buscar las suscripciones asociadas al socio
+                    suscripcion = Suscripción.objects.filter(
+                        user=socio).first()  # Usamos 'filter' para obtener una lista
+
+                    # Verificar si se encontró una suscripción
+                    if not suscripcion:
+                        messages.error(request, "No se encontró una suscripción para este socio.")
+                        return render(request, self.template_name, {"form": form})
+
+                    # Si la suscripción está inactiva, no dejamos iniciar sesión
+                    if suscripcion.suscripcion_activa == False:
+                        messages.error(request, "El socio no está actualmente suscrito a ningún plan.")
+                        return render(request, self.template_name, {"form": form})
+
+                except Socio.DoesNotExist:
+                    messages.error(request, "No se encontró el socio asociado al usuario.")
+                    return render(request, self.template_name, {"form": form})
+
+                # Si la suscripción está activa, procedemos con el login
                 login(request, user)
                 next_url = request.GET.get('next', 'welcome')  # Si 'next' no está presente, redirige a 'index'
                 return redirect(next_url)
