@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="{% static 'css/estilosBase.css' %}">
     <link rel="stylesheet" href="{% static 'css/estilosPerfil.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+  
+</style>
 </head>
 <body>
     <div class="perfilCabecera">
@@ -27,11 +30,17 @@
     </div>
 
     <div class="perfilContenedorImagen">
-        <div class="perfilAñadirImagen"><i class="fa-solid fa-plus"></i></div>
+        <div class="perfilAñadirImagen">
+            <i class="fa-solid fa-plus"></i>
+            <input type="file" id="inputImagen" name="imagen" accept="image/*" style="display: none;">
+        </div>
         <div class="perfilNombreSocio">{{ nombre}} {{ apellidos }}</div>
         <div class="perfilIdSocio">ID MIEMBRO: {{ id }}</div>
     </div>
-
+    
+    <!-- Overlay para la animación de carga -->
+   
+    
     <div class="perfilContenedorSuscripcion">
         <div class="perfilSuscripcionPadding">
         <div class="perfilSuscripcionTitulo">MI SUSCRIPCIÓN</div>
@@ -58,8 +67,8 @@
             </div>
         </div>
             <div class="perfilsuscripcionBotones">
-                <div class="perfilSuscripcionBoton"><a href="" id="cambiarPlanEnlace">CAMBIAR PLAN</a></div>
-                <div class="perfilSuscripcionBoton"><a href="javascript:void(0)" id="darseDeBajaEnlace">DARME DE BAJA</a></div>
+                <a href="" id="cambiarPlanEnlace" class="perfilSuscripcionBoton">CAMBIAR PLAN</a>
+                <a href="javascript:void(0)" id="darseDeBajaEnlace" class="perfilSuscripcionBoton">DARME DE BAJA</a>
             </div>
         </div>
     </div>
@@ -112,21 +121,20 @@
 </div>
     
     <div class="perfilContenedorDarmeBaja" id="perfilContenedorDarmeBaja" style="display:none;">
-    <div class="perfilDarmeBajaPadding">
-        <div class="perfilDarmeBajaTitulo">DARME DE BAJA</div>
-        <div class="perfilDarmeBajaTexto">Estás apunto de darte de baja. Si lo haces, seguirás con tu contrato actual hasta que finalice y se dejará de prorrogar automáticamente.</div>
-        <form method="post">
-            {% csrf_token %}
-            <div class="perfilsuscripcionBotones">
-                <div class="perfilSuscripcionBoton">
-                    <button type="submit" name="darme_baja" value="true" class="perfilSuscripcionBoton">CONFIRMAR</button>
-                </div>
-                <div class="perfilSuscripcionBoton">
-                    <a href="{% url 'perfil' %}">CANCELAR</a>
-                </div>
+        <div class="contenedorRelativo">
+            <div class="perfilDarmeBajaPadding">
+                 <div class="perfilDarmeBajaCancelar">
+                    <a href="javascript:void(0)" id="cerrarBaja"><i class="fa-solid fa-x"></i></a>
+                 </div>
+                <div class="perfilDarmeBajaTitulo">DARME DE BAJA</div>
+                <div class="perfilDarmeBajaTexto">Estás apunto de darte de baja. Si lo haces, seguirás con tu contrato actual hasta que finalice y se dejará de prorrogar automáticamente.</div>
+                <form method="post">
+                    {% csrf_token %}
+                    
+                            <button type="submit" name="darme_baja" value="true" class="perfilSuscripcionBoton">CONFIRMAR</button>
+                </form>
             </div>
-        </form>
-    </div>
+        </div>
     </div>
 
     <div class="perfilContenedorDatosPersonales">
@@ -177,6 +185,7 @@
 
             </div>
         </div>
+    
     </div>
 
     <div class="perfilContenedorDatosDomicilio"> 
@@ -367,7 +376,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const perfilContenedorDarmeBaja = document.getElementById('perfilContenedorDarmeBaja');
             const cancelarBaja = document.getElementById('cancelarBaja');
             const confirmarBaja = document.getElementById('confirmarBaja');
+            const cerrarBaja = document.getElementById('cerrarBaja');
+            const perfilContenedorDarmeBaja2 = document.getElementById('perfilContenedorDarmeBaja');
 
+            cerrarBaja.addEventListener('click', function () {
+                perfilContenedorDarmeBaja2.style.display = 'none'; // Ocultar el contenedor
+            });
             // Mostrar el contenedor de baja
             darmeDeBajaEnlace.addEventListener('click', function (e) {
                 e.preventDefault(); // Evitar que se navegue
@@ -386,7 +400,44 @@ document.addEventListener('DOMContentLoaded', function () {
                 perfilContenedorDarmeBaja.style.display = 'none'; // Ocultar el contenedor
             });
         });
+document.addEventListener('DOMContentLoaded', function () {
+    const perfilAñadirImagen = document.querySelector('.perfilAñadirImagen');
+    const inputImagen = document.getElementById('inputImagen');
 
+    perfilAñadirImagen.addEventListener('click', function () {
+        inputImagen.click();
+    });
+
+    inputImagen.addEventListener('change', function () {
+        if (inputImagen.files.length > 0) {
+            const formData = new FormData();
+            formData.append('imagen', inputImagen.files[0]);
+
+            fetch("{% url 'perfil' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token }}",
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Recarga la página tras subir correctamente la imagen
+                    location.reload();
+                } else {
+                    alert('Error al subir la imagen');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+});
+
+
+   
 
 </script>
 

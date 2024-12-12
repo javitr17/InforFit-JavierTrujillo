@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.utils import timezone
 from datetime import timedelta
+from django.http import JsonResponse
+
 
 
 
@@ -150,8 +152,19 @@ class perfil(TemplateView):
                 messages.success(request, "Tu suscripción ha sido cancelada.")
                 return redirect(reverse('perfil'))
 
+        if 'imagen' in request.FILES:
+            socio.imagen = request.FILES['imagen']
+            socio.save()
+            request.session['mostrar_animacion'] = True
+
+            # Devuelve una respuesta JSON en lugar de redirigir
+            return JsonResponse({"success": True})
 
         else:
             # Muestra los errores de validación
             messages.error(request, "Por favor, corrige los errores en el formulario.")
             return render(request, self.template_name, self.get_context_data(form_datos=form_datos, form_domicilio=form_domicilio))
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class entrenamiento(TemplateView):
+    template_name = 'app/entrenamiento.html'

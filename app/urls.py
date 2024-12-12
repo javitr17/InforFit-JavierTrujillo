@@ -10,5 +10,6 @@ urlpatterns = [
     path('perfil', perfil.as_view(), name='perfil'),
     path('logIn', logIn.as_view(), name='login'),
     path('logOut', logOut.as_view(), name='logout'),
+    path('entrenamiento', entrenamiento.as_view(), name='entrenamiento'),
 
 ]

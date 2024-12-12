@@ -133,6 +133,12 @@ body{
     align-items: center;
     padding: 1rem;
     cursor: pointer;
+    width: 100%;
+    color: #222E39;
+    border: none;
+    font-weight: 800;
+    text-decoration: none;
+    font-size: 20px;
 }
 .perfilDatosBoton, .perfilDomicilioBoton{
     background-color: #FFCC00;
@@ -149,10 +155,7 @@ body{
 }
 
 .perfilSuscripcionBoton a{
-    color: #222E39;
-    font-weight: 800;
-    text-decoration: none;
-    font-size: 20px;
+
 }
 
 .perfilContenedorDatosPersonales{
@@ -373,7 +376,9 @@ body{
     font-weight: 800;
     font-size: 20px;
 }
-
+.contenedorRelativo{
+    position: relative;
+}
 .perfilContenedorDarmeBaja {
             display: none;
             position: fixed;
@@ -386,11 +391,33 @@ body{
             display: flex;
             justify-content: center;
             align-items: center;
+
         }
+
+.perfilDarmeBajaCancelar {
+    position: absolute; /* Posicionamiento relativo al contenedor padre */
+    top: 5px; /* Ajusta la distancia desde el borde superior */
+    left:85%; /* Ajusta la distancia desde el borde derecho */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    z-index: 10; /* Asegúrate de que esté encima de otros elementos */
+}
+
+
+.perfilDarmeBajaCancelar a {
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    color: #FFFFFF; /* Cambia el color del ícono (opcional) */
+}
+
+.perfilDarmeBajaCancelar a i{
+    font-size: 12px;
+}
+
+
+
 
         .perfilDarmeBajaPadding {
             background-color: #222E39;
-            padding: 3rem;
+            padding: 2rem;
             text-align: center;
             max-width: 400px;
             width: 90%;
@@ -398,12 +425,13 @@ body{
         }
 
         .perfilDarmeBajaTitulo {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 30px;
+            font-weight: 700;
         }
 
         .perfilDarmeBajaTexto {
             margin: 20px 0;
+
         }
 
 
