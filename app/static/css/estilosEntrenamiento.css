@@ -1,5 +1,71 @@
-.holaEntreminamiento{
-    background-color: red;
-    height: 1000px;
+body{
+        background-attachment: fixed;
+
+}
+.entrenamiento1contenedorDondeEntrenar{
+    margin-top: 10rem;
+    margin-bottom: 5rem;
+    color: #FFFFFF;
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    opacity: 90%;
+    backdrop-filter: blur(10px);
     width: 100%;
+    height: 650px;
+
+}
+
+.entrenamiento1contenedorDondeEntrenarPadding{
+    padding: 2rem;
+    justify-items: center;
+}
+
+.entrenamiento1DondeEntrenarTitulo{
+    font-size: 40px;
+    font-weight: 800;
+
+}
+
+.entrenamiento1Imagenes{
+    display: flex;
+    gap:3rem;
+    width: 100%;
+    padding: 2rem;
+}
+
+.entrenamiento1ImagenCasa{
+    background-image: url("../imagenes/entrenaEnCasa.png");
+ background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.entrenamiento1ImagenGym{
+    background-image: url("../imagenes/entrenaEnGym.png");
+     background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+.entrenamiento1ImagenCasa, .entrenamiento1ImagenGym{
+    width: 80%;
+    height: 455px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+
+}
+
+.entrenamiento1ImagenCasa:hover, .entrenamiento1ImagenGym:hover{
+    transform: scale(1.01);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5); /* Sombra un poco más intensa */
+}
+
+.entrenamiento1ImagenCasa div, .entrenamiento1ImagenGym div{
+    display: flex;
+  justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 48px;
+    font-weight: 800;
+
 }

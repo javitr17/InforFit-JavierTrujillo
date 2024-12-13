@@ -13,10 +13,30 @@ from django.views.generic import TemplateView
 from django.utils import timezone
 from datetime import timedelta
 from django.http import JsonResponse
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
+def generar_pdf(request):
+    # Crea una respuesta HTTP para un archivo PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
 
+    # Crea el objeto Canvas de ReportLab
+    p = canvas.Canvas(response, pagesize=letter)
 
+    # Escribe el contenido dinámico en el PDF
+    p.drawString(100, 750, "Reporte de Ventas")
+    p.drawString(100, 730, "Este es un reporte generado dinámicamente en PDF.")
+    p.drawString(100, 710, "Producto 1 - 10€")
+    p.drawString(100, 690, "Producto 2 - 20€")
+    p.drawString(100, 670, "Producto 3 - 30€")
 
+    # Finaliza la creación del PDF
+    p.showPage()
+    p.save()
+
+    return response
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -168,3 +188,15 @@ class perfil(TemplateView):
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class entrenamiento(TemplateView):
     template_name = 'app/entrenamiento.html'
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class rutina_casa(TemplateView):
+    template_name = 'app/rutina_casa.html'
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class rutina_gym(TemplateView):
+    template_name = 'app/rutina_gym.html'
+
+
+
+
