@@ -16,28 +16,16 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-
-def generar_pdf(request):
-    # Crea una respuesta HTTP para un archivo PDF
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
-
-    # Crea el objeto Canvas de ReportLab
-    p = canvas.Canvas(response, pagesize=letter)
-
-    # Escribe el contenido dinámico en el PDF
-    p.drawString(100, 750, "Reporte de Ventas")
-    p.drawString(100, 730, "Este es un reporte generado dinámicamente en PDF.")
-    p.drawString(100, 710, "Producto 1 - 10€")
-    p.drawString(100, 690, "Producto 2 - 20€")
-    p.drawString(100, 670, "Producto 3 - 30€")
-
-    # Finaliza la creación del PDF
-    p.showPage()
-    p.save()
-
-    return response
-
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+from ..preguntarIA import *
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class perfil(TemplateView):
@@ -189,14 +177,66 @@ class perfil(TemplateView):
 class entrenamiento(TemplateView):
     template_name = 'app/entrenamiento.html'
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
-class rutina_casa(TemplateView):
-    template_name = 'app/rutina_casa.html'
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class rutina_gym(TemplateView):
-    template_name = 'app/rutina_gym.html'
+class rutina(TemplateView):
+    template_name = 'app/rutina.html'
 
+    def get_context_data(self, **kwargs):
 
+        context = super().get_context_data(**kwargs)
 
+        # Recuperar el parámetro de la URL y convertirlo a mayúsculas
+        sitio = self.kwargs.get('sitio', None)  # 'parametro' es el nombre del parámetro en la URL
+        print(f'SITIO: '+sitio)
+        if sitio:
+            sitio = sitio.upper()  # Convertir a mayúsculas
 
+        # Agregar el parámetro y el formulario al contexto
+        form = FormEntrenamiento()
+        context['form'] = form
+        context['sitio'] = sitio  # Pasar el parámetro al contexto
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = FormEntrenamiento(request.POST)
+        sitio = self.kwargs.get('sitio', None)
+        if form.is_valid():
+            # Procesar datos del formulario
+            dias_a_la_semana = form.cleaned_data['dias_a_la_semana']
+            tiempo_del_entreno = form.cleaned_data['tiempo_del_entreno']
+            nivel_de_la_persona = form.cleaned_data['nivel_de_la_persona']
+            objetivo = form.cleaned_data['objetivo']
+
+            respuesta = preguntarIA(sitio, dias_a_la_semana, tiempo_del_entreno, nivel_de_la_persona, objetivo)
+
+            # Crear la respuesta HTTP para el PDF
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="rutina_personalizada.pdf"'
+
+            # Crear el documento PDF
+            p = canvas.Canvas(response, pagesize=letter)
+
+            # Establecer la fuente para el texto
+            p.setFont('Helvetica', 12)
+            p.setFillColor(colors.black)  # Color negro para el texto
+
+            # El texto a añadir al PDF
+
+            # Crear un objeto de texto para que se ajuste automáticamente
+            text_object = p.beginText(40, 750)  # Posición inicial
+            text_object.setFont('Helvetica', 12)
+            text_object.setTextOrigin(40, 750)
+            text_object.textLines(respuesta)
+
+            # Dibujar el texto en el PDF
+            p.drawText(text_object)
+
+            # Mostrar la página
+            p.showPage()
+            p.save()
+
+            return response
+
+        return render(request, self.template_name, {'form': form})

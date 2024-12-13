@@ -112,3 +112,61 @@ class FormCambioContraseña(PasswordChangeForm):
         widget=forms.PasswordInput(attrs={'placeholder': 'Confirmar nueva contraseña'}),
         label="Confirmar nueva contraseña"
     )
+
+
+class FormEntrenamiento(forms.Form):
+    # Opciones para cada campo
+    DIAS_OPCIONES = [
+        ('1', '1 día'),
+        ('2', '2 días'),
+        ('3', '3 días'),
+        ('4', '4 días'),
+        ('5', '5 días'),
+        ('6', '6 días'),
+        ('7', '7 días'),
+    ]
+
+    TIEMPO_OPCIONES = [
+        ('45min', '45 minutos'),
+        ('1h', '1 hora'),
+        ('1:30h', '1 hora 30 minutos'),
+        ('2h', '2 horas'),
+    ]
+
+    NIVEL_OPCIONES = [
+        ('principiante', 'Principiante'),
+        ('intermedio', 'Intermedio'),
+        ('alto', 'Alto'),
+    ]
+
+    OBJETIVO_OPCIONES = [
+        ('ganar_musculo', 'Ganar músculo'),
+        ('fuerza', 'Fuerza'),
+        ('perder_peso', 'Perder peso'),
+    ]
+
+    # Campos del formulario
+    dias_a_la_semana = forms.ChoiceField(
+        choices=DIAS_OPCIONES,
+        widget=forms.RadioSelect
+
+    )
+
+    tiempo_del_entreno = forms.ChoiceField(
+        choices=TIEMPO_OPCIONES,
+        widget=forms.RadioSelect
+
+    )
+
+    nivel_de_la_persona = forms.ChoiceField(
+        choices=NIVEL_OPCIONES,
+        widget=forms.RadioSelect
+
+    )
+
+    objetivo = forms.ChoiceField(
+        choices=OBJETIVO_OPCIONES,
+        widget=forms.RadioSelect
+
+    )
+

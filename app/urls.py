@@ -11,9 +11,5 @@ urlpatterns = [
     path('logIn', logIn.as_view(), name='login'),
     path('logOut', logOut.as_view(), name='logout'),
     path('entrenamiento', entrenamiento.as_view(), name='entrenamiento'),
-    path('rutinaCasa', rutina_casa.as_view(), name='rutina_casa'),
-
-    path('rutinaGym', rutina_gym.as_view(), name='rutina_gym'),
-
-    path('generar-pdf/', generar_pdf, name='generar_pdf'),
+    path('rutina/<str:sitio>/', rutina.as_view(), name='rutina'),
 ]

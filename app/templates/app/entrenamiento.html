@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="entrenamiento1contenedorDondeEntrenar">
-    <div class="entrenamiento1contenedorDondeEntrenarPadding">
-        <div class="entrenamiento1DondeEntrenarTitulo">¿DÓNDE QUIERES ENTRENAR?</div>
-            <div  class="entrenamiento1Imagenes">
-                <a href="{% url 'rutina_casa' %}" class="entrenamiento1ImagenCasa">
-                    <div>CASA</div>
-                </a>
-                <a href="{% url 'rutina_gym' %}" class="entrenamiento1ImagenGym">
-                    <div>GYM</div>
-                </a>
-            </div>
-        <div></div>
+    
+<div class="entrenamiento"> 
+<div></div>
+    <div class="entrenamiento1contenedorDondeEntrenar">
+        <div class="entrenamiento1contenedorDondeEntrenarPadding">
+            <div class="entrenamiento1DondeEntrenarTitulo">¿DÓNDE QUIERES ENTRENAR?</div>
+                <div  class="entrenamiento1Imagenes">
+                    <a href="{% url 'rutina' sitio='casa' %}" class="entrenamiento1ImagenCasa">
+                        <div>CASA</div>
+                    </a>
+                    <a href="{% url 'rutina' sitio='gimnasio' %}" class="entrenamiento1ImagenGym">
+                        <div>GIMNASIO</div>
+                    </a>
+                </div>
+            <div></div>
+        </div>
     </div>
-</div>
-    
-    
+<div></div>
+</div>>    
     
 {% endblock %}

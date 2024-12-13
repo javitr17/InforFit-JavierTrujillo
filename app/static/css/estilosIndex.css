@@ -139,7 +139,7 @@ padding: 2.5rem;
 }
 
 .seccionOpcionesContainer div:hover{
-    transform: scale(1.05); /* Aumenta el tamaño al 105% */
+    transform: scale(1.02); /* Aumenta el tamaño al 105% */
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5); /* Sombra un poco más intensa */
 }
 
