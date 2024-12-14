@@ -16,7 +16,7 @@ Debajo de dicha barra de navegación podemos apreciar ciertos elementos visuales
 
 A continuación, si seguimos bajando en esta página principal, observamos otro panel horizontal, con imágenes de las distintas secciones de las que dispone la web, si se pulsan, al igual que en la barra de navegación, nos dirigen hacia ella.
 
-Finalmente, en la parte inferior de la pantalla ubicamos el footer de la misma, el cual, al igual que la barra de navegación se mantiene en alguna de las páginas de nuestro proyecto (Ya que su implementación está realizada desde un template base del que extienden los demás templates). El contenido del mismo es meramente informativo y con un fin estético, a excepción de los logos de las redes sociales que si son pulsados si se abre una nueva ventana en el navegador, dirigiendo al usuario a dicha red social.
+Finalmente, en la parte inferior de la pantalla ubicamos el footer de la misma, el cual, al igual que la barra de navegación se mantiene en alguna de las páginas de nuestro proyecto (Ya que su implementación está realizada desde un template base del que extienden los demás templates). El contenido del mismo es meramente informativo y con un fin estético, a excepción de los logos de las redes sociales que si son pulsados se abre una nueva ventana en el navegador, dirigiendo al usuario a dicha red social.
 
 ## Registro
 
@@ -38,7 +38,7 @@ Para seguir avanzando en el registro se deberá hacer clic en el botón de conti
 
 ### Registro > Pago
 
-Esta es la última página del registro, reservada al pago del usuario, en la acabamos con la misma estructura anterior. En el contenedor principal apreciamos un formulario con los detalles del pago. En cuanto al contenedor secundario, observamos que sigue conteniendo los datos del plan elegido y del total a pagar, y con un botón para realizar el pago, el cual está inicialmente deshabilitado, y solo se habilita cuando se introducen unos datos válidos en el formulario de los detalles del pago.
+Esta es la última página del registro, reservada al pago del usuario, en la seguimos y finalizamos con la misma estructura anterior. En el contenedor principal apreciamos un formulario con los detalles del pago. En cuanto al contenedor secundario, observamos que sigue conteniendo los datos del plan elegido y del total a pagar, y con un botón para realizar el pago, el cual está inicialmente deshabilitado, y solo se habilita cuando se introducen unos datos válidos en el formulario de los detalles del pago.
 
 Para proceder con el pago de la inscripción y suscripción al gimnasio, se debe pulsar el botón para realizar el pago de la sección secundaria y la aplicación procesará el pago, mostrando un mensaje por pantalla en función del estado de la transacción realizada.
 
@@ -48,7 +48,7 @@ En caso contrario, se muestra un mensaje de error en el pago y se da la posibili
 
 ## Inicio de sesión
 
-La página de inicio de sesión de la plataforma consta de la barra de la misma barra de navegación de la página principal en la parte superior, seguidamente, observamos un elemento visual que nos da la bienvenida al inicio de sesión y debajo de ella vemos el contenedor con el formulario del Inicio de sesión, el cual debe rellenar el usuario y luego hacer clic en el botón correspondiente para iniciar sesión. En el mismo contenedor disponemos de un enlace al registro por si aún no estamos no somos socios. Por último, en la parte inferior de esta pantalla se sitúa el footer, que al igual que la barra de navegación, es similar al de la página principal.
+La página de inicio de sesión de la plataforma consta de la barra de la misma barra de navegación de la página principal en la parte superior. Seguidamente, observamos un elemento visual que nos da la bienvenida al inicio de sesión y debajo de ella vemos el contenedor con el formulario del Inicio de sesión, el cual debe rellenar el usuario y luego hacer clic en el botón correspondiente para iniciar sesión. En el mismo contenedor disponemos de un enlace al registro por si aún no estamos no somos socios. Por último, en la parte inferior de esta pantalla se sitúa el footer, que al igual que la barra de navegación, es similar al de la página principal.
 
 ## Perfil
 
@@ -68,7 +68,7 @@ Luego, si miramos hacia abajo, vemos una serie de contenedores en los que se rea
 
 ## Entrenamiento
 
-En esta sección, se pretende crear rutinas personalizadas al socio atendiendo a sus preferencias personales. Se compone de dos páginas, las cuales mantienen la barra de navegación y footer situados en la parte superior e inferior de la pantalla respectivamente y tienen un contenedor principal que varía en función de la página. A continuación las detallo:
+En esta sección, se pretende que la palicación cree rutinas personalizadas al socio atendiendo a sus preferencias personales. Se compone de dos páginas, las cuales mantienen la barra de navegación y footer situados en la parte superior e inferior de la pantalla respectivamente y tienen un contenedor principal que varía en función de la página. A continuación las detallo:
 
 ### Elección Entrenamiento
 
