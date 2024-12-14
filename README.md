@@ -46,6 +46,45 @@ En el caso de que esta haya resultado exitosa, se muestran los datos de los carg
 
 En caso contrario, se muestra un mensaje de error en el pago y se da la posibilidad de volver a introducir los detalles del pago pulsando un botón dedicado para ello.
 
+## Inicio de sesión
+
+La página de inicio de sesión de la plataforma consta de la barra de la misma barra de navegación de la página principal en la parte superior, seguidamente, observamos un elemento visual que nos da la bienvenida al inicio de sesión y debajo de ella vemos el contenedor con el formulario del Inicio de sesión, el cual debe rellenar el usuario y luego hacer clic en el botón correspondiente para iniciar sesión. En el mismo contenedor disponemos de un enlace al registro por si aún no estamos no somos socios. Por último, en la parte inferior de esta pantalla se sitúa el footer, que al igual que la barra de navegación, es similar al de la página principal.
+
+## Perfil
+
+En la página de perfil del socio de la aplicación, página en la que el socio puede ver y gestionar todo lo relacionado con sus datos y suscripción. El diseño se compone de: en la parte superior, un encabezado similar a la barra de navegación de la página principal, eliminando los enlaces y botones y añadiendo el logo del perfil en la parte derecha.
+
+Luego, si miramos hacia abajo, vemos una serie de contenedores en los que se realizan distintas funcionalidades: 
+
+- **Panel Añadir Imagen:** el socio podrá asignar una imagen a su perfil, de forma que esta aparecerá a la derecha de la barra de navegación en lugar del icono de perfil.
+
+- **Panel de la Suscripción:** aquí aparece la información y detalles del contrato de la suscripción actual del socio, además, podrá tanto cambiar de plan, como darse de baja.
+
+- **Panel de Datos Personales:** en este contenedor, el socio puede ver los detalles de sus datos personales y modificarlos.
+
+- **Panel de Datos Domiciliarios:** contenedor donde, al igual que en el de Datos personales, el socio podrá, tanto ver sus datos Domiciliarios como modificarlos.
+
+- **Panel de Cambiar Contraseña:** aquí, el socio puede crear una nueva contraseña, sin necesidad de verificación más allá de la introducción de la actual contraseña.
+
+## Entrenamiento
+
+En esta sección, se pretende crear rutinas personalizadas al socio atendiendo a sus preferencias personales. Se compone de dos páginas, las cuales mantienen la barra de navegación y footer situados en la parte superior e inferior de la pantalla respectivamente y tienen un contenedor principal que varía en función de la página. A continuación las detallo:
+
+### Elección Entrenamiento
+
+En esta primera página, el contenedor principal se encarga de dar a elegir al socio dos opciones para realizar su rutina de entrenamiento personalizada, estas son, en casa o en el gimnasio.
+
+En función de la opción que se seleccione, se dirigirá al socio a la página de la rutina correspondiente.
+
+### Rutina Personalizada en Gimnasio
+
+En dicha página, en el contenedor principal se le permite al usuario escoger entre una serie de parámetros para realizar su rutina de entrenamiento acorde a su persona y a sus preferencias y objetivos.
+
+Una vez seleccionadas estas preferencias, el socio puede hacer clic en el botón situado en la parte inferior de dicho contenedor principal para, por medio de inteligencia artificial, generar un archivo PDF con la rutina completa personalizada, este archivo se descarga automáticamente al pulsar el botón.
+
+### Rutina Personalizada en Casa
+
+La funcionalidad de esta otra página es idéntica a la anterior exceptuando que la rutina personalizada que se va a generar está diseñada para realizarse en casa en lugar de en el gimnasio.
 
 
 
