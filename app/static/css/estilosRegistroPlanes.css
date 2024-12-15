@@ -1,0 +1,421 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+.registroCabecera {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.5fr 7fr 1.5fr;
+    background-color: #222E39;
+    color: #D9D9D9;
+    font-weight: 600;
+    text-align: center;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    padding: 0.5rem;
+    height: 76px;
+min-height: 71px;
+
+
+}
+
+.registroCabecera a{
+    align-content: center;
+}
+
+.registroCabecera img {
+    align-items: center;
+    width: 100%; /* Proporcional al ancho de la ventana */
+    height: auto; /* Mantener la proporción */
+    max-height: 100%; /* Asegurarse de que no crezca más allá del límite de la cabecera */
+
+}
+.registroNavDer{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+
+
+
+}
+.registroNum{
+    display: block;
+    color: #B3B7BA;
+    font-size: 25px;
+    margin-top: 1rem;
+    width: 40%;
+    height: 100%;
+
+}
+.registroSubrayado{
+    background-color: #ffffff;
+    border-radius: 3px;
+    width: 100%;
+    height: 4px;
+margin-top: 0.1rem;
+}
+
+.registroNum:nth-child(1){
+    color: #ffffff;
+}
+
+body{
+
+    background-image: url("../imagenes/registroFondo.png");
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-attachment: fixed;
+
+
+}
+
+.fondoRegistro1{
+    display: grid;
+grid-template-columns: 67% 33% ;
+    height: auto;
+    width: 100%;
+    justify-items: center;
+    margin-top: 130px;
+}
+
+.registroSeccionIzq1{
+  width: auto; /* Permitir que el ancho se ajuste */
+    max-width: 80%; /* Evita que sean demasiado grandes */
+    min-height: 900px; /* Fija una altura mínima para evitar que el alto cambie */
+    height: auto; /* Permite el crecimiento si el contenido excede el alto mínimo */
+
+
+}
+.registroPlanSeccion1{
+    width: 100%;
+    height: 680px;
+    background-color: #222E39;
+   opacity: 90%;
+    backdrop-filter: blur(10px);
+
+}
+.registroDatosSeccion1, .registroDetallesPagoSeccion1{
+    height: 80px;
+    width: 100%;
+    background-color: #222E39;
+    margin-top: 2rem;
+    opacity: 90%;
+    backdrop-filter: blur(10px);
+
+}
+
+.registroDetallesPagoSeccion1{
+    margin-bottom: 2rem;
+}
+
+.registroSeccionDer1{
+    background-color: #222E39;
+    width: auto;
+    max-width: 80%; /* Evita que sean demasiado grandes */
+    min-height: 200px; /* Fija una altura mínima para evitar que el alto cambie */
+    height: 250px;
+    opacity: 90%;
+    backdrop-filter: blur(10px);
+    justify-items: center;
+
+}
+.registroPlanSeccion1Contenedor{
+    padding: 2rem;
+}
+.registroSeleccionaPlan{
+    color: #FFFFFF;
+    font-size: 40px;
+    font-weight: 800;
+
+
+}
+.registroEligeSuscripcion{
+    color: #FFFFFF;
+    font-weight: 400;
+    font-size: 25px;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+.registroPlanes{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual ancho */
+    gap: 1.5rem;
+    width: 100%;
+    height: auto; /* Ajustar a la altura del contenido */
+}
+.registroPlan{
+        cursor:pointer;
+        background-color: #FFFFFF;
+        color: #222E39;
+    height: 100%;
+
+}
+
+.registroPlanSeccion{
+    width: clamp(200px, 100%, 100%); /* Mínimo 200px, máximo 100% del contenedor */
+    min-height: 440px; /* Mantener el alto mínimo */
+    height: auto;
+    padding: 2rem;
+    box-sizing: border-box; /* Incluye padding en el cálculo del ancho */
+
+
+}
+
+.registroPlanTitulo {
+    font-size: clamp(20px, 2vw, 40px); /* Entre 20px y 40px */
+    font-weight: 800;
+    text-align: center;
+}
+
+.registroPlanTitulo, .registroVentaja,.registroPrecio{
+    display:flex;
+    justify-content: center;
+}
+.registroVentajas{
+margin-left: 1rem;
+}
+
+
+
+
+.registroVentaja{
+    padding-top: 2rem;
+     font-size: clamp(12px, 1.5vw, 20px); /* Entre 12px y 20px */
+    font-weight: 200;
+    text-align: center;
+}
+.registroPrecio{
+    font-size: clamp(18px, 2vw, 40px); /* Entre 18px y 40px */
+    font-weight: 800;
+    border-bottom: 1px solid #222E39;
+    text-align: center;
+
+}
+.registro1mes{
+  align-content: center;
+    padding-left: 0.5rem;
+    font-size:20px;
+
+}
+.registroEuros{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    width: fit-content;
+
+
+}
+.registroVentajas{
+    padding-top: 2rem;
+
+}
+
+.registroVentajas li{
+        padding-top: 0.7rem;
+    list-style: none;
+
+
+}
+.registroTusdatos,.registroDetallesPago {
+    color: #B3B7BA;
+    font-size: 30px;
+    font-weight: 800;
+    height: 80px;
+    width: 100%;
+    align-content: center;
+    padding-left: 2rem;
+}
+.registroSeccionDer1Contenedor{
+  padding: 3rem;
+    width: 100%;
+}
+.registroInformacionGeneral{
+    color:#FFFFFF;
+    font-size: 25px;
+    font-weight: 800;
+    padding-bottom: 2rem;
+}
+
+.registroBoton a{
+    background-color: #FFCC00;
+    padding: 1rem 6.3rem;
+    border: none;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 1.3rem;
+    text-decoration: none;
+
+}
+.confirmar-boton[disabled] {
+    pointer-events: none; /* Desactiva clics */
+    opacity: 0.5; /* Cambia el estilo para parecer desactivado */
+    cursor: not-allowed;
+}
+
+.registroVentajas li i{
+    padding-right:1rem ;
+}
+.registroBoton{
+    margin-top:3rem ;
+}
+.registroPlanDetalles{
+    display: none;
+
+}
+.registroPlanDetalle{
+    display: flex;
+    color: #FFFFFF;
+    width: 100%;
+    justify-content: space-between;
+
+}
+.registroTexto{
+margin-top: 1rem;
+
+}
+.registroValor{
+margin-top: 1rem;
+    text-align: right;
+
+}
+.registroCuotaMensual{
+    padding-top: 1rem;
+    color: #FFFFFF;
+    font-size: 17px;
+    font-weight: 800;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.registroCuotaMensualTexto{
+width: 50%;
+}
+.registroCuotaMensual{
+
+}
+
+.registroPlanDetalle:nth-child(1){
+    padding-bottom: 1rem;
+    border-bottom:1px solid #FFFFFF;
+}
+.registroPlanDetalle:nth-child(5){
+    padding-bottom: 1rem;
+    border-bottom:1px solid #FFFFFF;
+}
+
+@media (max-width: 1657px) {
+.fondoRegistro1{
+    justify-content: center;
+    align-items: center; /* Asegura la alineación vertical */
+    display: flex;
+    flex-direction: column;
+    gap:0rem;
+
+}
+    .registroSeccionIzq1{
+        /* Ajusta el ancho al contenedor */
+        min-height: 900px; /* Mantén una altura fija */
+        margin: 0 auto; /* Centra horizontalmente */
+        max-width: 1058px ;
+        min-width: 953px;
+    }
+    .registroSeccionDer1{
+        min-width: 1058px;
+        width: auto;
+       max-width: 100%; /* Ajusta el ancho al contenedor */
+
+        margin: 0 auto; /* Centra horizontalmente */
+        margin-bottom: 4rem;
+        min-height: 300px;
+
+    }
+    .registroBoton{
+         width: 100%;
+    display: flex;
+    justify-content: center;
+        text-align: center;
+    }
+    .registroBoton a{
+    background-color: #FFCC00;
+    width: 100%;
+    border: none;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 1.3rem;
+    text-decoration: none;
+    padding-left:  0;
+    padding-top: 1rem;
+        padding-bottom: 3rem;
+        padding-right: 0;
+
+    height: 40px;
+    }
+    .registroInformacionGeneral{
+        text-align: center;
+        font-size: 25px;
+
+    }
+    .registroBoton{
+        justify-items: center;
+    }
+    .registroPlanSeccion1 {
+        height: auto; /* Esto es opcional, asegúrate de que sea constante */
+
+    }
+}
+
+@media (max-width: 1244px) {
+    .registroSeccionIzq1, .registroSeccionDer1{
+        min-width: 500px;
+    }
+
+    .registroSeccionDer1{
+        margin-top: 2rem;
+        min-width: 561px;
+    }
+  .registroPlanes {
+        grid-template-columns: none;
+        grid-template-rows: repeat(3, auto); /* Cambia a valores fijos si necesario */
+        gap: 1.5rem;
+        width: 100%;
+    }
+
+    .registroPlan {
+        height: 380px; /* Mantén la altura fija */
+    }
+
+
+    .fondoRegistro1{
+    display: flex;
+    flex-direction: column;
+    gap:0rem;
+
+
+
+
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

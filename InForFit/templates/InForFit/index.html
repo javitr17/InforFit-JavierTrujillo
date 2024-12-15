@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="imagenFondoPrincipal">
+    <div class="infoSuscripcion">
+        <div class="indexSuscripcionContainer">
+            <div class="indexSuscripcion">SUSCRIPCIÓN</div>
+            <div class="indexMensual">ANUAL</div>
+            <div class="index2499">24,99€</div>
+            {% if user.is_authenticated %}
+                 <div class="indexBoton"><a href="{% url 'login' %}">INSCRÍBETE AHORA</a></div>
+                {% else %}
+                <div class="indexBoton"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="seccionInfo">
+
+    <div class="infoGym">
+        <div class="indexInfogymContainer">
+            <div class="indexDeshabilitar"></div>
+            <div class="seccionInfoGym">
+                <div class="tituloInfogym">ASESORAMIENTO</div>
+                <div class="descInfoGym">Asesoramiento privado y especializado para cada socio</div>
+            </div>
+            <div class="indexDeshabilitar"></div>
+            <div class="indexDeshabilitar"></div>
+            <div class="seccionInfoGym">
+                <div class="tituloInfogym">RECETAS FIT</div>
+                <div class="descInfoGym">Ideas de recetas saludables y acordes a tus objetivos</div>
+            </div>
+            <div class="indexDeshabilitar"></div>
+            <div class="indexDeshabilitar"></div>
+            <div class="seccionInfoGym">
+                <div class="tituloInfogym">CLASES</div>
+                <div class="descInfoGym">Reserva de clases funcionales colectivas </div>
+            </div>
+            <div class="indexDeshabilitar"></div>
+            <div class="indexDeshabilitar"></div>
+            <div class="seccionInfoGym">
+                <div class="tituloInfogym">PROGRESO</div>
+                <div class="descInfoGym">Registra tu progreso día a día</div>
+            </div>
+            <div class="indexDeshabilitar"></div>
+        </div>
+    </div>
+</div>
+<div class="seccionOpciones">
+    <div class="seccionOpcionesContainer">
+        <a href="{% url 'entrenamiento' %}"><div class="indexEntrenamiento"></div></a>
+        <a href="#"><div class="indexProgreso"></div></a>
+        <a href="#"><div class="indexClubs"></div></a>
+        <a href="#"><div class="indexDieta"></div></a>
+    </div>
+</div>
+
+<div class="indexSeccionVacia"></div>
+
+
+
+
+
+{% endblock %}

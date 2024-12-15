@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}    
+
+<div class="rutina">
+    <div></div>
+    <div class="rutinaContenedor">
+        <div class="rutinaContenedorPadding">
+            <div class="rutinaContenedorTitulo">ASESORAMIENTO DE RUTINA PERSONALIZADA EN {{ sitio }}</div>
+            <div class="rutinaContenedorSubtitulo">SELECCIONA TUS PREFERENCIAS</div>
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="rutinaDiasSemana">
+                    <div class="rutinaParametrosTitulo">Días a la Semana</div>
+                    {{ form.dias_a_la_semana }}
+                </div>
+                <div class="rutinaTiempoEntreno">
+                    <div class="rutinaParametrosTitulo">Tiempo de Entreno</div>
+                    {{ form.tiempo_del_entreno }}
+                </div>
+                <div class="rutinaNivel">
+                    <div class="rutinaParametrosTitulo">Nivel</div>
+                    {{ form.nivel_de_la_persona }}
+                </div>
+                <div class="rutinaObjetivo">
+                    <div class="rutinaParametrosTitulo">Objetivo</div>
+                    {{ form.objetivo }}
+                </div>
+                <button type="submit" class="rutinaBtn" id="generar-pdf-btn">GENERAR RUTINA <i class="fa-regular fa-file-pdf"></i></button>
+            </form>
+        </div>
+    </div>
+    <div></div>
+</div>
+{% endblock %}

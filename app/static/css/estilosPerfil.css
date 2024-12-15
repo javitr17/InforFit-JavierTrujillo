@@ -1,0 +1,502 @@
+body{
+    justify-items: center;
+    background-image: url("../imagenes/registroFondo.png");
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-position: center; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-attachment: fixed;
+
+}
+
+.perfilCabecera{
+     width: 100%;
+    display: grid;
+    grid-template-columns: 1.5fr 9fr 0.5fr;
+    background-color: #222E39;
+    color: #D9D9D9;
+    font-weight: 600;
+    text-align: center;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    padding: 0.4rem;
+
+
+    align-items: center;
+
+}
+
+.perfilCabecera a img{
+    width: 100%;
+    height: auto;
+}
+.logoPerfil{
+    height: 100%;
+}
+
+.perfilContenedorImagen{
+    margin-top: 7rem;
+    background-image: url("../imagenes/perfilAñadirImagen.png");
+    width: 95%;
+    height: 520px;
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    justify-items: center;
+
+}
+
+.perfilAñadirImagen{
+    font-size: 35px;
+    color: #FFFFFF;
+    padding-top: 15%;
+    padding-left: 3%;
+
+}
+
+.perfilAñadirImagen i{
+    cursor: pointer;
+}
+
+.perfilNombreSocio{
+    font-size: 35px;
+    color: #FFFFFF;
+    font-weight: 800;
+    padding-top: 20%;
+
+}
+
+.perfilIdSocio{
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 25px;
+}
+
+.perfilContenedorSuscripcion, .perfilContenedorCambiarSuscripcion{
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    width: 95%;
+    height: fit-content;
+    padding-bottom: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.perfilSuscripcionPadding, .perfilDatosPersonalesPadding, .perfilContenedorDatosDomicilioPadding, .perfilContenedorContraseñaPadding, .perfilCambiarSuscripcionPadding{
+    padding:2rem;
+    color: #FFFFFF;
+}
+
+.perfilSuscripcionTitulo, .perfilDatosPersonalesTitulo, .perfilContenedorDatosDomicilioTitulo, .perfilContenedorContraseñaTitulo, .perfilCambiarSuscripcionTitulo{
+    font-size: 35px;
+    font-weight: 700;
+    padding-bottom: 2rem;
+
+}
+
+
+.perfilDatoSuscripcion, .campoFormularioDatos{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-top: 1px solid #FFFFFF;
+    padding-top: 1rem;
+    font-size: 18px;
+}
+
+.perfilDatoSuscripcion:nth-child(1){
+    border: none;
+    padding-top: unset;
+}
+
+#sinBorde{
+    border: none;
+    padding-top: unset;
+}
+
+.perfilsuscripcionBotones{
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    height: 50px;
+}
+.perfilSuscripcionBoton{
+    background-color: #FFCC00;
+    text-align:center;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    width: 100%;
+    color: #222E39;
+    border: none;
+    font-weight: 800;
+    text-decoration: none;
+    font-size: 20px;
+}
+.perfilDatosBoton, .perfilDomicilioBoton{
+    background-color: #FFCC00;
+    text-align:center;
+    align-items: center;
+    padding: 1rem;
+    color: #222E39;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 1rem;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+.perfilSuscripcionBoton a{
+
+}
+
+.perfilContenedorDatosPersonales{
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    width: 95%;
+    height: fit-content;
+    margin-bottom:2rem;
+    padding-bottom: 0.5rem;
+}
+
+.campoFormularioDatos div input{
+    color: #FFFFFF;
+    background-color: transparent;
+    font-size: 18px;
+    border: unset;
+    text-align: right;
+
+}
+
+.campoFormularioDatos div input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+#flex{
+    display: flex;
+    gap: 0.5rem;
+}
+
+#flex div{
+    display: flex;
+    padding-left: 0.5rem;
+}
+
+.campoFormularioDatos div input{
+    outline: none;
+    color: #FFFFFF;
+}
+
+.campoFormularioDatos div input::placeholder {
+    color: #FFFFFF; /* Cambia el color del placeholder a blanco */
+    opacity: 1;     /* Asegúrate de que el placeholder tenga opacidad completa */
+}
+
+.perfilContenedorDatosDomicilio{
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    width: 95%;
+    height: fit-content;
+    padding-bottom: 0.6rem;
+    margin-bottom:2rem;
+}
+.perfilContenedorContraseña{
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    width: 95%;
+    height: fit-content;
+    padding-bottom: 0.6rem;
+    margin-bottom:2rem;
+}
+
+/* Estilo general */
+.perfilCampoContraseña {
+    margin-bottom: 20px;
+}
+
+
+/* Placeholder flotante como div */
+.input-placeholder {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #FFFFFF;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* Cuando el input tiene texto o está enfocado */
+.input-group input:focus + .input-placeholder,
+.input-group input:not(:placeholder-shown) + .input-placeholder {
+    top: -10px;
+    font-size: 12px;
+    color: #363535;
+    background-color: transparent;
+}
+
+/* Ícono del ojo */
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+}
+
+.toggle-password:hover {
+    color: #363535;
+}
+
+.toggle-password i {
+    font-size: 18px;
+}
+/* Estilo general */
+.perfilCampoContraseña {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Estilo del input */
+.perfilCampoContraseña input {
+    width: 100%;
+    padding: 10px 40px 10px 10px; /* Espacio para el ícono */
+    border: none;
+    border-bottom: 1px solid #FFFFFF;
+    font-size: 18px;
+    outline: none;
+    background-color: transparent;
+    box-sizing: border-box;
+    color: #FFFFFF;
+}
+
+/* Efecto cuando el input está en foco */
+.perfilCampoContraseña input:focus {
+
+}
+
+/* Placeholder flotante */
+.perfilCampoContraseña input::placeholder {
+    color: transparent; /* Hacer el placeholder invisible */
+}
+
+.perfilCampoContraseña input:focus::placeholder {
+    color: transparent;
+}
+
+.perfilCampoContraseña input:not(:focus):not(:placeholder-shown) {
+    padding-top: 18px; /* Ajustar la posición cuando el texto está presente */
+}
+
+.perfilCampoContraseña input:not(:focus):not(:placeholder-shown) + .input-placeholder {
+    top: 10px;
+    font-size: 12px;
+    color: #363535;
+}
+
+/* Ícono del ojo */
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+}
+
+.toggle-password:hover {
+    color: #363535;
+}
+
+.toggle-password i {
+    font-size: 18px;
+}
+
+/* Asegúrate de que los placeholders sean visibles */
+.perfilCampoContraseña input::placeholder {
+    color:#FFFFFF; /* Puedes cambiar el color a uno más claro */
+    font-size: 18px;
+}
+
+.perfilCampoContraseña input:focus::placeholder {
+    color: #555; /* Cambiar el color cuando el campo está enfocado */
+}
+
+.perfilCambiarSuscripcionPlan{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-top: 1px solid #FFFFFF;
+    font-size: 18px;
+    padding-top: 1rem;
+}
+
+#nuevo_plan{
+    background-color: transparent;
+    color: #FFFFFF;
+    font-size: 18px;
+    border: none;
+    text-align: right;
+    text-align-last: right; /* Alinea la última línea en navegadores compatibles */
+
+}
+
+.perfilCambiarSuscripcionPlan option{
+   text-align: right;
+}
+
+#nuevo_plan option{
+    background-color: #171E26;
+    color: #FFFFFF;
+    font-size: 18px;
+    border: none;
+    text-align: left; /* Alineación a la izquierda de los options */
+    direction: ltr; /* Asegura que el texto de los options tenga dirección normal */
+
+}
+#nuevo_plan:focus {
+    outline: none; /* Elimina el contorno cuando el select tiene el foco */
+}
+
+/* Opcional: Si necesitas eliminar el contorno cuando una opción está seleccionada */
+#nuevo_plan:active {
+    outline: none; /* Elimina el contorno cuando se hace clic en el select */
+}
+
+#guardarCambioPlan, #cancelarCambioPlan{
+    color: #222E39;
+    border: none;
+    font-weight: 800;
+    font-size: 20px;
+}
+.contenedorRelativo{
+    position: relative;
+}
+.perfilContenedorDarmeBaja {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro */
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+.perfilDarmeBajaCancelar {
+    position: absolute; /* Posicionamiento relativo al contenedor padre */
+    top: 5px; /* Ajusta la distancia desde el borde superior */
+    left:85%; /* Ajusta la distancia desde el borde derecho */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    z-index: 10; /* Asegúrate de que esté encima de otros elementos */
+}
+
+
+.perfilDarmeBajaCancelar a {
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    color: #FFFFFF; /* Cambia el color del ícono (opcional) */
+}
+
+.perfilDarmeBajaCancelar a i{
+    font-size: 12px;
+}
+
+
+
+
+        .perfilDarmeBajaPadding {
+            background-color: #222E39;
+            padding: 2rem;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            color: #FFFFFF;
+        }
+
+        .perfilDarmeBajaTitulo {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .perfilDarmeBajaTexto {
+            margin: 20px 0;
+
+        }
+
+
+
+@media (min-width: 1140px) {
+.perfilAñadirImagen{
+    font-size: 35px;
+    color: #FFFFFF;
+    padding-top: 12%;
+    padding-left: 2%;
+}
+     .perfilNombreSocio{
+    padding-top: 18%;
+}
+
+}
+@media (min-width: 1020px) {
+    .perfilNombreSocio{
+    padding-top: 18%;
+}
+
+}
+
+@media (min-width: 1230px) {
+  .perfilAñadirImagen{
+
+    padding-top: 10%;
+}
+     .perfilNombreSocio{
+    padding-top: 17%;
+}
+
+}
+@media (min-width: 1400px) {
+  .perfilAñadirImagen{
+
+    padding-top: 10%;
+}
+     .perfilNombreSocio{
+    padding-top: 14%;
+}
+
+}
+
+@media (min-width: 1600px) {
+    .perfilContenedorImagen{
+        height: 600px;
+    }
+
+    .perfilNombreSocio{
+    padding-top: 16%;
+}
+
+
+}
+
+
+@media (min-width: 1780px) {
+    .perfilContenedorImagen{
+        height: 600px;
+    }
+
+    .perfilNombreSocio{
+    padding-top: 13%;
+}
+
+
+}

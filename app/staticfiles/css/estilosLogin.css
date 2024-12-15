@@ -1,0 +1,115 @@
+.loginIniciarSesion{
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 1.5rem;
+    color: #ffffff;
+    text-decoration: none;
+}
+.fondoBienvenida{
+     width: 100%;
+    height: 65vh;
+    background-image: url("../imagenes/bienvenido.png");
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    margin-top: 3.5rem;
+
+}
+.loginContenedor{
+    width: 36%;
+    height: 38vw;
+    background-color: #222E39;
+    border-radius: 20px;
+    margin-left: 32vw;
+    margin-top: 8rem;
+
+
+}
+
+.loginSeccionPrincipal{
+    width: 100%;
+    height: 40vw;
+}
+.loginDatosAcceso{
+    color: #ffffff;
+    font-size: 33px;
+    text-align: center;
+    font-weight: 800;
+    width: 18rem;
+    margin-left: 28%;
+    padding-top: 3rem;
+
+}
+.loginContenedor form{
+
+    margin-top: 10%;
+    text-align: center;
+}
+.loginCampos{
+    padding: 1rem;
+}
+.loginCampos input{
+    background-color: #222E39;
+    border: none;
+    border-bottom: 2px solid #ffffff;
+    height: 2rem;
+    width: 80%;
+    color: #ffffff;
+    font-size: 18px;
+
+}
+
+.loginCampos input:focus {
+    border-bottom: none; /* Elimina el borde inferior al hacer clic */
+    outline: none; /* Opcional: elimina el contorno azul predeterminado del navegador */
+    border-bottom: 2px solid #ffffff;
+
+}
+
+.loginCampos input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #222E39 inset; /* Fondo igual al input */
+    -webkit-text-fill-color: #ffffff; /* Color del texto igual al input */
+    caret-color: #ffffff; /* Color del cursor */
+
+}
+
+
+
+.loginCampos input::placeholder {
+    color: #ffffff;
+    opacity: 1;
+    font-size: 18px;
+
+}
+.loginRecaptcha{
+    margin-left: 12rem;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.loginBotonyEnlace{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+}
+
+.loginBotonyEnlace  button{
+     background-color: #FFCC00;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+    height: 4.5rem;
+    width: 76.67%;
+    margin-left: 11.66%;
+    cursor: pointer;
+}
+.loginBotonyEnlace a{
+    color: #FFCC00;
+}
+
+
