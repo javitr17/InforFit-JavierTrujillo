@@ -86,6 +86,8 @@ Una vez seleccionadas estas preferencias, el socio puede hacer clic en el botón
 
 La funcionalidad de esta otra página es idéntica a la anterior exceptuando que la rutina personalizada que se va a generar está diseñada para realizarse en casa en lugar de en el gimnasio.
 
+# 🚀 Enlace al dominio del proyecto desplegado
 
+https://inforfit-javiertrujillo-production.up.railway.app/
 
 
