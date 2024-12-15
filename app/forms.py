@@ -170,3 +170,22 @@ class FormEntrenamiento(forms.Form):
 
     )
 
+class FormPesoDiario(forms.ModelForm):
+    class Meta:
+        model = DatosFisicos
+        fields = ['fecha', 'peso']
+        widgets = {
+            'fecha': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def clean_peso(self):
+        peso = self.cleaned_data.get('peso')
+        if not peso or peso <= 0:
+            raise forms.ValidationError('El peso debe ser mayor que cero.')
+        return peso
+
+    def clean_fecha(self):
+        fecha = self.cleaned_data.get('fecha')
+        if not fecha:
+            raise forms.ValidationError('La fecha es obligatoria.')
+        return fecha

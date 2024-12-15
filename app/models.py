@@ -25,9 +25,10 @@ class Socio(models.Model):
 
 class DatosFisicos(models.Model):
     user = models.ForeignKey(Socio, on_delete=models.CASCADE)
-    peso = models.DecimalField(max_digits=5, decimal_places=2)  # Peso con decimales
-    altura = models.DecimalField(max_digits=3, decimal_places=2)  # Altura en metros, con decimales
-    imc = models.DecimalField(max_digits=4, decimal_places=2)  # IMC calculado, con decimales
+    peso = models.DecimalField(max_digits=6, decimal_places=3)  # Peso con decimales
+    altura = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)  # Altura en metros, con decimales
+    imc = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)  # IMC calculado, con decimales
+    fecha =models.DateField(null=True)
 
     def __str__(self):
         return f" {self.user}, IMC: {self.imc}"
@@ -40,7 +41,7 @@ class Suscripción(models.Model):
     precio_inscripcion= models.DecimalField(max_digits=6, decimal_places=2)
     duracion = models.CharField(max_length=100)  # Duración en días, por ejemplo
     fecha_inicio = models.DateField()
-    fecha_vencimiento = models.DateField()
+    fecha_vencimiento = models.DateField(null=False, blank=False)
     proximo_pago=models.DateField()
     vencimiento_notificado = models.BooleanField(default=False)  # Notificación si fue avisado del vencimiento
     suscripcion_activa=models.BooleanField(default=True)

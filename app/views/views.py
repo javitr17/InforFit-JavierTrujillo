@@ -26,6 +26,10 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from ..preguntarIA import *
+from datetime import datetime
+from django.views.generic.edit import FormView
+
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class perfil(TemplateView):
@@ -240,3 +244,65 @@ class rutina(TemplateView):
             return response
 
         return render(request, self.template_name, {'form': form})
+
+
+class PesoDiarioView(FormView):
+    template_name = 'app/progreso.html'
+    form_class = FormPesoDiario
+
+    def form_valid(self, form):
+        print('FORMULARIO VALIDO')
+        socio = get_object_or_404(Socio, user=self.request.user)
+        datos_fisicos = form.save(commit=False)
+        datos_fisicos.user = socio
+        datos_fisicos.save()
+        return JsonResponse({'status': 'success'})
+
+    def form_invalid(self, form):
+        print('FORMULARIO INVALIDO')
+        print(form.errors)  # Ver los errores de validación
+        print('Datos del formulario:')
+        print(form.cleaned_data)
+        return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+
+
+class PesoDiarioView(FormView):
+    template_name = 'app/progreso.html'
+    form_class = FormPesoDiario
+
+    def form_valid(self, form):
+        # Verificar si el usuario está autenticado
+        if not self.request.user.is_authenticated:
+            return JsonResponse({'status': 'error', 'message': 'Usuario no autenticado'}, status=403)
+
+        print('FORMULARIO VALIDO')
+        socio = get_object_or_404(Socio, user=self.request.user)  # Asegúrate de que el usuario tiene un socio
+        datos_fisicos = form.save(commit=False)
+        datos_fisicos.user = socio
+        datos_fisicos.save()
+        return JsonResponse({'status': 'success'})
+
+    def form_invalid(self, form):
+        print('FORMULARIO INVALIDO')
+        return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+
+
+class PesoDataView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'status': 'error', 'message': 'Usuario no autenticado'}, status=403)
+
+        # Obtener el socio del usuario autenticado
+        socio = get_object_or_404(Socio, user=request.user)
+        datos = DatosFisicos.objects.filter(user=socio)
+
+        # Preparar los datos en el formato que FullCalendar espera
+        data = [
+            {
+                'title': f'Peso: {dato.peso} kg',  # El título con el peso
+                'start': dato.fecha.strftime('%Y-%m-%dT%H:%M:%S'),  # Fecha en formato ISO
+                'end': dato.fecha.strftime('%Y-%m-%dT%H:%M:%S'),  # Puede ser la misma fecha o puedes agregar tiempo
+            }
+            for dato in datos
+        ]
+        return JsonResponse(data, safe=False)

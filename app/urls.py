@@ -10,6 +10,8 @@ urlpatterns = [
     path('perfil', perfil.as_view(), name='perfil'),
     path('logIn', logIn.as_view(), name='login'),
     path('logOut', logOut.as_view(), name='logout'),
+    path('peso-diario/', PesoDiarioView.as_view(), name='peso_diario'),
+    path('peso-data/', PesoDataView.as_view(), name='peso_data'),
     path('entrenamiento', entrenamiento.as_view(), name='entrenamiento'),
     path('rutina/<str:sitio>/', rutina.as_view(), name='rutina'),
 ]
