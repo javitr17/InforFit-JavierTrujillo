@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="datosFisicosCentrar">
+    <div class="datosFisicosContenedor1">
+        <div class="datosFisicosContenedor1Padding">
+            <div class="datosFisicosContenedor1Titulo">FIJA TUS DATOS FÍSICOS</div>
+            <div class="datosFisicosContenedor1Texto">Fija tus datos físicos para llevar un seguimiento de los mismos a lo largo del tiempo. 
+                Además, la aplicacion calculará tu Índice de masa corporal (IMC), herramienta diagnóstica que se emplea para identificar categorías 
+                de peso que pueden llevar a problemas de salud.</div>
+        </div>
+    </div>
+    <div class="datosFisicosContenedor2">
+        <div class="datosFisicosContenedor2Padding">
+           
+            <form id="pesoForm">
+                <div class="datosFisicosContenedor2Titulo">FIJAR PESO</div>
+                <div class="datosFisicosContenedor2Campos">
+                    <div class="datosFisicosContenedor2Subtitulo">Peso</div>
+                    {% csrf_token %}
+                    <div class="datosFisicosContenedor2Campo">{{ peso_form.peso }} kg</div>
+                </div>
+                <button class="datosFisicosContenedor2Boton" type="submit">FIJAR PESO ACTUAL</button>
+            </form>
+        </div>
+    </div>    
+
+    <div class="datosFisicosContenedor3">
+        <div class="datosFisicosContenedor3Padding">
+            
+            <form id="alturaForm">
+                <div class="datosFisicosContenedor3Titulo">FIJAR ALTURA</div>
+                <div class="datosFisicosContenedor3Campos">
+                    <div class="datosFisicosContenedor3Subtitulo">Altura</div>
+                    {% csrf_token %}
+                    <div class="datosFisicosContenedor3Campo">{{ altura_form.altura }} cm</div>
+                </div>    
+                <button class="datosFisicosContenedor3Boton" type="submit">FIJAR ALTURA</button>
+            </form>
+        </div>    
+            
+    </div>
+
+    <div class="datosFisicosContenedor4">
+       <div class="datosFisicosContenedor4Padding">
+           <div class="datosFisicosContenedor4Volver">
+                <a href="{% url 'progreso' %}">
+                <i class="fa-solid fa-arrow-left"></i> 
+                <div>PROGRESO</div>
+                </a>    
+           </div>
+       </div>
+       
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Manejar el envío del formulario de peso
+        document.getElementById('pesoForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch(window.location.href, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Peso registrado con éxito');
+                    // Aquí podrías actualizar el calendario, si es necesario
+                } else {
+                    alert('Error al registrar peso');
+                    console.log(data.errors);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Manejar el envío del formulario de altura
+        document.getElementById('alturaForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch(window.location.href, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Altura registrada con éxito');
+                } else {
+                    alert('Error al registrar altura');
+                    console.log(data.errors);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+{% endblock %}

@@ -4,6 +4,8 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.utils.timezone import now
+
 
 
 class Socio(models.Model):
@@ -25,9 +27,9 @@ class Socio(models.Model):
 
 class DatosFisicos(models.Model):
     user = models.ForeignKey(Socio, on_delete=models.CASCADE)
-    peso = models.DecimalField(max_digits=6, decimal_places=3)  # Peso con decimales
-    altura = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)  # Altura en metros, con decimales
-    imc = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)  # IMC calculado, con decimales
+    peso = models.DecimalField(max_digits=6, decimal_places=3, default=70)  # Peso con decimales
+    altura = models.IntegerField(blank=True, null=True, default=170)  # Altura en centímetros como un entero
+    imc = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True, default=22)  # IMC calculado, con decimales
     fecha =models.DateField(null=True)
 
     def __str__(self):

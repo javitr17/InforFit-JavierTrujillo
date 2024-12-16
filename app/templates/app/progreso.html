@@ -1,19 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 style="margin-top: 15rem">Registro de Peso Diario</h1>
+<div class="progresoCentrar">
 
-<!-- Formulario para añadir peso -->
-<form id="pesoForm">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Registrar Peso</button>
-</form>
-
-<!-- Contenedor para el calendario -->
-<div id="calendar" style="margin-top: 20px;"></div>
-
+     <div class="progresoCalendarioTitulo">
+        <div>TU MES</div>
+    </div>
+    <div class="progresoContenedor3">
+        <div class="progresoCentrarCalendario">
+             <div id="calendar"></div>
+        </div>
+    </div>
+    
+    <div class="progresoContenedor1">
+    <div class="progresoDatosPeso">
+        <div class="progresoDatosPesoTitulo">Peso</div>
+        <div class="progresoDatosPesoPeso">60</div>
+        <div class="progresoDatosPesoKg">kg</div>
+    </div>
+    <div class="progresoPesoFondoPeso"></div>
+    <a href="{% url 'datos_fisicos' %}"><div class="progresoPesoFlecha"><i class="fa-solid fa-arrow-right"></i></div></a> 
+    </div>
+    
+    <div class="progresoContenedor2">
+        <div class="progresoAltura">
+            <div class="progresoDatosAltura">
+                <div class="progresoDatosAlturaTitulo">Altura</div>
+                <div class="progresoDatosAlturaPeso">172</div>
+                <div class="progresoDatosAlturaCm">cm</div>
+            </div>
+            <div class="progresoAlturaIcono"><i class="fa-solid fa-ruler-vertical"></i></div>
+        </div>
+        <div class="progresoIMC">
+             <div class="progresoDatosIMC">
+                <div class="progresoDatosIMCTitulo">IMC</div>
+                <div class="progresoDatosIMCPeso">22</div>
+                <div class="progresoDatosIMCunidad">%</div>
+             </div>
+             <div class="progresoIMCIcono"><i class="fa-solid fa-chart-pie"></i></div> 
+        </div>    
+        
+    </div>
+   
+  
+</div>
+    
+    
+    
+    
+    
 <!-- FullCalendar CSS -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/locales/es.global.min.js"></script>
 <!-- FullCalendar JS -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
@@ -22,48 +58,24 @@
         // Inicializar el calendario
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',  // Vista inicial del calendario (mes)
-            events: '/InForFit/peso-data/',  // Endpoint para obtener los datos
-            eventColor: '#ff9f89',  // Color de fondo del evento
-            eventTextColor: '#000000',  // Color del texto del evento
-            eventDisplay: 'block',  // Mostrar los eventos
-        });
+        initialView: 'dayGridMonth',  // Vista inicial
+        locale: 'es',  // Idioma en español
+        displayEventTime: false,    
+        events: '/InForFit/peso-data/',  // Endpoint de eventos
+        eventColor: '#B3B7BA',  // Color de fondo del evento
+        eventTextColor: '#222E39',  // Color del texto del evento
+        buttonText: {  // Traducción de los textos de los botones
+            today: 'Hoy',
+            month: 'Mes',
+            week: 'Semana',
+            day: 'Día',
+            list: 'Agenda',
+        },
+    });
+            
 
         calendar.render();  // Renderizar el calendario
-
-        // Manejar el envío del formulario de peso
-        document.getElementById('pesoForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);  // Obtener los datos del formulario
-
-            // Enviar los datos del formulario mediante Fetch
-            fetch(window.location.href, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': formData.get('csrfmiddlewaretoken'),  // Incluir el token CSRF
-                },
-                body: formData,  // Enviar los datos como FormData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.status === 'success') {
-                    alert('Peso registrado con éxito');
-                    calendar.refetchEvents();  // Recargar los eventos en el calendario
-                } else {
-                    alert('Error al registrar peso');
-                    console.log(data.errors);
-                }
-            })
-            .catch(error => {
-                alert('Hubo un error al procesar la solicitud.');
-                console.error(error);
-            });
-        });
+        
     });
 </script>
 

@@ -1,0 +1,115 @@
+.datosFisicosCentrar{
+    margin-top: 5rem;
+     display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;    /* Centra verticalmente */
+    width: 100%;
+    flex-direction: column;
+    height: 1400px;
+    gap: 3rem;
+
+}
+
+
+.datosFisicosContenedor1{
+    width: 90%;
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    color: #FFFFFF;
+    height: 220px;
+}
+.datosFisicosContenedor1Padding{
+    padding: 2rem 3rem 3rem 3rem;
+}
+
+.datosFisicosContenedor1Titulo{
+    font-weight: 800;
+    font-size: 40px;
+    padding-bottom: 1rem;
+}
+
+.datosFisicosContenedor1Texto{
+    font-size: 18px;
+}
+
+.datosFisicosContenedor2, .datosFisicosContenedor3{
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    height: 380px;
+    width: 90%;
+    color: #FFFFFF;
+
+}
+.datosFisicosContenedor2Titulo, .datosFisicosContenedor3Titulo{
+     font-weight: 800;
+    font-size: 40px;
+    padding-bottom: 2rem;
+}
+
+.datosFisicosContenedor2Padding, .datosFisicosContenedor3Padding{
+    padding: 2rem 3rem 3rem 3rem;
+}
+
+#id_peso,#id_altura{
+    background-color: transparent;
+    color: #FFFFFF;
+    width: fit-content;
+    text-align: right;
+
+}
+
+#id_peso:focus,#id_altura:focus {
+    outline: none; /* Elimina el borde predeterminado */
+    box-shadow: none; /* Elimina sombras adicionales si las hay */
+    border: none; /* Asegúrate de que tampoco haya un borde */
+}
+
+.datosFisicosContenedor3Subtitulo, .datosFisicosContenedor2Subtitulo{
+font-size: 30px;
+    font-weight: 600;
+}
+
+.datosFisicosContenedor3Campos, .datosFisicosContenedor2Campos{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 4rem;
+}
+
+.datosFisicosContenedor3Boton, .datosFisicosContenedor2Boton{
+    background-color: #FFCC00;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 20px;
+    width: 100%;
+    height: 70px;
+}
+
+.datosFisicosContenedor4{
+    height: auto;
+    width: 90%;
+    color: #FFFFFF;
+}
+
+.datosFisicosContenedor4Padding{
+    padding: 2rem;
+    padding-right: 3rem;
+    background-image: linear-gradient(to right,#222E39, #171E26);
+    width: fit-content;
+
+
+}
+.datosFisicosContenedor4 a{
+    width: 100%;
+
+       display: flex;
+    gap: 1rem;
+    align-items: center;
+    font-weight: 800;
+}
+
+.datosFisicosContenedor4 a div{
+    font-size: 40px;
+
+}
+
+.datosFisicosContenedor4 a i{
+    font-size: 45px ;
+}

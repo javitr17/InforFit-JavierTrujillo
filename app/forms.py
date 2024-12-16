@@ -170,13 +170,10 @@ class FormEntrenamiento(forms.Form):
 
     )
 
-class FormPesoDiario(forms.ModelForm):
+class FormPeso(forms.ModelForm):
     class Meta:
         model = DatosFisicos
-        fields = ['fecha', 'peso']
-        widgets = {
-            'fecha': forms.DateInput(attrs={'type': 'date'}),
-        }
+        fields = ['peso']  # Solo el campo peso
 
     def clean_peso(self):
         peso = self.cleaned_data.get('peso')
@@ -184,8 +181,10 @@ class FormPesoDiario(forms.ModelForm):
             raise forms.ValidationError('El peso debe ser mayor que cero.')
         return peso
 
-    def clean_fecha(self):
-        fecha = self.cleaned_data.get('fecha')
-        if not fecha:
-            raise forms.ValidationError('La fecha es obligatoria.')
-        return fecha
+class FormAltura(forms.ModelForm):
+    class Meta:
+        model = DatosFisicos
+        fields = ['altura']  # Solo el campo altura
+
+
+

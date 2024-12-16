@@ -1,0 +1,178 @@
+.progresoCentrar{
+
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;    /* Centra verticalmente */
+    width: 100%;
+    flex-direction: column;
+    height: 2290px;
+    gap: 3rem;
+
+}
+
+.progresoContenedor1{
+
+    width: 90%;
+    height: 450px;
+    display: grid;
+    grid-template-columns: 20% 62% 18%;
+    gap: 3rem;
+    background-image: linear-gradient(to right,#222E39, #171E26);
+
+}
+
+.progresoDatosPeso{
+    display: flex;
+    flex-direction: column;
+
+    font-weight: 800;
+    justify-content: center;
+    align-items: center;
+}
+
+.progresoDatosPesoTitulo{
+    color: #B3B7BA;
+    font-size: 40px;
+}
+
+.progresoDatosPesoPeso{
+    color: #FFFFFF;
+    font-size: 120px;
+    width: fit-content;
+
+
+}
+
+.progresoDatosPesoKg{
+    color: #FFFFFF;
+    font-size: 60px;
+}
+
+.progresoPesoFondoPeso{
+    background-image: url("../imagenes/fondoPeso.png");
+    background-position: top; /* Posiciona la imagen en la parte superior */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+}
+
+.progresoPesoFlecha{
+    color: #FFFFFF;
+    font-size: 40px;
+    font-weight: 800;
+    margin-top: 2rem;
+}
+
+.progresoContenedor2{
+    color: #FFFFFF;
+    font-weight: 800;
+    width: 90%;
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    background-image: linear-gradient(to right,#222E39, #171E26);
+}
+
+.progresoIMC, .progresoAltura{
+display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+
+
+}
+
+.progresoIMCIcono , .progresoAlturaIcono{
+    display: flex;
+align-items: center;
+    justify-items: center;
+    width: 100%;
+}
+
+.progresoDatosAlturaTitulo, .progresoDatosIMCTitulo{
+    color: #B3B7BA;
+    font-size: 40px;
+}
+
+.progresoDatosIMCPeso, .progresoDatosAlturaPeso{
+    color: #FFFFFF;
+    font-size: 120px;
+    width: fit-content;
+}
+
+.progresoDatosAlturaCm, .progresoDatosIMCunidad{
+     color: #FFFFFF;
+    font-size: 60px;
+}
+
+
+
+.progresoIMCIcono i, .progresoAlturaIcono i{
+    font-size: 120px;
+}
+
+.progresoCentrar a{
+    width: fit-content;
+}
+
+.progresoContenedor3{
+     color: #FFFFFF;
+    font-weight: 800;
+    width: 90%;
+    height: 960px;
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(to right,#222E39, #171E26);
+}
+
+#calendar {
+    width: 90%; /* Asegura que el calendario ocupe todo el ancho */
+    height: 90%; /* Asegura que el calendario ocupe todo el alto */
+    max-width: 1200px; /* Define un ancho máximo opcional */
+
+
+}
+
+.progresoCalendarioTitulo{
+     margin-top: 5rem;
+    display: flex;
+    justify-items: left;
+    width: 90%;
+    height: 100px;
+    align-items: center;
+    background-image: linear-gradient(to right,#222E39, #171E26);
+
+}
+
+.progresoCalendarioTitulo div{
+    margin-left: 5rem;
+     font-size: 40px;
+    font-weight: 800;
+   color: #FFFFFF;
+}
+
+
+.progresoCentrarCalendario{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fc-day-today {
+    background-color: #303d4a !important; /* Fondo especial para el día actual */
+    color: #FFFFFF !important; /* Texto blanco */
+}
+
+.fc-col-header-cell-cushion, .fc-daygrid-day-number {
+    color: #FFFFFF; /* Cambia el color de los números */
+    font-weight: bold; /* Opcional: hacerlos más visibles */
+}
+.fc-event-title{
+    color: #D9D9D9;
+}
+
+#fc-dom-1 {
+    text-transform: uppercase; /* Convierte el texto a mayúsculas */
+}

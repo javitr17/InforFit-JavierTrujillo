@@ -246,46 +246,8 @@ class rutina(TemplateView):
         return render(request, self.template_name, {'form': form})
 
 
-class PesoDiarioView(FormView):
+class progreso(TemplateView):
     template_name = 'app/progreso.html'
-    form_class = FormPesoDiario
-
-    def form_valid(self, form):
-        print('FORMULARIO VALIDO')
-        socio = get_object_or_404(Socio, user=self.request.user)
-        datos_fisicos = form.save(commit=False)
-        datos_fisicos.user = socio
-        datos_fisicos.save()
-        return JsonResponse({'status': 'success'})
-
-    def form_invalid(self, form):
-        print('FORMULARIO INVALIDO')
-        print(form.errors)  # Ver los errores de validación
-        print('Datos del formulario:')
-        print(form.cleaned_data)
-        return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
-
-
-class PesoDiarioView(FormView):
-    template_name = 'app/progreso.html'
-    form_class = FormPesoDiario
-
-    def form_valid(self, form):
-        # Verificar si el usuario está autenticado
-        if not self.request.user.is_authenticated:
-            return JsonResponse({'status': 'error', 'message': 'Usuario no autenticado'}, status=403)
-
-        print('FORMULARIO VALIDO')
-        socio = get_object_or_404(Socio, user=self.request.user)  # Asegúrate de que el usuario tiene un socio
-        datos_fisicos = form.save(commit=False)
-        datos_fisicos.user = socio
-        datos_fisicos.save()
-        return JsonResponse({'status': 'success'})
-
-    def form_invalid(self, form):
-        print('FORMULARIO INVALIDO')
-        return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
-
 
 class PesoDataView(TemplateView):
     def get(self, request, *args, **kwargs):
@@ -306,3 +268,66 @@ class PesoDataView(TemplateView):
             for dato in datos
         ]
         return JsonResponse(data, safe=False)
+
+
+class datosFisicos(TemplateView):
+    template_name = 'app/datosFisicos.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Obtener el socio asociado al usuario
+        if self.request.user.is_authenticated:
+            socio = get_object_or_404(Socio, user=self.request.user)
+
+            # Obtener los datos físicos más recientes del socio
+            datos_fisicos = DatosFisicos.objects.filter(user=socio).last()
+
+            # Inicializar los formularios con los datos existentes
+            if datos_fisicos:
+                context['peso_form'] = FormPeso(initial={'peso': datos_fisicos.peso})
+                context['altura_form'] = FormAltura(initial={'altura': datos_fisicos.altura})
+            else:
+                context['peso_form'] = FormPeso()
+                context['altura_form'] = FormAltura()
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'status': 'error', 'message': 'Usuario no autenticado'}, status=403)
+
+        socio = get_object_or_404(Socio, user=request.user)
+
+        # Procesar el formulario de peso
+        if 'peso' in request.POST:
+            form = FormPeso(request.POST)
+            if form.is_valid():
+                peso = form.cleaned_data['peso']
+                # Actualizar o crear los datos de peso
+                DatosFisicos.objects.create(
+                    user=socio,
+                    peso=peso,
+                    fecha=now()  # Fecha actual
+                )
+                return JsonResponse({'status': 'success', 'message': 'Peso registrado'})
+            else:
+                return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+
+        # Procesar el formulario de altura
+        elif 'altura' in request.POST:
+            form = FormAltura(request.POST)
+            if form.is_valid():
+                altura = form.cleaned_data['altura']
+                print(altura)
+                # Actualizar o crear los datos de altura
+                DatosFisicos.objects.create(
+                    user=socio,
+                    altura=altura,
+                    fecha=now()  # Fecha actual
+                )
+                return JsonResponse({'status': 'success', 'message': 'Altura registrada'})
+            else:
+                return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+
+        return JsonResponse({'status': 'error', 'message': 'Formulario no reconocido'}, status=400)
