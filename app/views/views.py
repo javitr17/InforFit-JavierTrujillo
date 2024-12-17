@@ -40,7 +40,7 @@ class perfil(TemplateView):
         socio = Socio.objects.filter(user=self.request.user).first()
 
         if socio:
-            form_datos = FormRegistro(instance=socio)
+            form_datos = FormDatosSocio(instance=socio)
             domicilio = socio.datosdomicilio_set.first()
             form_cambio_contraseña = FormCambioContraseña(user=self.request.user)
 
@@ -101,14 +101,11 @@ class perfil(TemplateView):
             messages.error(request, "No se encontró un socio asociado al usuario.")
             return redirect('perfil')
 
-        form_datos = FormRegistro(request.POST, instance=socio)
+        form_datos = FormDatosSocio(request.POST, instance=socio)
 
-        # Excluir los campos no deseados de la validación
-        for campo in ['dni', 'calle', 'ciudad', 'codigo_postal', 'pais', 'password', 'password_confirm']:
-            if campo in form_datos.fields:
-                form_datos.fields[campo].required = False
 
         if form_datos.is_valid():
+            print('FORM DATOS VALIDO')
             # Guardar los datos personales
             socio.nombre = form_datos.cleaned_data['nombre']
             socio.apellidos = form_datos.cleaned_data['apellidos']
@@ -120,6 +117,9 @@ class perfil(TemplateView):
 
             messages.success(request, "Tus datos personales se han actualizado correctamente.")
             return redirect(reverse('perfil'))
+        else:
+            print('FORM DATOS NO VALIDO')
+            print(form_datos.errors)  # Esto imprime los errores del formulario
 
         # Si se actualizan los datos domiciliarios
         domicilio = socio.datosdomicilio_set.first()

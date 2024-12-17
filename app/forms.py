@@ -39,7 +39,7 @@ class FormLogIn(forms.Form):
             raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres.")
         if not any(char.isdigit() for char in password):
             raise forms.ValidationError("La contraseña debe contener al menos un número.")
-
+        return password
 class FormSignUp(forms.Form):
     dni = forms.CharField(max_length=9)
     password = forms.CharField(widget=forms.PasswordInput)
@@ -190,17 +190,53 @@ class FormRegistro(forms.ModelForm):
             pais=self.cleaned_data['pais'],
         )
         return {'socio': socio, 'domicilio': domicilio}
+
+
 class FormDatosDomicilio(forms.ModelForm):
+    # Validadores
+    codigo_postal_validator = RegexValidator(
+        regex=r'^\d{5}$',
+        message="El código postal debe contener exactamente 5 números."
+    )
+
+    # Campos con validadores y widgets
+    dni = forms.CharField(
+        max_length=9,
+        validators=[validar_dni],
+        widget=forms.TextInput(attrs={'placeholder': 'DNI'})
+    )
+    calle = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'placeholder': 'Calle'})
+    )
+    ciudad = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={'placeholder': 'Ciudad'})
+    )
+    codigo_postal = forms.CharField(
+        max_length=5,
+        validators=[codigo_postal_validator],
+        widget=forms.TextInput(attrs={'placeholder': 'Código postal'})
+    )
+    pais = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={'placeholder': 'País'})
+    )
+
     class Meta:
         model = DatosDomicilio
         fields = ['dni', 'calle', 'ciudad', 'codigo_postal', 'pais']
-        widgets = {
-            'dni': forms.TextInput(attrs={'placeholder': 'DNI'}),
-            'calle': forms.TextInput(attrs={'placeholder': 'Calle'}),
-            'ciudad': forms.TextInput(attrs={'placeholder': 'Ciudad'}),
-            'codigo_postal': forms.TextInput(attrs={'placeholder': 'Código postal'}),
-            'pais': forms.TextInput(attrs={'placeholder': 'País'}),
-        }
+
+    # Validación personalizada para evitar errores generales
+    def clean(self):
+        cleaned_data = super().clean()
+        dni = cleaned_data.get("dni")
+        ciudad = cleaned_data.get("ciudad")
+
+        if ciudad and ciudad.lower() == "prohibido":
+            raise ValidationError("El nombre de la ciudad no es válido.")
+
+        return cleaned_data
 
 class FormCambioContraseña(PasswordChangeForm):
     old_password = forms.CharField(
@@ -290,4 +326,71 @@ class FormAltura(forms.ModelForm):
         fields = ['altura']  # Solo el campo altura
 
 
+class FormDatosSocio(forms.ModelForm):
+    # Opciones de género
+    GENERO_SOCIO = [
+        ('Hombre', 'Hombre'),
+        ('Mujer', 'Mujer'),
+        ('Otro', 'Otro'),
+    ]
+
+    # Validadores
+    telefono_validator = RegexValidator(
+        regex=r'^\+?[0-9]{9,16}$',
+        message="El teléfono debe contener entre 9 y 16 dígitos, y puede comenzar con +."
+    )
+
+    # Campos del formulario
+    nombre = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={'placeholder': 'Nombre', 'autocomplete': 'given-name'})
+    )
+    apellidos = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'placeholder': 'Apellidos', 'autocomplete': 'family-name'})
+    )
+    fecha_nacimiento = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'Fecha de nacimiento'})
+    )
+    telefono = forms.CharField(
+        max_length=16,
+        validators=[telefono_validator],
+        widget=forms.TextInput(attrs={'placeholder': 'Teléfono', 'autocomplete': 'tel'})
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': 'Email', 'autocomplete': 'email'})
+    )
+    genero = forms.ChoiceField(
+        choices=GENERO_SOCIO,
+        widget=forms.RadioSelect,
+        initial='Otro'
+    )
+
+
+    class Meta:
+        model = Socio
+        fields = ['nombre', 'apellidos', 'fecha_nacimiento', 'telefono', 'email', 'genero']
+
+    # Validación personalizada de la fecha de nacimiento
+    def clean_fecha_nacimiento(self):
+        fecha_nacimiento = self.cleaned_data.get("fecha_nacimiento")
+        today = date.today()
+        edad_minima = 5
+        edad_maxima = 100
+
+        edad_usuario = today.year - fecha_nacimiento.year - (
+                    (today.month, today.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+
+        if edad_usuario < edad_minima:
+            raise ValidationError(f"Debes tener al menos {edad_minima} años.")
+        if edad_usuario > edad_maxima:
+            raise ValidationError(f"La edad máxima permitida es {edad_maxima} años.")
+        return fecha_nacimiento
+
+    # Validación personalizada del teléfono (en caso de ser requerido)
+    def clean_telefono(self):
+        telefono = self.cleaned_data.get('telefono')
+        if not telefono.isdigit():
+            raise ValidationError("El teléfono debe contener solo números.")
+        return telefono
 
