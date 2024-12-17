@@ -22,18 +22,45 @@
 <body>
 <div class="cabeceraResponsive">
     <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>
-    <div class="navBoton"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+   {% if user.is_authenticated %}
+    <div class="navBoton"><a href="{% url 'logout' %}">CERRAR SESIÓN</a></div>
     <div class="indexMenu"><i class="fa-solid fa-bars"></i></div>
+   {% else %}
+    <div class="navBoton"><a href="{% url 'signupPlan' %}">INSCRBIRME YA</a></div>
+    <div class="indexMenu"><i class="fa-solid fa-bars"></i></div>
+   {% endif %}
+
+
 </div>
 <div class="contenidoBodyResponsive">
 <div class="navegacionResponsive">
-    <div class="entrenamientoResponsive">ENTRENAMIENTO</div>
-    <div class="progresoResponsive">PROGRESO</div>
+    <a href="{% url 'entrenamiento' %}"><div class="entrenamientoResponsive">ENTRENAMIENTO</div></a>
+    <a href="{% url 'progreso' %}"><div class="progresoResponsive">PROGRESO</div></a>
     <div class="clubsResponsive">CLUBS</div>
     <div class="nutricionResponsive">NUTRICIÓN</div>
 </div>
-    <div class="navBotonResponsive"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+<div class="paddingBodyResponsivePerfilYBoton">
+    {% if user.is_authenticated %}
+        {% if socio_con_imagen %}
+            <div class="imagenPerfilBodyResponsive">
+            <div class="imagenSocioPerfilContenedor">
+                <a href="{% url 'perfil' %}"><div class="imagenSocioPerfil" style="background-image: url('{{ url_imagen_socio }}');"></div></a>
+            </div>
+            </div>
+         {% else %}
+            <div class="imagenPerfilBodyResponsive">
+                  <div class="logoPerfil"><a href="{% url 'perfil' %}"><i class="fa-regular fa-user"></i></a></div>
+            </div>
 
+        {% endif %}
+        <div class="navBotonResponsiveCerrarSesion"><a href="{% url 'logout' %}">CERRAR SESIÓN</a></div>
+
+    {% else %}
+        <div class="navBotonResponsive"><a href="{% url 'signupPlan' %}">INSCRÍBETE AHORA</a></div>
+
+    {% endif %}
+    </div>
+</div>
 </div>
 <div class="cabecera">
     <a href="{% url 'welcome' %}"><img src="{% static 'imagenes/logo.png' %}" alt="Logo"></a>

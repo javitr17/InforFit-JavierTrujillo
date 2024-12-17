@@ -191,8 +191,9 @@ background-color: #222E39;
 .bodyResponsive{
     background-color: #222E39;
     width: 100%;
-    height: 100%;
+    height: 1080px;
 }
+
 .navegacionResponsive{
     color: #FFFFFF;
     font-size: 22px;
@@ -207,11 +208,51 @@ background-color: #222E39;
     padding: 2rem;
 }
 .navBotonResponsive{
-    padding-top: 520px;
+
     justify-items: center;
      background-color: #222E39;
+
 }
 
+.navBotonResponsiveCerrarSesion{
+    display: flex;
+justify-items: center;
+    align-items: center;
+     background-color: #222E39;
+}
+.navBotonResponsiveCerrarSesion a{
+display: block;
+    background-color: #FFCC00;
+padding: 0.5rem 4rem;
+    height: 100%;
+    width: 100%;
+    border: none;
+    color: #222E39;
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+}
+.paddingBodyResponsivePerfilYBoton{
+    padding: 1rem;
+    margin-top: 480px;
+}
+
+.imagenPerfilBodyResponsive{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 2rem;
+
+}
+
+.imagenSocioPerfilContenedor{
+    width: fit-content;
+
+}
 .navBotonResponsive a {
     display: block;
     background-color: #FFCC00;
@@ -239,7 +280,21 @@ background-color: #222E39;
 
     }
 }
-@media (max-width: 1100px) {
+
+@media (max-width: 1738px) {
+    .cabecera{
+            grid-template-columns: 1.5fr 6.5fr 2.2fr; /* Mantiene la proporción de 10% 70% 20% */
+
+    }
+}
+
+@media (max-width: 1280px) {
+    .cabecera{
+            grid-template-columns: 1.5fr 6.5fr 2.8fr; /* Mantiene la proporción de 10% 70% 20% */
+
+    }
+}
+@media  (max-width: 1100px) {
 .cabecera{
     display: none;
 }
@@ -247,7 +302,7 @@ background-color: #222E39;
  background-color: #222E39;
     color: #D9D9D9;
     display: grid;
-    grid-template-columns: 2fr 6fr 2fr; /* Mantiene la proporción de 10% 70% 20% */
+    grid-template-columns: 3fr 5fr 2fr; /* Mantiene la proporción de 10% 70% 20% */
    width: 100%;
     font-weight: 600;
     text-align: center;
@@ -278,7 +333,46 @@ display: flex;
 
 }
 }
+@media (max-width: 780px) {
+    .bodyResponsive .cabeceraResponsive{
+        grid-template-columns: 4fr 4fr 2fr;
+    }
+}
 
+@media (max-width: 530px) {
+    .bodyResponsive .cabeceraResponsive{
+        grid-template-columns: 5fr 3fr 2fr;
+    }
+    .cabeceraResponsive{
+        grid-template-columns: 3fr 5fr 2fr;
+    }
+    .cabeceraResponsive .navBoton {
+        width: 100%;
+        height: 100%;
+
+    }
+    .cabeceraResponsive .navBoton a{
+        padding: 0.375rem 1.125rem;
+        font-size: 0.75rem;
+    }
+
+}
+@media (max-width: 355px) {
+    .cabeceraResponsive .navBoton a{
+        padding: 0.3rem 0.75rem;
+        font-size: 0.70rem;
+
+    }
+    .cabeceraResponsive{
+        min-height: 65px;
+    }
+}
+@media (max-width: 430px) {
+    .bodyResponsive .cabeceraResponsive{
+        grid-template-columns: 6fr 2fr 2fr;
+
+    }
+}
 @media (max-width: 677px) {
     .contenidoFooter1{
 
