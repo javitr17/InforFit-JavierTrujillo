@@ -11,11 +11,12 @@
 }
 
 .progresoContenedor1{
-
+    padding: 3rem;
+    padding-left: 4rem;
     width: 90%;
     height: 450px;
     display: grid;
-    grid-template-columns: 20% 62% 18%;
+    grid-template-columns: 25% 60% 15%;
     gap: 3rem;
     background-image: linear-gradient(to right,#222E39, #171E26);
 
@@ -65,13 +66,15 @@
 }
 
 .progresoContenedor2{
+    padding: 3rem;
     color: #FFFFFF;
     font-weight: 800;
     width: 90%;
     height: 450px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    justify-items: center; /* Centra horizontalmente */
+    align-items: center;   /* Centra verticalmente */
+    grid-template-columns: repeat(2, 1fr);
     gap: 3rem;
     background-image: linear-gradient(to right,#222E39, #171E26);
 }
@@ -136,21 +139,21 @@ align-items: center;
 }
 
 .progresoCalendarioTitulo{
-     margin-top: 5rem;
+    margin-top: 5rem;
     display: flex;
     justify-items: left;
     width: 90%;
-    height: 100px;
+    height: auto;
     align-items: center;
-    background-image: linear-gradient(to right,#222E39, #171E26);
 
 }
 
 .progresoCalendarioTitulo div{
-    margin-left: 5rem;
+    background-image: linear-gradient(to right,#222E39, #171E26);
      font-size: 40px;
     font-weight: 800;
    color: #FFFFFF;
+    padding: 1rem 5rem 1rem 3rem;
 }
 
 

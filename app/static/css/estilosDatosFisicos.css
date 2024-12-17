@@ -17,6 +17,7 @@
     color: #FFFFFF;
     height: 220px;
 }
+
 .datosFisicosContenedor1Padding{
     padding: 2rem 3rem 3rem 3rem;
 }
@@ -71,6 +72,11 @@ font-size: 30px;
     display: flex;
     justify-content: space-between;
     padding-bottom: 4rem;
+}
+
+.datosFisicosContenedor3Campo, .datosFisicosContenedor2Campo{
+   font-size: 20px;
+    font-weight: 800;
 }
 
 .datosFisicosContenedor3Boton, .datosFisicosContenedor2Boton{

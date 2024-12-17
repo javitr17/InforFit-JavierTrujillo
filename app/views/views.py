@@ -245,10 +245,49 @@ class rutina(TemplateView):
 
         return render(request, self.template_name, {'form': form})
 
-
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class progreso(TemplateView):
     template_name = 'app/progreso.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Obtener el socio asociado al usuario actual
+        if self.request.user.is_authenticated:
+            socio = get_object_or_404(Socio, user=self.request.user)
+
+            # Obtener los datos físicos más recientes del socio
+            datos_fisicos = DatosFisicos.objects.filter(user=socio).last()
+
+            if datos_fisicos:
+                # Truncar el peso a los dos primeros dígitos
+                if datos_fisicos.peso:
+                    peso_str = str(datos_fisicos.peso)  # Convertir a cadena
+                    peso_actual = float(peso_str[:2])  # Convertir los dos primeros dígitos a float
+                else:
+                    peso_actual = None
+
+                # Obtener la altura
+                altura_actual = datos_fisicos.altura
+
+                # Calcular el IMC si ambos valores están disponibles
+                if peso_actual and altura_actual:
+                    altura_metros = float(altura_actual) / 100  # Convertir a metros
+                    imc = round(peso_actual / (altura_metros ** 2), 2)  # Cálculo del IMC
+                else:
+                    imc = None
+            else:
+                peso_actual = None
+                altura_actual = None
+                imc = None
+
+            # Pasar los valores al contexto
+            context['peso_actual'] = peso_actual
+            context['altura_actual'] = altura_actual
+            context['imc'] = imc
+
+        return context
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class PesoDataView(TemplateView):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -269,7 +308,7 @@ class PesoDataView(TemplateView):
         ]
         return JsonResponse(data, safe=False)
 
-
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class datosFisicos(TemplateView):
     template_name = 'app/datosFisicos.html'
 
