@@ -23,7 +23,7 @@
 
         #card-errors {
             color: red;
-            margin-top: 0.5rem;
+            margin-top: 2rem;
         }
     </style>
 </head>
@@ -235,7 +235,7 @@
                     if (data.usuario_existente) {
                         window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=usuario_existente";
                     } else if (data.status === "success") {
-                        window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=success";
+                        window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=success&allow_access=true";
                     } else {
                         window.location.href = "{% url 'signupPago' %}?contrato={{ contrato }}&mensaje=cancel";
                     }

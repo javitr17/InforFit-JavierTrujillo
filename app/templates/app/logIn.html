@@ -2,62 +2,57 @@
 {% block content %}
     <div class="fondoBienvenida"></div>
 
-<div class="loginSeccionPrincipal">
-    <div class="loginContenedor">
-        <div class="loginCentrarVerticalmente">
-        <div></div>
-        <div>
-        <div class="loginDatosAcceso">TUS DATOS DE</div>
-        <div class="loginDatosAcceso">ACCESO</div>
+    <div class="loginSeccionPrincipal">
+        <div class="loginContenedor">
+            <div class="loginCentrarVerticalmente">
+                <div></div>
+                <div>
+                    <div class="loginDatosAcceso">TUS DATOS DE</div>
+                    <div class="loginDatosAcceso">ACCESO</div>
 
-        
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
 
-            <form method="post" action="{% url 'login' %}">
-        
-                {% csrf_token %}
-        
-                <div class="loginCampos">
-        
-                    {{ form.dni }}
+                        <!-- Campo DNI -->
+                        <div class="loginCampos">
+                            {{ form.dni }}
+                            
+                        </div>
+
+                        <!-- Campo Contraseña -->
+                        <div class="loginCampos">
+                            {{ form.password }}
+                           
+                        </div>
+
+                        <!-- Recaptcha -->
+                        <div class="loginRecaptcha">
+                            {{ form.captcha }}
+                        </div>
+
+                        <!-- Mostrar errores generales -->
+                        {% if error_messages %}
+                            <div class="mensaje_error">
+                                <ul>
+                                    {% for error in error_messages %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <!-- Campo Oculto 'next' -->
+                        {{ form.next }}
+
+                        <!-- Botón de envío -->
+                        <div class="loginBotonyEnlace">
+                            <button type="submit">INICIAR SESIÓN</button>
+                            <a href="{% url 'signupPlan' %}">Hazte socio</a>
+                        </div>
+                    </form>
                 </div>
-        
-                <div class="loginCampos">
-                    {{ form.password }}
-                </div>
-                <div class="loginRecaptcha">
-                     {{ form.captcha }}
-                </div>
-        
-                <!-- Campo Oculto 'next' para redireccionamiento -->
-                {{ form.next }}
-        
-        
-        
-                <!-- Mostrar errores si existen -->
-                {% if form.non_field_errors %}
-                    <div style="color: red;">
-                        {{ form.non_field_errors }}
-                    </div>
-                {% endif %}
-            {% if messages %}
-            <div class="alert alert-danger">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
+                <div></div>
             </div>
-        {% endif %}
-                <div class="loginBotonyEnlace">
-                <!-- Botón de Envío -->
-                    <button type="submit">INICIAR SESIÓN</button>
-                    <a href="{% url 'signupPlan' %}">Hazte socio</a>
-                </div>
-            </form>
         </div>
-        <div></div>
     </div>
-</div>
-
-</div>
-    
-
 {% endblock %}

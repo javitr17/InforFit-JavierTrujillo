@@ -98,7 +98,7 @@ display: block;}
 
 .registroDatosSeccion2{
     width: 100%;
-    height: 1000px;
+    height: 1030px;
     background-color: #222E39;
      opacity: 90%;
     backdrop-filter: blur(10px);
@@ -173,8 +173,13 @@ display: block;}
     margin-top: 2rem;
 }
 
+.errores-formulario{
+   color: #ba1d1d;
 
-
+}
+#id_password_confirm{
+    margin-bottom: 2rem;
+}
 .btn-confirmar{
      background-color: #FFCC00;
     padding: 1rem 7.1rem;
@@ -183,7 +188,7 @@ display: block;}
     font-weight: 800;
     font-size: 1rem;
     text-decoration: none;
-    margin-top: 3rem;
+    margin-top: 1rem;
 
 }
 

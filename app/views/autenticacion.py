@@ -17,14 +17,23 @@ from django.urls import reverse
 import secrets
 from datetime import timedelta
 from django.contrib.auth.mixins import AccessMixin
+from decimal import Decimal, ROUND_HALF_UP
+
 
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
+
 class SoloNoAutenticadosMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('welcome')  # Redirige al usuario autenticado
+        # Verificamos si el parámetro `allow_access` está presente en la URL
+        allow_access = request.GET.get('allow_access')
+
+        # Si el usuario está autenticado y el parámetro `allow_access` no está presente, redirigimos
+        if request.user.is_authenticated and not allow_access:
+            return redirect('welcome')  # Redirige al usuario autenticado a la página de bienvenida
+
+        # Si no está autenticado o el parámetro `allow_access` está presente, continuamos con el flujo normal
         return super().dispatch(request, *args, **kwargs)
 
 class signUpPlan(SoloNoAutenticadosMixin, TemplateView):
@@ -104,10 +113,41 @@ class signUpDatos(SoloNoAutenticadosMixin, View):
 
             # Redirige a la próxima vista con el parámetro contrato
             return redirect(f'/InForFit/signUpPago?contrato={contrato}')
-        else:
-            form = FormRegistro()
 
-        return render(request, self.template_name, {'form': form})
+        contrato_info = {
+            'Mensual': {
+                'duracion': '1 mes',
+                'cuota_inscripcion': '15.00€',
+                'renovacion': 'tras 1 mes indefinidamente',
+                'recision': '14 días antes del fin del contrato',
+                'cuota_mensual': '38.99€',
+            },
+            'Semestral': {
+                'duracion': '6 meses',
+                'cuota_inscripcion': '15.00€',
+                'renovacion': 'tras 6 meses indefinidamente',
+                'recision': '14 días antes del fin del contrato',
+                'cuota_mensual': '32.99€',
+            },
+            'Anual': {
+                'duracion': '12 meses',
+                'cuota_inscripcion': '15.00€',
+                'renovacion': 'tras 12 meses indefinidamente',
+                'recision': '14 días antes del fin del contrato',
+                'cuota_mensual': '24.99€',
+            }
+        }
+        detalles_contrato = contrato_info.get(contrato, {})
+        context = {
+            'contrato': contrato,
+            'duracion': detalles_contrato.get('duracion'),
+            'cuota_inscripcion': detalles_contrato.get('cuota_inscripcion'),
+            'renovacion': detalles_contrato.get('renovacion'),
+            'recision': detalles_contrato.get('recision'),
+            'cuota_mensual': detalles_contrato.get('cuota_mensual'),
+            'form': form,
+        }
+        return render(request, self.template_name, context)
 
 
 class signUpPago(SoloNoAutenticadosMixin, View):
@@ -150,16 +190,35 @@ class signUpPago(SoloNoAutenticadosMixin, View):
             },
         }
 
-        # Recuperar detalles del contrato basado en la selección
         detalles_contrato = contrato_info.get(contrato, {})
-        # Calcular el monto total en centavos
+
+        # Calcular el monto total en centavos (convertir a Decimal antes de operar)
         cuota_mensual = detalles_contrato.get('cuota_mensual', 0.0)
         cuota_inscripcion = detalles_contrato.get('cuota_inscripcion', 0.0)
-        monto_total = int((cuota_mensual + cuota_inscripcion) * 100)
-        total_pagar=f"{monto_total / 100:.2f}€"
-        # Formatear el mensaje si ya existe uno
+
+        # Convertir los valores a Decimal (evitar problemas de precisión con floats)
+        cuota_mensual = Decimal(str(cuota_mensual))  # Asegurarse de convertir como string
+        cuota_inscripcion = Decimal(str(cuota_inscripcion))  # Asegurarse de convertir como string
+
+        # Imprimir los valores de las cuotas para verificación
+        print(f'CUOTA MENSUAL: {cuota_mensual}')
+        print(f'CUOTA INSCRIPCION: {cuota_inscripcion}')
+
+        # Calcular el monto total
+        monto_total = cuota_mensual + cuota_inscripcion
+
+        # Redondear el monto total a 2 decimales (en formato de centavos)
+        monto_total = monto_total.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+        # Mostrar el monto total en euros, sin necesidad de dividir entre 100
+        total_pagar = f"{monto_total:.2f}€"  # No dividimos por 100 aquí
+
+        # Formatear el mensaje si ya existe uno (por ejemplo, "success" o "cancel")
         if mensaje in ['success', 'cancel']:
-            monto_total = f"{monto_total / 100:.2f}€"
+            total_pagar = f"{monto_total:.2f}€"
+
+        # Mostrar el monto total
+        print(f'MONTO TOTAL: {total_pagar}')
 
         # Añadimos la información de pago y contrato al contexto
         context = {
@@ -191,6 +250,7 @@ class signUpPago(SoloNoAutenticadosMixin, View):
             print(f"[DEBUG] Datos del cliente: {data}")
 
             monto_total = data.get('monto_total')
+            monto_total = int(Decimal(str(monto_total)) * 100)
             contrato = data.get('contrato')
             print(f'CONTRATO: {contrato}')
             if contrato== 'Anual':
@@ -219,9 +279,11 @@ class signUpPago(SoloNoAutenticadosMixin, View):
             print(f'fecha_vencimiento: {fecha_vencimiento}')
             print(f'proximo_pago: {proximo_pago}')
 
-
-
-
+            email = socio_data.get('email')
+            dni = domicilio_data.get('dni')
+            if User.objects.filter(username=dni).exists() or User.objects.filter(email=email).exists():
+                print(f"[WARNING] Usuario con DNI: {dni} o email: {email} ya existe.")
+                return JsonResponse({'usuario_existente': True})
 
             payment_method_id = data.get('payment_method_id')
             card_holder_name = data.get('card_holder_name')
@@ -312,7 +374,6 @@ class signUpPago(SoloNoAutenticadosMixin, View):
                     login(request, nuevo_usuario)
                     print("[INFO] Usuario autenticado automáticamente.")
 
-
                 return JsonResponse({'usuario_existente': False, 'status': 'success'})
 
             else:
@@ -341,54 +402,58 @@ class logIn(SoloNoAutenticadosMixin, View):
         return render(request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
+        print(request.POST)  # Depura qué datos se están enviando en el formulario
+
         form = self.form_class(request.POST)
+        error_messages = []  # Lista para errores de lógica del negocio
+
         if form.is_valid():
-            # Obtener DNI y contraseña del formulario
+            # Obtener DNI y contraseña
             dni = form.cleaned_data.get('dni')
             password = form.cleaned_data.get('password')
-
-
-            # Autenticar usando el DNI
+            print(f'USUARIO {dni}')
+            print(f'CONTRASEÑA {password}')
+            # Autenticar al usuario
             user = authenticate(username=dni, password=password)
 
             if user is not None:
-                # Si el usuario es administrador, no verificamos suscripción
+                print('usuario valido')
+                # Si el usuario es superusuario, saltamos verificación de suscripción
                 if user.is_superuser:
                     login(request, user)
                     next_url = request.GET.get('next', 'welcome')
                     return redirect(next_url)
 
+                # Verificación de la suscripción para usuarios normales
                 try:
-                    # Obtener el objeto Socio asociado al usuario
                     socio = Socio.objects.get(user=user)
+                    suscripcion = Suscripción.objects.filter(user=socio).first()
 
-                    # Buscar las suscripciones asociadas al socio
-                    suscripcion = Suscripción.objects.filter(
-                        user=socio).first()  # Usamos 'filter' para obtener una lista
-
-                    # Verificar si se encontró una suscripción
                     if not suscripcion:
-                        messages.error(request, "No se encontró una suscripción para este socio.")
-                        return render(request, self.template_name, {"form": form})
-
-                    # Si la suscripción está inactiva, no dejamos iniciar sesión
-                    if suscripcion.suscripcion_activa == False:
-                        messages.error(request, "El socio no está actualmente suscrito a ningún plan.")
-                        return render(request, self.template_name, {"form": form})
-
+                        error_messages.append("No se encontró una suscripción para este socio.")
+                    elif not suscripcion.suscripcion_activa:
+                        error_messages.append("El socio no está actualmente suscrito a ningún plan.")
                 except Socio.DoesNotExist:
-                    messages.error(request, "No se encontró el socio asociado al usuario.")
-                    return render(request, self.template_name, {"form": form})
+                    error_messages.append("No se encontró el socio asociado al usuario.")
 
-                # Si la suscripción está activa, procedemos con el login
+                # Si hay errores de suscripción, mostramos los mensajes
+                if error_messages:
+                    return render(request, self.template_name, {"form": form, "error_messages": error_messages})
+
+                # Si todo está correcto, iniciamos sesión
                 login(request, user)
-                next_url = request.GET.get('next', 'welcome')  # Si 'next' no está presente, redirige a 'index'
+                next_url = request.GET.get('next', 'welcome')
                 return redirect(next_url)
             else:
-                form.add_error(None, "Credenciales inválidas. Por favor, intente de nuevo.")
+                error_messages.append("Credenciales inválidas. Por favor, intente de nuevo.")
+        else:
+            # Errores de validación del formulario
+            for field, errors in form.errors.items():
+                for error in errors:
+                    error_messages.append(f"{error}")
 
-        return render(request, self.template_name, {"form": form})
-
+        # Renderizamos la plantilla con los errores
+        return render(request, self.template_name, {"form": form, "error_messages": error_messages})
 
 class logOut(View):
     def get(self, request):

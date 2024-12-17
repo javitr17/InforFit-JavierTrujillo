@@ -29,11 +29,13 @@
 
 }
 
-
+.mensaje_error{
+    color: #ba1d1d;
+}
 
 .loginContenedor{
     width: 40%;
-    height: 655px;
+    height: 660px;
     background-color: #222E39;
     border-radius: 20px;
     align-items: center;
@@ -62,7 +64,7 @@
 
 .loginContenedor form{
     height: 450px;
-margin-top: 4rem;
+margin-top: 2rem;
     text-align: center;
 }
 .loginCampos{
@@ -117,6 +119,7 @@ display: flex;
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    margin-top: 1rem;
 
 }
 
