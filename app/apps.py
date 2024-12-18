@@ -43,6 +43,8 @@ def verificar_puede_darse_de_baja(request):
     # Verificar si el usuario está autenticado
     if request.user.is_authenticated:
         from .models import Suscripción
+        if request.user.is_superuser:
+            return
 
         # Obtener la suscripción del socio autenticado
         suscripcion = Suscripción.objects.filter(socio=request.user).first()

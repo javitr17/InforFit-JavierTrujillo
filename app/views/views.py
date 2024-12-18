@@ -46,6 +46,8 @@ class VerificarDarseDeBajaMiddleware:
         return response
 
     def verificar_puede_darse_de_baja(self, request):
+        if request.user.is_superuser:
+            return
         socio = Socio.objects.get(user=request.user)
 
         # Luego, usa el socio para hacer la consulta en Suscripción
