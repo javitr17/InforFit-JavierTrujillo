@@ -30,6 +30,42 @@ from datetime import datetime
 from django.views.generic.edit import FormView
 
 
+class VerificarDarseDeBajaMiddleware:
+    """
+    Middleware para verificar si un usuario puede darse de baja, basado en la suscripción.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.user.is_authenticated:
+            self.verificar_puede_darse_de_baja(request)
+
+        response = self.get_response(request)
+        return response
+
+    def verificar_puede_darse_de_baja(self, request):
+        socio = Socio.objects.get(user=request.user)
+
+        # Luego, usa el socio para hacer la consulta en Suscripción
+        suscripcion = Suscripción.objects.filter(user=socio).first()
+
+        if suscripcion:
+            proximo_pago = suscripcion.proximo_pago
+
+            # Verificar si el próximo pago es más de 14 días en el futuro
+            ahora = datetime.now().date()
+
+            if proximo_pago and proximo_pago - ahora > timedelta(days=14):
+                puede_darse_de_baja = True
+            else:
+                puede_darse_de_baja = False
+
+            # Guardar en la sesión para que esté accesible en cualquier parte
+            request.session['puede_darse_de_baja'] = puede_darse_de_baja
+        else:
+            request.session['puede_darse_de_baja'] = False
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class perfil(TemplateView):
@@ -156,13 +192,19 @@ class perfil(TemplateView):
 
         if 'darme_baja' in request.POST:  # Detectamos la solicitud de baja
             suscripcion = Suscripción.objects.filter(user=socio).first()
-            if suscripcion:
-                print('BAJA CONFIRMADA')
-                suscripcion.suscripcion_activa = False  # Desactivamos la suscripción
-                suscripcion.save()
+            puede_darse_de_baja = request.session.get('puede_darse_de_baja', False)
+            print(f'puede_darse_de_baja {puede_darse_de_baja}')
+            print(f'suscripcion {suscripcion}')
+            if puede_darse_de_baja:
+                if suscripcion:
+                    print('BAJA CONFIRMADA')
+                    suscripcion.suscripcion_activa = False  # Desactivamos la suscripción
+                    suscripcion.save()
 
-                messages.success(request, "Tu suscripción ha sido cancelada.")
-                return redirect(reverse('perfil'))
+                    messages.success(request, "Tu suscripción ha sido cancelada.")
+                    return redirect(reverse('perfil'))
+            else:
+                return render(request, self.template_name, self.get_context_data(form_datos=form_datos, form_domicilio=form_domicilio, no_se_puede_baja=True ))
 
         if 'imagen' in request.FILES:
             socio.imagen = request.FILES['imagen']

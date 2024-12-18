@@ -4,6 +4,8 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.shortcuts import redirect
 from django.core.management import execute_from_command_line
+from django.utils import timezone
+from datetime import timedelta
 
 
 
@@ -36,3 +38,25 @@ def verificar_suscripciones_inactivas(Socio, Suscripción):
                 # Opcionalmente, redirigimos a una página que avise sobre la cancelación de la suscripción
                 return redirect('welcome')
 
+
+def verificar_puede_darse_de_baja(request):
+    # Verificar si el usuario está autenticado
+    if request.user.is_authenticated:
+        from .models import Suscripción
+
+        # Obtener la suscripción del socio autenticado
+        suscripcion = Suscripción.objects.filter(socio=request.user).first()
+
+        if suscripcion:
+            proximo_pago = suscripcion.proximo_pago
+
+            # Verificar si el próximo pago es más de 14 días en el futuro
+            if proximo_pago and proximo_pago - timezone.now() > timedelta(days=14):
+                # Si quedan más de 14 días, puede darse de baja
+                puede_darse_de_baja = True
+            else:
+                # Si no quedan más de 14 días, no puede darse de baja
+                puede_darse_de_baja = False
+
+            # Guardar esta variable en el contexto global o en la sesión para acceder en la app
+            request.session['puede_darse_de_baja'] = puede_darse_de_baja

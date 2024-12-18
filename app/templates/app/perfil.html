@@ -137,6 +137,22 @@
         </div>
     </div>
 
+    {% if no_se_puede_baja %}
+        <div class="noSepuedeBaja">
+        <div class="perfilContenedorDarmeBaja">
+        <div class="contenedorRelativo">
+            <div class="perfilDarmeBajaPadding">
+                 <div class="perfilDarmeBajaCancelar">
+                    <a href="javascript:void(0)" id="cerrarBaja"><i class="fa-solid fa-x"></i></a>
+                 </div>
+                <div class="perfilDarmeBajaTitulo">LO SENTIMOS, YU PERIODO PARA DARTE DE BAJA HA EXPIRADO</div>
+                <div class="perfilDarmeBajaTexto">Debes darte de baja 14 días antes de que finalice tu suscripción</div>
+                
+            </div>
+        </div>
+    </div>
+        </div>
+    {% endif %}
     <div class="perfilContenedorDatosPersonales">
         <div class="perfilDatosPersonalesPadding">
             <div class="perfilDatosPersonalesTitulo">MIS DATOS PERSONALES</div>
@@ -436,6 +452,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+  document.addEventListener('DOMContentLoaded', function () {
+    // Obtener el enlace de "cerrar" para el contenedor de baja
+    const cerrarBaja = document.querySelector('.noSepuedeBaja #cerrarBaja'); // Correcto
+    const noSepuedeBaja = document.querySelector('.noSepuedeBaja');
+
+    // Verificar si el elemento existe antes de agregar el evento
+    if (cerrarBaja) {
+        // Agregar el evento de clic en el icono "X" para cerrar el contenedor
+        cerrarBaja.addEventListener('click', function () {
+            noSepuedeBaja.style.display = 'none'; // Ocultar el contenedor cuando se hace clic en la "X"
+        });
+    }
+});
 
    
 

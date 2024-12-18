@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'app',
     'InForFit',
     'django_recaptcha',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.views.views.VerificarDarseDeBajaMiddleware',
+
 ]
 
 ROOT_URLCONF = 'InForFit.urls'
@@ -163,7 +166,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 OPENAI_API_KEY = config('OPENAI_API_KEY')
 
-
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 
 

@@ -11,6 +11,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import stripe
+from celery import shared_task
 from django.conf import settings
 import json
 from django.urls import reverse
@@ -23,6 +24,63 @@ from decimal import Decimal, ROUND_HALF_UP
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
+
+@shared_task
+def procesar_pagos_diarios():
+    today = timezone.now().date()
+
+    # Obtener todos los socios con suscripciones activas
+    socios_con_suscripciones_activas = Suscripción.objects.filter(suscripcion_activa=True)
+
+    for suscripcion in socios_con_suscripciones_activas:
+        socio = suscripcion.user
+        tarjeta = TarjetaPago.objects.filter(user=socio).first()
+
+        if tarjeta:
+            # Verificar si la fecha de proximo_pago coincide con la fecha actual
+            if suscripcion.proximo_pago.date() == today:
+                # Procesar el pago con Stripe para la cuota de suscripción
+                monto_total = int(suscripcion.precio_suscripcion * 100)  # Convertir a centavos
+
+                # Intentar realizar el pago
+                try:
+                    # Crear un PaymentIntent
+                    intent = stripe.PaymentIntent.create(
+                        amount=monto_total,
+                        currency='eur',
+                        payment_method=tarjeta.token_stripe,
+                        confirmation_method='manual',
+                        confirm=True
+                    )
+
+                    if intent.status == 'succeeded':
+                        # Si el pago es exitoso, actualizar los datos de la suscripción
+                        if suscripcion.nombre == 'Mensual':
+                            duracion = timedelta(days=30)
+                        elif suscripcion.nombre == 'Semestral':
+                            duracion = timedelta(days=180)
+                        elif suscripcion.nombre == 'Anual':
+                            duracion = timedelta(days=365)
+                        else:
+                            duracion = timedelta(days=30)  # Valor predeterminado
+
+                        fecha_inicio = timezone.now()
+                        fecha_vencimiento = fecha_inicio + duracion
+
+                        # Actualizar suscripción con nuevas fechas
+                        suscripcion.fecha_inicio = fecha_inicio
+                        suscripcion.fecha_vencimiento = fecha_vencimiento
+                        suscripcion.proximo_pago = fecha_vencimiento
+
+                        suscripcion.save()
+                        print(f"[INFO] Pago procesado y suscripción de {socio} actualizada.")
+                    else:
+                        print(f"[ERROR] El pago de {socio} no fue exitoso.")
+
+                except stripe.error.StripeError as e:
+                    print(f"[ERROR] StripeError al procesar el pago para {socio}: {str(e)}")
+        else:
+            print(f"[ERROR] No se encontró tarjeta de pago registrada para {socio}.")
 
 class SoloNoAutenticadosMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
