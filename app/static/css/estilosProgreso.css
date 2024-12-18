@@ -12,7 +12,7 @@
 
 .progresoContenedor1{
     padding: 3rem;
-    padding-left: 4rem;
+    padding-left: 6rem;
     width: 90%;
     height: 450px;
     display: grid;
@@ -74,25 +74,40 @@
     display: grid;
     justify-items: center; /* Centra horizontalmente */
     align-items: center;   /* Centra verticalmente */
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 40% 60%;
     gap: 3rem;
     background-image: linear-gradient(to right,#222E39, #171E26);
 }
 
 .progresoIMC, .progresoAltura{
-display: grid;
-    grid-template-columns: repeat(2, 1fr);
+
     gap: 2rem;
 
 
 }
 
+.progresoAltura{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.progresoIMC{
+    display: grid;
+    grid-template-columns: 65% 35%;
+}
+
 .progresoIMCIcono , .progresoAlturaIcono{
-    display: flex;
+padding-top: 5rem;
 align-items: center;
     justify-items: center;
     width: 100%;
+
 }
+
+.progresoAlturaIcono{
+    padding-left: 2rem;
+}
+
 
 .progresoDatosAlturaTitulo, .progresoDatosIMCTitulo{
     color: #B3B7BA;

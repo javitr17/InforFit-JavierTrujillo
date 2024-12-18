@@ -217,21 +217,28 @@ class rutina(TemplateView):
 
             # Crear la respuesta HTTP para el PDF
             response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = 'attachment; filename="rutina_personalizada.pdf"'
+            response['Content-Disposition'] = f'attachment; filename="rutina_personalizada_{sitio}.pdf"'
 
             # Crear el documento PDF
             p = canvas.Canvas(response, pagesize=letter)
 
-            # Establecer la fuente para el texto
-            p.setFont('Helvetica', 12)
-            p.setFillColor(colors.black)  # Color negro para el texto
+            # Establecer el título del PDF
+            if sitio:
+                sitio = sitio.upper()  # Convertir el sitio a mayúsculas
+            titulo = f"RUTINA PERSONALIZADA EN {sitio}"
 
-            # El texto a añadir al PDF
+            # Establecer fuente y dibujar el título
+            p.setFont('Helvetica-Bold', 16)  # Fuente en negrita y tamaño más grande
+            p.drawString(40, 770, titulo)  # Dibujar el título en la parte superior
 
-            # Crear un objeto de texto para que se ajuste automáticamente
-            text_object = p.beginText(40, 750)  # Posición inicial
+            # Añadir un espacio debajo del título
+            espacio_inferior = 20  # Espacio de 20 puntos
+            contenido_y = 770 - espacio_inferior
+
+            # Restablecer fuente y dibujar el contenido
+            p.setFont('Helvetica', 12)  # Fuente normal para el contenido
+            text_object = p.beginText(40, contenido_y)  # Ajustar la posición inicial del texto principal
             text_object.setFont('Helvetica', 12)
-            text_object.setTextOrigin(40, 750)
             text_object.textLines(respuesta)
 
             # Dibujar el texto en el PDF
@@ -262,8 +269,7 @@ class progreso(TemplateView):
             if datos_fisicos:
                 # Truncar el peso a los dos primeros dígitos
                 if datos_fisicos.peso:
-                    peso_str = str(datos_fisicos.peso)  # Convertir a cadena
-                    peso_actual = float(peso_str[:2])  # Convertir los dos primeros dígitos a float
+                    peso_actual = round(float(datos_fisicos.peso), 2)  # Redondear a 2 decimales
                 else:
                     peso_actual = None
 
@@ -327,8 +333,8 @@ class datosFisicos(TemplateView):
                 context['peso_form'] = FormPeso(initial={'peso': datos_fisicos.peso})
                 context['altura_form'] = FormAltura(initial={'altura': datos_fisicos.altura})
             else:
-                context['peso_form'] = FormPeso()
-                context['altura_form'] = FormAltura()
+                context['peso_form'] = FormPeso(initial={'peso': 70})
+                context['altura_form'] = FormAltura(initial={'altura': 172})
 
         return context
 
@@ -338,15 +344,20 @@ class datosFisicos(TemplateView):
 
         socio = get_object_or_404(Socio, user=request.user)
 
-        # Procesar el formulario de peso
         if 'peso' in request.POST:
             form = FormPeso(request.POST)
             if form.is_valid():
                 peso = form.cleaned_data['peso']
-                # Actualizar o crear los datos de peso
+
+                # Obtener la última altura registrada para el usuario
+                ultimo_dato = DatosFisicos.objects.filter(user=socio).last()
+                ultima_altura = ultimo_dato.altura if ultimo_dato and ultimo_dato.altura else None
+
+                # Crear un nuevo registro con el peso y la última altura conocida
                 DatosFisicos.objects.create(
                     user=socio,
                     peso=peso,
+                    altura=ultima_altura,  # Usar la última altura registrada o dejar en null
                     fecha=now()  # Fecha actual
                 )
                 return JsonResponse({'status': 'success', 'message': 'Peso registrado'})
@@ -358,14 +369,17 @@ class datosFisicos(TemplateView):
             form = FormAltura(request.POST)
             if form.is_valid():
                 altura = form.cleaned_data['altura']
-                print(altura)
-                # Actualizar o crear los datos de altura
-                DatosFisicos.objects.create(
-                    user=socio,
-                    altura=altura,
-                    fecha=now()  # Fecha actual
-                )
-                return JsonResponse({'status': 'success', 'message': 'Altura registrada'})
+                # Obtener el último registro del usuario
+                ultimo_dato = DatosFisicos.objects.filter(user=socio).last()
+                if ultimo_dato:
+                    # Actualizar la altura en el último registro
+                    ultimo_dato.altura = altura
+                    ultimo_dato.save()
+                    return JsonResponse({'status': 'success', 'message': 'Altura actualizada'})
+                else:
+                    return JsonResponse(
+                        {'status': 'error', 'message': 'No hay registros de peso previos para actualizar altura'},
+                        status=400)
             else:
                 return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
 

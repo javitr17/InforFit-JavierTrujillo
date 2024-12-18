@@ -72,7 +72,9 @@ display: flex;
     height: 60px;
     width: 100%;
 }
-
+.rutinaBtn i{
+    padding-left: 1rem;
+}
 .rutinaContenedorPadding form{
     width: 100%;
 }

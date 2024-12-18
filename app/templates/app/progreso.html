@@ -14,7 +14,11 @@
     <div class="progresoContenedor1">
     <div class="progresoDatosPeso">
         <div class="progresoDatosPesoTitulo">Peso</div>
+        {% if peso_actual %}
         <div class="progresoDatosPesoPeso">{{ peso_actual }}</div>
+        {% else %}
+            <div class="progresoDatosPesoPeso">70.0</div>
+        {% endif %}
         <div class="progresoDatosPesoKg">kg</div>
     </div>
     <div class="progresoPesoFondoPeso"></div>
@@ -25,7 +29,12 @@
         <div class="progresoAltura">
             <div class="progresoDatosAltura">
                 <div class="progresoDatosAlturaTitulo">Altura</div>
+                {% if altura_actual %}
                 <div class="progresoDatosAlturaPeso">{{ altura_actual }}</div>
+                {% else %}
+                    <div class="progresoDatosAlturaPeso">{{ 172 }}</div>
+
+                {% endif %}
                 <div class="progresoDatosAlturaCm">cm</div>
             </div>
             <div class="progresoAlturaIcono"><i class="fa-solid fa-ruler-vertical"></i></div>
@@ -33,7 +42,11 @@
         <div class="progresoIMC">
              <div class="progresoDatosIMC">
                 <div class="progresoDatosIMCTitulo">IMC</div>
+                {% if altura_actual %} 
                 <div class="progresoDatosIMCPeso">{{ imc }}</div>
+                {% else %}
+                    <div class="progresoDatosIMCPeso">22.22</div>
+                {% endif %} 
                 <div class="progresoDatosIMCunidad">%</div>
              </div>
              <div class="progresoIMCIcono"><i class="fa-solid fa-chart-pie"></i></div> 
